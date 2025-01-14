@@ -5,7 +5,6 @@ import ActionButton from "@/components/ActionButton";
 export default function Home() {
   return (
     <>
-      <Header />
       <main className="flex flex-col items-center">
         <span className="h-[100svh] w-[100svw] flex flex-col items-center justify-around">
           <span className="flex flex-col items-center">
@@ -18,7 +17,6 @@ export default function Home() {
         <h2>Do you want to know if the company accepts only a few people, or you just suck?</h2>
         <h2>What if the recruiter had to give a reason for rejection?</h2>
       </main>
-      <Footer />
     </>
   );
 }
