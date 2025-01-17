@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { JobOffer } from '@/app/lib/definitions'
 
-export const OfferPage = ({ offer }: { JobOffer }) => {
+export const Offer = ({ offer }: { JobOffer }) => {
   return (
     <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8">
       <span className="flex flex-row gap-2">

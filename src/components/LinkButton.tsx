@@ -21,11 +21,15 @@ export const LinkButton = ({ type, href, children }: Props) => {
       </Link>
       break;
 
-    default:
+    case "header":
       link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
       </Link>
       break;
+    default:
+      link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
+        {children}
+      </Link>
   }
   return link;
 }
