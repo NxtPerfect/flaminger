@@ -18,9 +18,11 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
-        <Header/>
-        {children}
-        <Footer/>
+        <Header />
+        <main className="flex flex-col items-center px-24 py-12">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
