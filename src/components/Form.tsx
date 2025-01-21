@@ -1,6 +1,6 @@
 "use client" // Possible that i need to make the form client,
 // and leave this page as server
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useState } from 'react'
 import ActionButton from './ActionButton'
 
 type Props = {
@@ -8,26 +8,55 @@ type Props = {
 }
 
 export default function Form({ formType }: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
   async function registerOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch('/api/register', {
-      method: "POST",
-      body: formData,
-    })
+    setIsLoading(true);
+    setError("");
 
-    const data = await response.json();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const response = await fetch('/api/register', {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json();
+      if (data.errorType === "passwords") {
+        setError("Passwords don't match.");
+      }
+      if (data.errorType === "emptyFields") {
+        setError("Populate all fields.");
+      }
+      if (data.errorType === "badData") {
+        setError("Ensure all fields are valid.");
+      }
+      if (data.errorType === "dataConsent") {
+        setError("You must consent to data sending.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function loginOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch('/api/login', {
-      method: "POST",
-      body: formData,
-    })
+    setIsLoading(true);
+    setError("");
 
-    const data = await response.json();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const response = await fetch('/api/login', {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json();
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   if (formType === "register") {
@@ -42,6 +71,7 @@ export default function Form({ formType }: Props) {
         <input type="text" name="surname" placeholder="Jobs" required className="rounded-md px-2 py-1 text-black" />
         <label htmlFor="password">Password*</label>
         <input type="password" name="password" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
+        <span className="text-sm">Minimum of 8 characters, only numbers and letters.</span>
         <label htmlFor="confirmPassword">Confirm password*</label>
         <input type="password" name="confirmPassword" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
         <div className="flex flex-row gap-4 mt-8 max-w-[40ch] text-pretty items-center">
@@ -53,7 +83,8 @@ export default function Form({ formType }: Props) {
           <input type="checkbox" name="mailingConsent" className="flex-shrink-0 size-4 rounded-md px-2 py-1 text-black" />
         </div>
         <span className="text-sm">* Fields are required</span>
-        <ActionButton type="formSubmit">Register</ActionButton>
+        {error ? <span className="text-red-500">{error}</span> : null}
+        <ActionButton type="formSubmit" isLoading={isLoading}>Register</ActionButton>
       </form>
     )
   }
@@ -64,6 +95,7 @@ export default function Form({ formType }: Props) {
       <input type="text" name="email" placeholder="sample@email.io" required className="rounded-md px-2 py-1 text-black" />
       <label htmlFor="password">Password*</label>
       <input type="password" name="password" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
+      {error ? <span className="text-red-500">{error}</span> : null}
       <ActionButton type="formSubmit">Login</ActionButton>
     </form>
   )

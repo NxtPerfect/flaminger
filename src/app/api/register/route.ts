@@ -1,4 +1,8 @@
-export async function POST(req: Request) {
+import { createUser } from "@/db/queries/insert";
+
+const MINIMUM_PASSWORD_LENGTH = 8;
+
+export async function POST(req: Request, res: Response) {
   let data = await req.formData();
 
   const email = data.get("email");
@@ -8,7 +12,24 @@ export async function POST(req: Request) {
   const confirmPassword = data.get("confirmPassword");
   const dataConsent = data.get("dataConsent");
   const mailingConsent = data.get("mailingConsent");
-  // const id = req.query["id"];
+
+  if (!email || !firstname || !surname || !password || !confirmPassword || !dataConsent) {
+    return Response.json({ errorType: "emptyFields" }, { status: 400 });
+  }
+
+  if (password !== confirmPassword) {
+    return Response.json({ errorType: "passwords" }, { status: 400 });
+  }
+
+  if (!isValidUserData(email, firstname, surname) || !isValidPassword(password)) {
+    return Response.json({ errorType: "badData" }, { status: 400 });
+  }
+
+  if (!dataConsent) {
+    return Response.json({ errorType: "dataConsent" }, { status: 400 });
+  }
+
+  createUser({ email: email!.toString(), firstname: firstname!.toString(), surname: surname!.toString(), password: password!.toString(), mailingConsent: mailingConsent != null });
   // const auth = req.cookies.authorization
   // res.setHeader('Set-Cookie', 'username=lee; Path=/; HttpOnly')
   // res.status(200).send('Cookie has been set.')
@@ -16,9 +37,35 @@ export async function POST(req: Request) {
   // res.status(200).send('Cookie has been deleted.')
   // res.redirect(307, `/post/${id}`)
   // return res.json();
-  return Response.json({ status: "success" });
+  return Response.redirect('/');
 }
 
-export async function GET(req: Request) {
-  return Response.json({ status: "success" });
+function isValidUserData(email: FormDataEntryValue, firstname: FormDataEntryValue, surname: FormDataEntryValue) {
+  return isValidEmail(email.toString()) || isValidFirstName(firstname.toString()) || isValidSurName(surname.toString());
+}
+
+function isValidEmail(email: string) {
+  const re = /\S+@\S+\.\S+/;
+  console.log(re.test(email));
+  return re.test(email);
+}
+
+function isValidFirstName(name: string) {
+  const re = /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
+  console.log(re.test(name));
+  return re.test(name);
+}
+
+function isValidSurName(name: string) {
+  const re = /^(?=.{1,75}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
+  console.log(re.test(name));
+  return re.test(name);
+}
+
+function isValidPassword(password: FormDataEntryValue) {
+  const re = /^(?=.{1,64}$)[a-z0-9]+$/i;
+  const passwordString = password.toString();
+  console.log(passwordString);
+  console.log(re.test(passwordString), passwordString.length);
+  return passwordString.length >= MINIMUM_PASSWORD_LENGTH && re.test(passwordString);
 }
