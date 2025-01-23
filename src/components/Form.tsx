@@ -2,6 +2,8 @@
 // and leave this page as server
 import React, { FormEvent, useState } from 'react'
 import ActionButton from './ActionButton'
+import { useRouter } from 'next/navigation'
+import { createSession } from '@/app/lib/session'
 
 type Props = {
   readonly formType: "login" | "register"
@@ -10,6 +12,7 @@ type Props = {
 export default function Form({ formType }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const router = useRouter();
 
   async function registerOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,24 +21,35 @@ export default function Form({ formType }: Props) {
 
     try {
       const formData = new FormData(event.currentTarget);
+      console.log("Before fetch");
       const response = await fetch('/api/register', {
         method: "POST",
         body: formData,
       })
+      console.log("after fetch");
 
       const data = await response.json();
+      console.log("Data Before:", data);
       if (data.errorType === "passwords") {
-        setError("Passwords don't match.");
+        setError("Confirm Password doesn't match password.");
+        return;
       }
       if (data.errorType === "emptyFields") {
         setError("Populate all fields.");
+        return;
       }
       if (data.errorType === "badData") {
         setError("Ensure all fields are valid.");
+        return;
       }
       if (data.errorType === "dataConsent") {
         setError("You must consent to data sending.");
+        return;
       }
+
+      console.log("Data:", data);
+      await createSession(data.userId);
+      router.push('/profile');
     } finally {
       setIsLoading(false);
     }
@@ -54,6 +68,9 @@ export default function Form({ formType }: Props) {
       })
 
       const data = await response.json();
+      if (data.status === 200) {
+        router.push('/profile');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -70,10 +87,10 @@ export default function Form({ formType }: Props) {
         <label htmlFor="surname">Surname*</label>
         <input type="text" name="surname" placeholder="Jobs" required className="rounded-md px-2 py-1 text-black" />
         <label htmlFor="password">Password*</label>
-        <input type="password" name="password" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
+        <input type="password" name="password" placeholder="******" required minLength={8} maxLength={64} className="rounded-md px-2 py-1 text-black" />
         <span className="text-sm">Minimum of 8 characters, only numbers and letters.</span>
         <label htmlFor="confirmPassword">Confirm password*</label>
-        <input type="password" name="confirmPassword" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
+        <input type="password" name="confirmPassword" placeholder="******" required minLength={8} maxLength={64} className="rounded-md px-2 py-1 text-black" />
         <div className="flex flex-row gap-4 mt-8 max-w-[40ch] text-pretty items-center">
           <label htmlFor="dataConsent">I consent to handing over my data to Flaminger for purpose of correctly working platform.*</label>
           <input type="checkbox" name="dataConsent" required className="flex-shrink-0 size-4 rounded-md px-2 py-1 text-black" />

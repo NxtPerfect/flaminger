@@ -9,3 +9,8 @@ export type JobOffer = {
   description: string
   alternativeApplicationLink?: string
 }
+
+export type SessionPayload = {
+  userId: string
+  expiresAt: Date
+}

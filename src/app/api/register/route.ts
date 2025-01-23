@@ -1,4 +1,6 @@
 import { createUser } from "@/db/queries/insert";
+import { getUserByEmail } from "@/db/queries/select";
+import { hash, compareSync } from "bcryptjs";
 
 const MINIMUM_PASSWORD_LENGTH = 8;
 
@@ -29,15 +31,11 @@ export async function POST(req: Request, res: Response) {
     return Response.json({ errorType: "dataConsent" }, { status: 400 });
   }
 
-  createUser({ email: email!.toString(), firstname: firstname!.toString(), surname: surname!.toString(), password: password!.toString(), mailingConsent: mailingConsent != null });
-  // const auth = req.cookies.authorization
-  // res.setHeader('Set-Cookie', 'username=lee; Path=/; HttpOnly')
-  // res.status(200).send('Cookie has been set.')
-  // res.setHeader('Set-Cookie', 'username=; Path=/; HttpOnly; Max-Age=0')
-  // res.status(200).send('Cookie has been deleted.')
-  // res.redirect(307, `/post/${id}`)
-  // return res.json();
-  return Response.redirect('/');
+  const hashedUserPassword = await hash(password!.toString(), 12);
+  createUser({ email: email!.toString(), firstname: firstname!.toString(), surname: surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: mailingConsent != null });
+
+  const user = await getUserByEmail(email.toString());
+  return Response.json({ userId: user.id }, { status: 200 });
 }
 
 function isValidUserData(email: FormDataEntryValue, firstname: FormDataEntryValue, surname: FormDataEntryValue) {
