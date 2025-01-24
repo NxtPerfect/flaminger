@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from 'next/link';
+import React from 'react';
 
 type Props = {
   type: "header" | "offerLink" | "alt" | "logout" | null
@@ -7,7 +7,7 @@ type Props = {
   children: string
 }
 
-export const LinkButton = ({ type, href, children }: Props) => {
+export const LinkButton = async ({ type, href, children }: Props) => {
   let link;
   switch (type) {
     case "offerLink":
@@ -27,9 +27,18 @@ export const LinkButton = ({ type, href, children }: Props) => {
       </Link>
       break;
     case "logout":
-      link = <Link href="/" className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
+      link = <button onClick={() => {
+        fetch('/api/logout').then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .catch((error) => console.error('Fetch error:', error));
+      }}
+        className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
-      </Link>
+      </button>
     default:
       link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}

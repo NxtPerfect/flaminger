@@ -44,8 +44,6 @@ export async function endSession() {
   const cookieStore = await cookies()
 
   cookieStore.set('session', "", {
-    httpOnly: true,
-    secure: true,
     expires: 0,
     sameSite: 'lax',
     path: '/',

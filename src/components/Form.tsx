@@ -9,6 +9,17 @@ type Props = {
   readonly formType: "login" | "register"
 }
 
+type ReturnData = {
+  readonly errorType?: "passwords" | "emptyFields" | "badData" | "dataConsent" | "userExists" | null
+  readonly status: number
+}
+
+const badDataErrorMessage = "Ensure all fields are valid.";
+const passwordAndConfirmPasswordNotSame = "Confirm password doesn't match password.";
+const someFieldsAreEmpty = "Some fields are empty. Populate all fields.";
+const dataNotConsent = "You must consent to data sending.";
+const userExists = "This user already exists.";
+
 export default function Form({ formType }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -27,25 +38,25 @@ export default function Form({ formType }: Props) {
       })
 
       const data = await response.json();
-      if (data.errorType === "passwords") {
-        setError("Confirm Password doesn't match password.");
+      if (isPasswordsMatching(data)) {
+        setError(passwordAndConfirmPasswordNotSame);
         return;
       }
-      if (data.errorType === "emptyFields") {
-        setError("Populate all fields.");
+      if (isEmptyFields(data)) {
+        setError(someFieldsAreEmpty);
         return;
       }
-      if (data.errorType === "badData") {
-        setError("Ensure all fields are valid.");
+      if (isBadData(data)) {
+        setError(badDataErrorMessage);
         return;
       }
-      if (data.errorType === "dataConsent") {
-        setError("You must consent to data sending.");
+      if (isDataNotConsent(data)) {
+        setError(dataNotConsent);
         return;
       }
 
-      if (data.errorType === "userExists") {
-        setError("This user already exists, try different email.");
+      if (isUserExists(data)) {
+        setError(userExists);
         return;
       }
 
@@ -69,9 +80,11 @@ export default function Form({ formType }: Props) {
       })
 
       const data = await response.json();
-      if (data.status === 200) {
-        router.push('/profile');
+      if (isBadData(data)) {
+        setError(badDataErrorMessage);
+        return;
       }
+      router.push('/profile');
     } finally {
       setIsLoading(false);
     }
@@ -119,3 +132,22 @@ export default function Form({ formType }: Props) {
   )
 }
 
+function isPasswordsMatching(data: ReturnData) {
+  return data.errorType === "passwords";
+}
+
+function isEmptyFields(data: ReturnData) {
+  return data.errorType === "emptyFields";
+}
+
+function isBadData(data: ReturnData) {
+  return data.errorType === "badData";
+}
+
+function isDataNotConsent(data: ReturnData) {
+  return data.errorType === "dataConsent";
+}
+
+function isUserExists(data: ReturnData) {
+  return data.errorType === "userExists";
+}

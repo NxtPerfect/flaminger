@@ -11,7 +11,7 @@ export default async function Header() {
         <LinkButton type="header" href="/offers">Job offers</LinkButton>
         <LinkButton type="header" href="/about_us">About us</LinkButton>
         <LinkButton type="header" href="/profile">My Profile</LinkButton>
-        <LinkButton type="logout" href="/logout">Logout</LinkButton>
+        <LinkButton type="logout" href="/">Logout</LinkButton>
       </header>
     )
   }
