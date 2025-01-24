@@ -11,7 +11,6 @@ export async function getAllJobs() {
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {
-  // { jobsId, jobsIsOpen, jobIsAccepted, jobRejectionReason }
   return db.select()
     .from(jobsToUsersTable)
     .where(eq(usersTable.id, id))

@@ -2,7 +2,11 @@ import { db } from "..";
 import { companiesTable, InsertCompany, InsertJobs, InsertJobsToUsers, InsertUser, jobsTable, jobsToUsersTable, usersTable } from "../schema";
 
 export async function createUser(data: InsertUser) {
-  await db.insert(usersTable).values(data);
+  try {
+    await db.insert(usersTable).values(data);
+  } catch (e) {
+    throw new Error("User exists");
+  }
 }
 
 export async function createJob(data: InsertJobs) {

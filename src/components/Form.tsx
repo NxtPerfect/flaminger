@@ -21,15 +21,12 @@ export default function Form({ formType }: Props) {
 
     try {
       const formData = new FormData(event.currentTarget);
-      console.log("Before fetch");
       const response = await fetch('/api/register', {
         method: "POST",
         body: formData,
       })
-      console.log("after fetch");
 
       const data = await response.json();
-      console.log("Data Before:", data);
       if (data.errorType === "passwords") {
         setError("Confirm Password doesn't match password.");
         return;
@@ -47,7 +44,11 @@ export default function Form({ formType }: Props) {
         return;
       }
 
-      console.log("Data:", data);
+      if (data.errorType === "userExists") {
+        setError("This user already exists, try different email.");
+        return;
+      }
+
       await createSession(data.userId);
       router.push('/profile');
     } finally {

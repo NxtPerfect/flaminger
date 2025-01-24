@@ -1,69 +1,53 @@
+import { createSession } from "@/app/lib/session";
+import { isValidEmail, isValidFirstName, isValidPassword, isValidSurName } from "@/app/lib/validation";
 import { createUser } from "@/db/queries/insert";
 import { getUserByEmail } from "@/db/queries/select";
-import { hash, compareSync } from "bcryptjs";
-
-const MINIMUM_PASSWORD_LENGTH = 8;
+import { hash } from "bcryptjs";
 
 export async function POST(req: Request, res: Response) {
-  let data = await req.formData();
+  const formData = await req.formData();
 
-  const email = data.get("email");
-  const firstname = data.get("firstname");
-  const surname = data.get("surname");
-  const password = data.get("password");
-  const confirmPassword = data.get("confirmPassword");
-  const dataConsent = data.get("dataConsent");
-  const mailingConsent = data.get("mailingConsent");
+  const userData = getUserDataFromForm(formData);
 
-  if (!email || !firstname || !surname || !password || !confirmPassword || !dataConsent) {
+  if (!userData.email || !userData.firstname || !userData.surname || !userData.password || !userData.confirmPassword || !userData.dataConsent) {
     return Response.json({ errorType: "emptyFields" }, { status: 400 });
   }
 
-  if (password !== confirmPassword) {
+  if (userData.password !== userData.confirmPassword) {
     return Response.json({ errorType: "passwords" }, { status: 400 });
   }
 
-  if (!isValidUserData(email, firstname, surname) || !isValidPassword(password)) {
+  if (!isValidUserData(userData.email, userData.firstname, userData.surname) || !isValidPassword(userData.password.toString())) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  if (!dataConsent) {
+  if (!userData.dataConsent) {
     return Response.json({ errorType: "dataConsent" }, { status: 400 });
   }
 
-  const hashedUserPassword = await hash(password!.toString(), 12);
-  createUser({ email: email!.toString(), firstname: firstname!.toString(), surname: surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: mailingConsent != null });
+  const hashedUserPassword = await hash(userData.password!.toString(), 12);
+  try {
+    createUser({ email: userData.email!.toString(), firstname: userData.firstname!.toString(), surname: userData.surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: userData.mailingConsent != null });
+  } catch (error) {
+    return Response.json({ errorType: "userExists" }, { status: 400 });
+  }
 
-  const user = await getUserByEmail(email.toString());
-  return Response.json({ userId: user.id }, { status: 200 });
+  const user = await getUserByEmail(userData.email.toString());
+  await createSession(user[0].id.toString());
+  return Response.json({ userId: user[0].id }, { status: 200 });
 }
 
 function isValidUserData(email: FormDataEntryValue, firstname: FormDataEntryValue, surname: FormDataEntryValue) {
   return isValidEmail(email.toString()) || isValidFirstName(firstname.toString()) || isValidSurName(surname.toString());
 }
 
-function isValidEmail(email: string) {
-  const re = /\S+@\S+\.\S+/;
-  console.log(re.test(email));
-  return re.test(email);
-}
-
-function isValidFirstName(name: string) {
-  const re = /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
-  console.log(re.test(name));
-  return re.test(name);
-}
-
-function isValidSurName(name: string) {
-  const re = /^(?=.{1,75}$)[a-z]+(?:['_.\s][a-z]+)*$/i;
-  console.log(re.test(name));
-  return re.test(name);
-}
-
-function isValidPassword(password: FormDataEntryValue) {
-  const re = /^(?=.{1,64}$)[a-z0-9]+$/i;
-  const passwordString = password.toString();
-  console.log(passwordString);
-  console.log(re.test(passwordString), passwordString.length);
-  return passwordString.length >= MINIMUM_PASSWORD_LENGTH && re.test(passwordString);
+function getUserDataFromForm(formData: FormData) {
+  const email = formData.get("email");
+  const firstname = formData.get("firstname");
+  const surname = formData.get("surname");
+  const password = formData.get("password");
+  const confirmPassword = formData.get("confirmPassword");
+  const dataConsent = formData.get("dataConsent");
+  const mailingConsent = formData.get("mailingConsent");
+  return { email, firstname, surname, password, confirmPassword, dataConsent, mailingConsent }
 }

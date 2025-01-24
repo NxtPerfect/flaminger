@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 type Props = {
-  type: "header" | "offerLink" | "alt" | null
+  type: "header" | "offerLink" | "alt" | "logout" | null
   href: string
   children: string
 }
@@ -26,6 +26,10 @@ export const LinkButton = ({ type, href, children }: Props) => {
         {children}
       </Link>
       break;
+    case "logout":
+      link = <Link href="/" className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
+        {children}
+      </Link>
     default:
       link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
