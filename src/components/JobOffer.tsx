@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { LinkButton } from './LinkButton'
+import LinkButton from './LinkButton'
 
 type Props = {
   id: string

@@ -1,9 +1,11 @@
+"use server"
 import React from 'react'
-import { LinkButton } from './LinkButton'
+import LinkButton from './LinkButton'
 import { cookies } from 'next/headers';
 
 export default async function Header() {
   const cookieStore = await cookies();
+
   if (cookieStore.get("session")?.value) {
     return (
       <header className="sticky top-0 flex flex-row gap-2 w-full items-center justify-center backdrop-blur-md">

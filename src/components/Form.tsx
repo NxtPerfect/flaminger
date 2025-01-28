@@ -62,6 +62,7 @@ export default function Form({ formType }: Props) {
 
       await createSession(data.userId);
       router.push('/profile');
+      router.refresh();
     } finally {
       setIsLoading(false);
     }
@@ -85,6 +86,7 @@ export default function Form({ formType }: Props) {
         return;
       }
       router.push('/profile');
+      router.refresh();
     } finally {
       setIsLoading(false);
     }

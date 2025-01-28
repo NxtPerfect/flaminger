@@ -1,4 +1,6 @@
+"use client";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type Props = {
@@ -7,7 +9,17 @@ type Props = {
   children: string
 }
 
-export const LinkButton = async ({ type, href, children }: Props) => {
+export default function LinkButton({ type, href, children }: Props) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    await fetch('/api/logout', { method: "POST" })
+      .then((_) => {
+        router.push('/');
+        router.refresh();
+      })
+  }
+
   let link;
   switch (type) {
     case "offerLink":
@@ -15,6 +27,7 @@ export const LinkButton = async ({ type, href, children }: Props) => {
         {children}
       </Link>
       break;
+
     case "alt":
       link = <Link href={href} className="underline hover:text-neutral-600 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
@@ -26,19 +39,13 @@ export const LinkButton = async ({ type, href, children }: Props) => {
         {children}
       </Link>
       break;
+
     case "logout":
-      link = <button onClick={() => {
-        fetch('/api/logout').then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .catch((error) => console.error('Fetch error:', error));
-      }}
-        className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
+      link = <button onClick={handleLogout} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
       </button>
+      break;
+
     default:
       link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
         {children}
