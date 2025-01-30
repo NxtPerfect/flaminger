@@ -8,7 +8,7 @@ export default async function Header() {
 
   if (cookieStore.get("session")?.value) {
     return (
-      <header className="sticky top-0 flex flex-row gap-2 w-full items-center justify-center backdrop-blur-md">
+      <header className="sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50">
         <LinkButton type="header" href="/">Home</LinkButton>
         <LinkButton type="header" href="/offers">Job offers</LinkButton>
         <LinkButton type="header" href="/about_us">About us</LinkButton>
@@ -18,7 +18,7 @@ export default async function Header() {
     )
   }
   return (
-    <header className="sticky top-0 flex flex-row gap-2 w-full items-center justify-center backdrop-blur-md">
+    <header className="sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50">
       <LinkButton type="header" href="/">Home</LinkButton>
       <LinkButton type="header" href="/offers">Job offers</LinkButton>
       <LinkButton type="header" href="/about_us">About us</LinkButton>
