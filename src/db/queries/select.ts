@@ -14,9 +14,11 @@ export async function getAllJobsWithCompanyInfo() {
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id));
 }
 
-export async function getAllJobsForLoggedUser(id: SelectUser['id']) {
+export async function getAllJobsForLoggedUserWithCompanyInfo(id: SelectUser['id']) {
   return db.select()
-    .from(jobsTable);
+    .from(jobsTable)
+    .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
+    .leftJoin(jobsToUsersTable, eq(jobsToUsersTable.userId, id));
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {

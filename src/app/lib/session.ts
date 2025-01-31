@@ -1,6 +1,6 @@
 "use server";
 import 'server-only';
-import { jwtVerify, SignJWT } from 'jose';
+import { jwtDecrypt, jwtVerify, SignJWT } from 'jose';
 import { SessionPayload } from './definitions';
 import { cookies } from 'next/headers';
 
@@ -15,7 +15,7 @@ export async function encrypt(payload: SessionPayload) {
     .sign(encodedKey)
 }
 
-export async function decrypt(session: string | undefined = '') {
+export async function verifySession(session: string | undefined = '') {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ['HS256'],
@@ -48,4 +48,14 @@ export async function endSession() {
     sameSite: 'lax',
     path: '/',
   })
+}
+
+export async function getUsersId() {
+  const cookieStore = await cookies();
+
+  const session = cookieStore.get('session');
+  if (!session)
+    return -1;
+  const sessionValue = await jwtDecrypt(session.value, encodedKey);
+  console.log(sessionValue.payload);
 }

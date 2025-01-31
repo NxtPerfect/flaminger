@@ -36,7 +36,8 @@ export const jobsTable = pgTable('jobs_table', {
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
   userId: serial('user_id').primaryKey().references(() => usersTable.id),
   jobId: serial('job_id').references(() => jobsTable.id),
-  isOpen: boolean('is_open').notNull(),
+  isApplied: boolean('is_applied').notNull(),
+  isApplicationInProgress: boolean('is_application_in_progress').notNull(),
   isAccepted: boolean('is_accepted').notNull(),
   rejectionReason: text('rejection_reason'),
 });

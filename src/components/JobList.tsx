@@ -79,7 +79,7 @@ export default function JobList() {
         <JobOffer id={2} title="Easy to get offer" logoPath="/companies/logos/small/test.png" company="Samalik" acceptanceRate={73.12} requirements={[{ language: "html", minimumExperienceInYears: 1 }, { language: "css", minimumExperienceInYears: 1 }, { language: "js", minimumExperienceInYears: 1 }]} isClosed={false} />
       </li>
       <li>
-        <JobOffer id={3} title="Accepted offer" logoPath="/companies/logos/small/test.png" company="Bedun" acceptanceRate={5.22} requirements={[{ language: "asm", minimumExperienceInYears: 1 }]} isClosed={false} />
+        <JobOffer id={3} title="Accepted offer" logoPath="/companies/logos/small/test.png" company="Bedun" acceptanceRate={5.22} requirements={[{ language: "assembly", minimumExperienceInYears: 1 }]} isClosed={false} />
       </li>
       <li>
         <JobOffer id={4} title="In progress offer" logoPath="/companies/logos/small/test.png" company="Pakuk" acceptanceRate={23.12} requirements={[{ language: "react", minimumExperienceInYears: 10 }]} isClosed={false} />

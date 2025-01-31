@@ -1,7 +1,14 @@
+import { getUsersId } from "@/app/lib/session";
 import { Company } from "@/components/JobList";
 import { getAllJobsWithCompanyInfo, getCompanyById } from "@/db/queries/select"
 
 export async function GET() {
+  if (await getUsersId() !== -1) {
+    console.log("Logged in fr");
+  }
+  console.log("not logged in fr");
+
+
   const offers = await getAllJobsWithCompanyInfo();
   console.log(offers);
   return Response.json({ offers: offers }, { status: 200 })
