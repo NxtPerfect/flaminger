@@ -1,0 +1,1 @@
+ALTER TABLE "companies_table" DROP COLUMN "logo_path";

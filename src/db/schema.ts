@@ -12,7 +12,14 @@ export const usersTable = pgTable('users_table', {
 export const companiesTable = pgTable('companies_table', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(),
-  logoPath: text('logo_path').notNull(),
+  jobsAccepted: integer('jobs_accepted').default(0),
+  jobsRejected: integer('jobs_rejected').default(0),
+  acceptanceRate: integer('acceptance_rate').default(
+    (inserted) => {
+      return Number.parseFloat((inserted.jobsAccepted / (inserted.jobsAccepted + inserted.jobsRejected) * 100).toFixed(4))
+    }).$onUpdate((update) => {
+      return Number.parseFloat((update.jobsAccepted / (update.jobsAccepted + update.jobsRejected) * 100).toFixed(4))
+    }),
 });
 
 export const jobsTable = pgTable('jobs_table', {
@@ -27,8 +34,8 @@ export const jobsTable = pgTable('jobs_table', {
 });
 
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
-  jobId: serial('job_id').primaryKey().references(() => jobsTable.id),
-  userId: serial('user_id').references(() => usersTable.id),
+  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  jobId: serial('job_id').references(() => jobsTable.id),
   isOpen: boolean('is_open').notNull(),
   isAccepted: boolean('is_accepted').notNull(),
   rejectionReason: text('rejection_reason'),
