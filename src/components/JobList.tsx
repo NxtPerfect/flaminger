@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import JobOffer from './JobOffer'
 import { OfferWithCompanyInfo } from '@/app/lib/definitions';
+import SkeletonJobOffer from './placeholders/SkeletonJobOffer';
 
 export default function JobList() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [offers, setOffers] = useState<Array<OfferWithCompanyInfo>>();
 
   function getStatus(applicationStatus: { isAccepted: boolean, isApplicationInProgress: boolean, isApplied: boolean, isClosed: boolean }) {
@@ -16,12 +18,14 @@ export default function JobList() {
 
   useEffect(() => {
     console.log("Sent request")
+    setIsLoading(true);
     const fetchOffers = async () => {
       await fetch('/api/offers')
         .then(async (res) => {
           const jason = await res.json();
           console.log("Companies", jason.offers.companies_table);
           setOffers(jason.offers);
+          setIsLoading(false);
         })
     }
     fetchOffers();
@@ -29,6 +33,16 @@ export default function JobList() {
 
   return (
     <ul className="flex flex-col gap-4 px-4">
+      {isLoading &&
+        <>
+          <SkeletonJobOffer />
+          <SkeletonJobOffer />
+          <SkeletonJobOffer />
+          <SkeletonJobOffer />
+          <SkeletonJobOffer />
+          <SkeletonJobOffer />
+        </>
+      }
       {offers && offers!.map((offerFullInfo: OfferWithCompanyInfo) => {
         const company = offerFullInfo.companies_table;
         const offer = offerFullInfo.jobs_table;
