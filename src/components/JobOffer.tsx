@@ -9,17 +9,16 @@ type Props = {
   company: string
   acceptanceRate: number
   requirements?: { language: string, minimumExperienceInYears: number }[]
-  isClosed: boolean
+  status: "in progress" | "accepted" | "rejected" | "new" | "closed"
 }
 
-export default function JobOffer({ id, title, logoPath, company, acceptanceRate, requirements, isClosed }: Props) {
-  const offerState = "new";
+export default function JobOffer({ id, title, logoPath, company, acceptanceRate, requirements, status }: Props) {
   let linkText;
   let statusText;
   let isReject = false;
   let isAccepted = false;
   let isApplied = false;
-  switch (offerState) {
+  switch (status) {
     case "rejected":
       statusText = "Rejected";
       linkText = "Reapply";
@@ -30,7 +29,7 @@ export default function JobOffer({ id, title, logoPath, company, acceptanceRate,
       linkText = "";
       isAccepted = true;
       break;
-    case "applied":
+    case "in progress":
       statusText = "Your application is being reviewed...";
       linkText = "";
       isApplied = true;
@@ -40,26 +39,14 @@ export default function JobOffer({ id, title, logoPath, company, acceptanceRate,
       linkText = "Apply";
       break;
   }
+
   return (
-    <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8">
+    <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw]">
       <span className="flex flex-row gap-2">
         <h3>{title}</h3>
-        {isReject &&
-          <span>
-            <span className="text-neutral-600 select-none">{statusText}</span>
-            <LinkButton type="alt" href={`/profile/offer/${id}`}>Check Reason</LinkButton>
-          </span>}
-        {isAccepted &&
-          <span>
-            <span className="text-green-600 select-none">{statusText}</span>
-          </span>}
-        {isApplied &&
-          <span>
-            <span className="text-neutral-600 select-none">{statusText}</span>
-          </span>}
       </span>
       <span className="mt-4 flex flex-row gap-2">
-        <Image src={logoPath || "/companies/logos/small/test.png"} alt="Picture of a company" width={25} height={25} quality={50} />
+        <Image src={logoPath} alt="Picture of a company" width={25} height={25} quality={50} />
         <span>{company}</span>
         <span className={acceptanceRate > 50 ? "text-green-500" : "text-red-500"}>{acceptanceRate || 0}%</span>
       </span>
@@ -74,7 +61,20 @@ export default function JobOffer({ id, title, logoPath, company, acceptanceRate,
         {linkText &&
           <span className="flex flex-row gap-8">
             <LinkButton type="alt" href={`/offer/${id}`}>Read More</LinkButton>
-            <LinkButton type="offerLink" href={`/offer/${id}/apply`}>{linkText}</LinkButton>
+            <LinkButton type="offerLink" href={`/offer/${id}`}>{linkText}</LinkButton>
+          </span>}
+        {isReject &&
+          <span>
+            <span className="text-neutral-600 select-none">{statusText}</span>
+            <LinkButton type="alt" href={`/profile/offer/${id}`}>Check Reason</LinkButton>
+          </span>}
+        {isAccepted &&
+          <span>
+            <span className="text-green-600 select-none">{statusText}</span>
+          </span>}
+        {isApplied &&
+          <span>
+            <span className="text-neutral-600 select-none">{statusText}</span>
           </span>}
       </span>
     </div>

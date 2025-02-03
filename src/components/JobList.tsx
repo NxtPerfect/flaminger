@@ -1,55 +1,18 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import JobOffer from './JobOffer'
-
-type Offer = {
-  id: number
-  byCompanyId: number
-  title: string
-  description: string
-  // imagePath: string
-  company: string
-  isClosed: boolean
-  // requirements: Array<Requirement>
-  // state: "new" | "applied" | "accepted" | "rejected"
-}
-
-type Requirement = {
-  languages: string
-  minimumExperienceInYears: number
-}
-
-export type Company = {
-  id: number
-  name: string
-  jobsAccepted: number
-  jobsRejected: number
-  acceptanceRate: number
-}
-
-type OfferWithCompanyInfo = {
-  jobs_table: {
-    id: number
-    byCompanyId: number
-    title: string
-    description: string
-    // imagePath: string
-    company: string
-    isClosed: boolean
-    // requirements: Array<Requirement>
-    // state: "new" | "applied" | "accepted" | "rejected"
-  },
-  companies_table: {
-    id: number
-    name: string
-    jobsAccepted: number
-    jobsRejected: number
-    acceptanceRate: number
-  }
-}
+import { OfferWithCompanyInfo } from '@/app/lib/definitions';
 
 export default function JobList() {
   const [offers, setOffers] = useState<Array<OfferWithCompanyInfo>>();
+
+  function getStatus(applicationStatus: { isAccepted: boolean, isApplicationInProgress: boolean, isApplied: boolean, isClosed: boolean }) {
+    if (applicationStatus.isAccepted) return "accepted";
+    if (!applicationStatus.isApplicationInProgress && !applicationStatus.isAccepted) return "rejected";
+    if (applicationStatus.isClosed) return "closed";
+    if (applicationStatus.isApplied && applicationStatus.isApplicationInProgress) return "in progress";
+    return "new";
+  }
 
   useEffect(() => {
     console.log("Sent request")
@@ -69,21 +32,14 @@ export default function JobList() {
       {offers && offers!.map((offerFullInfo: OfferWithCompanyInfo) => {
         const company = offerFullInfo.companies_table;
         const offer = offerFullInfo.jobs_table;
+        const applicationStatus = offerFullInfo.jobs_to_users_table;
+        const status = applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
         return (
           <li key={offer.id}>
-            <JobOffer id={offer.id} title={offer.title} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.png`} company={offer.title} acceptanceRate={company.acceptanceRate} requirements={[]} isClosed={offer.isClosed} />
+            <JobOffer id={offer.id} title={offer.title} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} isClosed={offer.isClosed} status={status} rejectionReason={applicationStatus.rejectionReason} />
           </li>
         )
       })}
-      <li>
-        <JobOffer id={2} title="Easy to get offer" logoPath="/companies/logos/small/test.png" company="Samalik" acceptanceRate={73.12} requirements={[{ language: "html", minimumExperienceInYears: 1 }, { language: "css", minimumExperienceInYears: 1 }, { language: "js", minimumExperienceInYears: 1 }]} isClosed={false} />
-      </li>
-      <li>
-        <JobOffer id={3} title="Accepted offer" logoPath="/companies/logos/small/test.png" company="Bedun" acceptanceRate={5.22} requirements={[{ language: "assembly", minimumExperienceInYears: 1 }]} isClosed={false} />
-      </li>
-      <li>
-        <JobOffer id={4} title="In progress offer" logoPath="/companies/logos/small/test.png" company="Pakuk" acceptanceRate={23.12} requirements={[{ language: "react", minimumExperienceInYears: 10 }]} isClosed={false} />
-      </li>
     </ul>
   )
 }

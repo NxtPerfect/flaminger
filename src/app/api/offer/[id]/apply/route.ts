@@ -1,6 +1,7 @@
-import { randomInt } from "crypto"
+import { getUserId } from "@/app/lib/session"
+import { createJobToUser } from "@/db/queries/insert"
 
-type UserApplicationData = {
+interface UserApplicationData {
   firstname: string
   surname: string
   location: string
@@ -10,35 +11,22 @@ type UserApplicationData = {
   answersToQuestions?: string[]
 }
 
-export default async function POST(req: Request, res: Response) {
-  const rejected = randomInt(1);
-  if (rejected) return Response.json({ status: 400 })
-  return Response.json({ status: 200 })
+export async function PUT(req: Request, res: Response) {
+  const formData = await req.formData();
+  const userId = await getUserId();
 
-  // In future
-  // // On the frontend you'd do <input name="answers[1]"> etc
-  // // get offer id
-  // // get user data
-  // // like cv, answers to questions
-  // // return appropriate html status code
-  // // 200 = applied
-  // // 400 = issue with user's application
-  // const formData = await req.formData();
-  // const userData: UserApplicationData = {
-  //   firstname: formData.get("firstname")!.toString().trim(),
-  //   surname: formData.get("surname")!.toString().trim(),
-  //   location: formData.get("location")!.toString().trim(),
-  //   expectedPay: Number.parseInt(formData.get("expectedPay")!.toString().trim()),
-  //   overallTotalExperience: Number.parseInt(formData.get("overallTotalExperience")!.toString().trim()),
-  //   // curriculumVitae: formData.get("curriculumVitae"),
-  //   // How to get file from upload input thing?
-  //   answersToQuestions: Array<string>(),
-  // }
-  //
-  // let i = 1;
-  // while (formData.get(`answers[${i}]`)) {
-  //   const answer = formData.get(`answers[${i}]`);
-  //   userData.answersToQuestions!.push(answer!.toString());
-  //   i++;
-  // }
+  try {
+    await createJobToUser({
+      userId: userId,
+      jobId: Number.parseInt(formData.get("jobId")!.toString()),
+      isApplied: true,
+      isApplicationInProgress: true,
+      isAccepted: false,
+      rejectionReason: ""
+    });
+
+    return Response.json({ status: 200 });
+  } catch (error) {
+    return Response.json({ error: error }, { status: 400 });
+  }
 }

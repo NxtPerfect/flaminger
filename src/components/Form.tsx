@@ -1,12 +1,12 @@
-"use client" // Possible that i need to make the form client,
-// and leave this page as server
+"use client"
 import React, { FormEvent, useState } from 'react'
 import ActionButton from './ActionButton'
 import { useRouter } from 'next/navigation'
 import { createSession } from '@/app/lib/session'
 
 type Props = {
-  readonly formType: "login" | "register"
+  readonly formType: "login" | "register" | "applyToJob"
+  readonly jobId: number
 }
 
 type ReturnData = {
@@ -20,10 +20,15 @@ const someFieldsAreEmpty = "Some fields are empty. Populate all fields.";
 const dataNotConsent = "You must consent to data sending.";
 const userExists = "This user already exists.";
 
-export default function Form({ formType }: Props) {
+export default function Form({ formType, jobId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
+
+  const inputStyle = "rounded-md px-2 py-1 text-black";
+  const checkboxStyle = "flex flex-shrink-0 size-4 rounded-md px-2 py-1 text-black";
+  const loginFormStyle = "flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
+  const registerFormStyle = "flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
 
   async function registerOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,25 +43,9 @@ export default function Form({ formType }: Props) {
       })
 
       const data = await response.json();
-      if (isPasswordsMatching(data)) {
-        setError(passwordAndConfirmPasswordNotSame);
-        return;
-      }
-      if (isEmptyFields(data)) {
-        setError(someFieldsAreEmpty);
-        return;
-      }
-      if (isBadData(data)) {
-        setError(badDataErrorMessage);
-        return;
-      }
-      if (isDataNotConsent(data)) {
-        setError(dataNotConsent);
-        return;
-      }
-
-      if (isUserExists(data)) {
-        setError(userExists);
+      const error = getErrorIfBadRequest(data);
+      if (error) {
+        setError(error);
         return;
       }
 
@@ -66,6 +55,25 @@ export default function Form({ formType }: Props) {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function getErrorIfBadRequest(data: ReturnData) {
+    if (isPasswordsMatching(data)) {
+      return passwordAndConfirmPasswordNotSame;
+    }
+    if (isEmptyFields(data)) {
+      return someFieldsAreEmpty;
+    }
+    if (isBadData(data)) {
+      return badDataErrorMessage;
+    }
+    if (isDataNotConsent(data)) {
+      return dataNotConsent;
+    }
+    if (isUserExists(data)) {
+      return userExists;
+    }
+    return;
   }
 
   async function loginOnSubmit(event: FormEvent<HTMLFormElement>) {
@@ -94,42 +102,99 @@ export default function Form({ formType }: Props) {
 
   if (formType === "register") {
     return (
-      <form className="flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]"
+      <form className={registerFormStyle}
         onSubmit={registerOnSubmit} method="POST">
         <label htmlFor="email">Email address*</label>
-        <input type="text" name="email" placeholder="sample@email.io" required className="rounded-md px-2 py-1 text-black" />
+        <input type="text" name="email" placeholder="sample@email.io" required className={inputStyle} />
         <label htmlFor="firstname">Firstname*</label>
-        <input type="text" name="firstname" placeholder="Steve" required className="rounded-md px-2 py-1 text-black" />
+        <input type="text" name="firstname" placeholder="Steve" required className={inputStyle} />
         <label htmlFor="surname">Surname*</label>
-        <input type="text" name="surname" placeholder="Jobs" required className="rounded-md px-2 py-1 text-black" />
+        <input type="text" name="surname" placeholder="Jobs" required className={inputStyle} />
         <label htmlFor="password">Password*</label>
-        <input type="password" name="password" placeholder="******" required minLength={8} maxLength={64} className="rounded-md px-2 py-1 text-black" />
+        <input type="password" name="password" placeholder="******" required minLength={8} maxLength={64} className={inputStyle} />
         <span className="text-sm">Minimum of 8 characters, only numbers and letters.</span>
         <label htmlFor="confirmPassword">Confirm password*</label>
-        <input type="password" name="confirmPassword" placeholder="******" required minLength={8} maxLength={64} className="rounded-md px-2 py-1 text-black" />
+        <input type="password" name="confirmPassword" placeholder="******" required minLength={8} maxLength={64} className={inputStyle} />
         <div className="flex flex-row gap-4 mt-8 max-w-[40ch] text-pretty items-center">
           <label htmlFor="dataConsent">I consent to handing over my data to Flaminger for purpose of correctly working platform.*</label>
-          <input type="checkbox" name="dataConsent" required className="flex-shrink-0 size-4 rounded-md px-2 py-1 text-black" />
+          <input type="checkbox" name="dataConsent" required className={checkboxStyle} />
         </div>
         <div className="flex flex-row gap-4 mt-4 mb-4 max-w-[40ch] text-pretty items-center">
           <label htmlFor="mailingConsent">I would like to receive job offers and platform updates over email.</label>
-          <input type="checkbox" name="mailingConsent" className="flex-shrink-0 size-4 rounded-md px-2 py-1 text-black" />
+          <input type="checkbox" name="mailingConsent" className={checkboxStyle} />
         </div>
         <span className="text-sm">* Fields are required</span>
         {error ? <span className="text-red-500">{error}</span> : null}
-        <ActionButton type="formSubmit" isLoading={isLoading}>Register</ActionButton>
+        <ActionButton variant="formSubmit" isLoading={isLoading}>Register</ActionButton>
       </form>
     )
   }
+
+  if (formType === "applyToJob") {
+    async function handleApply(event: FormEvent<HTMLFormElement>) {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      await fetch(`/api/offer/${jobId}/apply`, {
+        method: "PUT",
+        body: formData
+      })
+        .then((_) => {
+          router.push('/');
+          router.refresh();
+        }
+        )
+    }
+
+    return (
+      <form className={registerFormStyle} onSubmit={handleApply}>
+        <input type="hidden" value={jobId} name="jobId" />
+        <label>
+          Do you use AI Tools?
+        </label>
+        <span>
+          <input type="checkbox" />
+          Yes
+        </span>
+        <label>
+          Are you willing to relocate?
+        </label>
+        <span className="flex flex-row gap-2">
+          <input type="radio" value="yes" /><label>Yes</label>
+        </span>
+        <span className="flex flex-row gap-2">
+          <input type="radio" value="no" /><label>No</label>
+        </span>
+        <label>
+          Type of employment you want:
+        </label>
+        <select>
+          <option>Remote</option>
+          <option>Hybrid</option>
+          <option>Stationary</option>
+        </select>
+        <label>
+          Describe briefly why you should be accepted for this position.
+        </label>
+        <input type="text" minLength={1} />
+        <label>
+          For human verification, what is the name for an animal whose name is duck:
+        </label>
+        <input type="text" maxLength={16} />
+        <ActionButton variant="formSubmit">Apply</ActionButton>
+      </form>
+    )
+  }
+
+
   return (
-    <form className="flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]"
+    <form className={loginFormStyle}
       onSubmit={loginOnSubmit}>
       <label htmlFor="email">Email address*</label>
-      <input type="text" name="email" placeholder="sample@email.io" required className="rounded-md px-2 py-1 text-black" />
+      <input type="text" name="email" placeholder="sample@email.io" required className={inputStyle} />
       <label htmlFor="password">Password*</label>
-      <input type="password" name="password" placeholder="******" required className="rounded-md px-2 py-1 text-black" />
+      <input type="password" name="password" placeholder="******" required className={inputStyle} />
       {error ? <span className="text-red-500">{error}</span> : null}
-      <ActionButton type="formSubmit">Login</ActionButton>
+      <ActionButton variant="formSubmit">Login</ActionButton>
     </form>
   )
 }

@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation'
 import React from 'react'
 
 export default function Reasoning() {
-  const params = useParams<{ id: number }>();
+  const params = useParams<{ id: string }>();
   return (
     <>
       <div>Here's the reason:</div>

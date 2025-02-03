@@ -13,7 +13,7 @@ export default function LinkButton({ type, href, children }: Props) {
   const router = useRouter();
 
   async function handleLogout() {
-    await fetch('/api/logout', { method: "POST" })
+    await fetch('/api/logout', { method: "DELETE" })
       .then((_) => {
         router.push('/');
         router.refresh();
