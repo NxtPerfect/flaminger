@@ -5,20 +5,42 @@ import { useRouter } from 'next/navigation'
 import { createSession } from '@/app/lib/session'
 
 type Props = {
-  readonly formType: "login" | "register" | "applyToJob"
+  readonly formType: FormType
   readonly jobId: number
 }
 
+type FormType = typeof FORM_VARIANTS[keyof typeof FORM_VARIANTS]
+
 type ReturnData = {
-  readonly errorType?: "passwords" | "emptyFields" | "badData" | "dataConsent" | "userExists" | null
+  readonly errorType?: ErrorVariant
   readonly status: number
 }
 
-const badDataErrorMessage = "Ensure all fields are valid.";
-const passwordAndConfirmPasswordNotSame = "Confirm password doesn't match password.";
-const someFieldsAreEmpty = "Some fields are empty. Populate all fields.";
-const dataNotConsent = "You must consent to data sending.";
-const userExists = "This user already exists.";
+type ErrorVariant = typeof ERROR_VARIANTS[keyof typeof ERROR_VARIANTS]
+
+const FORM_VARIANTS = {
+  LOGIN: "login",
+  REGISTER: "register",
+  APPLICATION: "applyToJob"
+}
+
+const ERROR_VARIANTS = {
+  BAD_DATA: "badData",
+  PASSWORDS_NOT_MATCHING: "passwordAndConfirmPasswordNotSame",
+  EMPTY_FIELDS: "someFieldsAreEmpty",
+  NO_DATA_CONSENT: "dataNotConsent",
+  USER_EXISTS: "userExists",
+  OTHER: "unknownError"
+}
+
+const ERROR_MESSAGES = {
+  [ERROR_VARIANTS.BAD_DATA]: "Ensure all fields are valid.",
+  [ERROR_VARIANTS.PASSWORDS_NOT_MATCHING]: "Confirm password doesn't match password.",
+  [ERROR_VARIANTS.EMPTY_FIELDS]: "Some fields are empty. Populate all fields.",
+  [ERROR_VARIANTS.NO_DATA_CONSENT]: "You must consent to data sending.",
+  [ERROR_VARIANTS.USER_EXISTS]: "This user already exists.",
+  [ERROR_VARIANTS.OTHER]: "Unknown error. Please report the circumstances of the situation."
+}
 
 export default function Form({ formType, jobId }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,21 +81,41 @@ export default function Form({ formType, jobId }: Props) {
 
   function getErrorIfBadRequest(data: ReturnData) {
     if (isPasswordsMatching(data)) {
-      return passwordAndConfirmPasswordNotSame;
+      return ERROR_MESSAGES[ERROR_VARIANTS.PASSWORDS_NOT_MATCHING];
     }
     if (isEmptyFields(data)) {
-      return someFieldsAreEmpty;
+      return ERROR_MESSAGES[ERROR_VARIANTS.EMPTY_FIELDS];
     }
     if (isBadData(data)) {
-      return badDataErrorMessage;
+      return ERROR_MESSAGES[ERROR_VARIANTS.BAD_DATA];
     }
     if (isDataNotConsent(data)) {
-      return dataNotConsent;
+      return ERROR_MESSAGES[ERROR_VARIANTS.NO_DATA_CONSENT];
     }
     if (isUserExists(data)) {
-      return userExists;
+      return ERROR_MESSAGES[ERROR_VARIANTS.USER_EXISTS];
     }
     return;
+  }
+
+  function isPasswordsMatching(data: ReturnData) {
+    return data.errorType === "passwords";
+  }
+
+  function isEmptyFields(data: ReturnData) {
+    return data.errorType === "emptyFields";
+  }
+
+  function isBadData(data: ReturnData) {
+    return data.errorType === "badData";
+  }
+
+  function isDataNotConsent(data: ReturnData) {
+    return data.errorType === "dataConsent";
+  }
+
+  function isUserExists(data: ReturnData) {
+    return data.errorType === "userExists";
   }
 
   async function loginOnSubmit(event: FormEvent<HTMLFormElement>) {
@@ -90,7 +132,7 @@ export default function Form({ formType, jobId }: Props) {
 
       const data = await response.json();
       if (isBadData(data)) {
-        setError(badDataErrorMessage);
+        setError(ERROR_MESSAGES[ERROR_VARIANTS.BAD_DATA]);
         return;
       }
       router.push('/profile');
@@ -197,24 +239,4 @@ export default function Form({ formType, jobId }: Props) {
       <ActionButton variant="formSubmit">Login</ActionButton>
     </form>
   )
-}
-
-function isPasswordsMatching(data: ReturnData) {
-  return data.errorType === "passwords";
-}
-
-function isEmptyFields(data: ReturnData) {
-  return data.errorType === "emptyFields";
-}
-
-function isBadData(data: ReturnData) {
-  return data.errorType === "badData";
-}
-
-function isDataNotConsent(data: ReturnData) {
-  return data.errorType === "dataConsent";
-}
-
-function isUserExists(data: ReturnData) {
-  return data.errorType === "userExists";
 }
