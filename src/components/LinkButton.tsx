@@ -4,12 +4,35 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type Props = {
-  type: "header" | "offerLink" | "alt" | "logout" | null
-  href: string
-  children: string
+  readonly variant?: ButtonVariant | null
+  readonly href: string
+  readonly className?: string | null
+  readonly children?: React.ReactNode | null
 }
 
-export default function LinkButton({ type, href, children }: Props) {
+const BUTTON_VARIANTS = {
+  OFFER_LINK: "offerLink",
+  ALT: "alt",
+  HEADER: "header",
+  LOGOUT: "logout",
+}
+
+const BUTTON_STYLES = {
+  [BUTTON_VARIANTS.OFFER_LINK]:
+    "bg-orange-700 hover:bg-orange-600 text-white ease-in-out duration-100 rounded-md px-2 py-1",
+  [BUTTON_VARIANTS.ALT]:
+    "underline hover:text-neutral-400 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
+  [BUTTON_VARIANTS.HEADER]:
+    "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
+  [BUTTON_VARIANTS.LOGOUT]:
+    "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
+  default:
+    "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1"
+}
+
+type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
+
+export default function LinkButton({ variant, href, className, children }: Props) {
   const router = useRouter();
 
   async function handleLogout() {
@@ -20,36 +43,12 @@ export default function LinkButton({ type, href, children }: Props) {
       })
   }
 
-  let link;
-  switch (type) {
-    case "offerLink":
-      link = <Link href={href} className="bg-orange-600 hover:bg-orange-700 ease-in-out duration-100 rounded-md px-2 py-1">
-        {children}
-      </Link>
-      break;
+  const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
+  const combinedStyle = (`${buttonStyle} ${className}`).trim();
+  const isLogout = variant === "logout" ? true : false;
 
-    case "alt":
-      link = <Link href={href} className="underline hover:text-neutral-600 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
-        {children}
-      </Link>
-      break;
+  if (!isLogout)
+    return <Link href={href} className={`${combinedStyle}`}>{children}</Link>
 
-    case "header":
-      link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
-        {children}
-      </Link>
-      break;
-
-    case "logout":
-      link = <button onClick={handleLogout} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
-        {children}
-      </button>
-      break;
-
-    default:
-      link = <Link href={href} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">
-        {children}
-      </Link>
-  }
-  return link;
+  return <button onClick={handleLogout} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">{children}</button>
 }
