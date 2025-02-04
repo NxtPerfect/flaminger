@@ -22,9 +22,9 @@ export default function JobList() {
     const fetchOffers = async () => {
       await fetch('/api/offers')
         .then(async (res) => {
-          const jason = await res.json();
-          console.log("Companies", jason.offers.companies_table);
-          setOffers(jason.offers);
+          const responseJson = await res.json();
+          console.log("Companies", responseJson.offers.companies_table);
+          setOffers(responseJson.offers);
           setIsLoading(false);
         })
     }
@@ -46,11 +46,15 @@ export default function JobList() {
       {offers && offers!.map((offerFullInfo: OfferWithCompanyInfo) => {
         const company = offerFullInfo.companies_table;
         const offer = offerFullInfo.jobs_table;
-        const applicationStatus = offerFullInfo.jobs_to_users_table;
-        const status = applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
+        let status;
+        let applicationStatus;
+        if (offerFullInfo.jobs_to_users_table) {
+          applicationStatus = offerFullInfo.jobs_to_users_table;
+          status = applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
+        }
         return (
           <li key={offer.id}>
-            <JobOffer id={offer.id} title={offer.title} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} isClosed={offer.isClosed} status={status} rejectionReason={applicationStatus.rejectionReason} />
+            <JobOffer id={offer.id} title={offer.title} description={offer.description} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} isClosed={offer.isClosed} status={status || "new"} rejectionReason={applicationStatus?.rejectionReason || ""} />
           </li>
         )
       })}

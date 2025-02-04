@@ -28,14 +28,24 @@ export type OfferWithCompanyInfo = {
 
 export type Offer = {
   id: number
-  byCompanyId: number
   title: string
   description: string
+  byCompanyId: number
   company: string
   isClosed: boolean
   // requirements: Array<Requirement>
   // state: "new" | "applied" | "accepted" | "rejected"
 }
+
+export type StatisticsForUserApplications = {
+  accepted: number
+  rejected: number
+  total: number
+  responseRate?: string
+}
+
+export type PendingApplication = {}
+export type CompletedApplication = {}
 
 export type Company = {
   id: number
@@ -54,3 +64,11 @@ export type UserApplications = {
   rejectionReason: string
 }
 
+export type User = {
+  id: number
+  firstname: string
+  surname: string
+  email: string
+  password: string
+  mailingConsent: boolean
+}

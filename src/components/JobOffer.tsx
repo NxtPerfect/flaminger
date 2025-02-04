@@ -5,6 +5,7 @@ import LinkButton from './LinkButton'
 type Props = {
   id: number
   title: string
+  description: string
   logoPath: string
   company: string
   acceptanceRate: number
@@ -12,7 +13,7 @@ type Props = {
   status: "in progress" | "accepted" | "rejected" | "new" | "closed"
 }
 
-export default function JobOffer({ id, title, logoPath, company, acceptanceRate, requirements, status }: Props) {
+export default function JobOffer({ id, title, description, logoPath, company, acceptanceRate, requirements, status }: Props) {
   let linkText;
   let statusText;
   let isReject = false;
@@ -43,16 +44,19 @@ export default function JobOffer({ id, title, logoPath, company, acceptanceRate,
   return (
     <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw]">
       <span className="flex flex-row gap-2">
-        <h3>{title}</h3>
+        <h3 className="text-xl">{title}</h3>
       </span>
-      <span className="mt-4 flex flex-row gap-2">
+      <span className="mt-2 flex flex-row gap-2">
         <Image src={logoPath} alt="Picture of a company" width={25} height={25} quality={50} />
         <span>{company}</span>
         <span className={acceptanceRate > 50 ? "text-green-500" : "text-red-500"}>{acceptanceRate || 0}%</span>
       </span>
-      <span className="mt-8 flex flex-row items-center justify-between">
+      <span className="mt-4 max-w-[50ch] line-clamp-3 text-ellipsis text-neutral-300">
+        {description.substring(0, 180)}
+      </span>
+      <span className="mt-4 flex flex-row items-center justify-between">
         <span className="flex flex-row gap-2 align-middle items-center">
-          {requirements.map(({ language, minimumExperienceInYears }, index) => {
+          {requirements && requirements.map(({ language, minimumExperienceInYears }, index) => {
             return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
               {`${language.toUpperCase()} > ${minimumExperienceInYears} years`}
             </div>
@@ -60,20 +64,20 @@ export default function JobOffer({ id, title, logoPath, company, acceptanceRate,
         </span>
         {linkText &&
           <span className="flex flex-row gap-8">
-            <LinkButton type="alt" href={`/offer/${id}`}>Read More</LinkButton>
-            <LinkButton type="offerLink" href={`/offer/${id}`}>{linkText}</LinkButton>
+            <LinkButton variant="alt" href={`/offer/${id}`}>Read More</LinkButton>
+            <LinkButton variant="offerLink" href={`/offer/${id}/apply`}>{linkText}</LinkButton>
           </span>}
         {isReject &&
-          <span>
+          <span className="flex flex-row gap-8">
             <span className="text-neutral-600 select-none">{statusText}</span>
-            <LinkButton type="alt" href={`/profile/offer/${id}`}>Check Reason</LinkButton>
+            <LinkButton variant="alt" href={`/profile/offer/${id}/apply`}>Check Reason</LinkButton>
           </span>}
         {isAccepted &&
-          <span>
+          <span className="flex flex-row gap-8">
             <span className="text-green-600 select-none">{statusText}</span>
           </span>}
         {isApplied &&
-          <span>
+          <span className="flex flex-row gap-8">
             <span className="text-neutral-600 select-none">{statusText}</span>
           </span>}
       </span>

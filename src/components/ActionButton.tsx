@@ -2,8 +2,7 @@ import React from 'react'
 
 interface Props {
   readonly variant?: ButtonVariant | null
-  // readonly type: "normal" | "big" | "alt" | "alt-big" | "formSubmit"
-  readonly children: React.ReactNode
+  readonly children?: React.ReactNode
   readonly className?: string
   readonly isLoading?: boolean
 }
