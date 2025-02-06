@@ -92,6 +92,7 @@ export async function getAllJobsWithCompanyInfo() {
 }
 
 export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser['id']) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, ...rest } = getTableColumns(jobsToUsersTable);
   return db.select({
     jobsTable,

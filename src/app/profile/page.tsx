@@ -22,6 +22,7 @@ export default function Profile() {
         setCompletedApplicationsFromApi(responseJson.completedApplications);
         setIsLoading(false);
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -90,37 +91,38 @@ export default function Profile() {
       {isLoading ?
         (<SkeletonProfile />)
         :
-        (<><div className="flex flex-row w-[50svw]">
-          <Image src="/profile/profile.png" alt="profile picture" width={350} height={350} />
-          <span className="flex flex-col">
-            <h2 className="text-xl font-semibold">User Information</h2>
-            <span className="flex flex-col w-36">
-              <span className="flex w-full justify-center gap-2">
-                <span>{user?.firstname}</span>
-                <span>{user?.surname}</span>
+        (<>
+          <div className="flex flex-row w-[50svw]">
+            <Image src="/profile/profile.png" alt="profile picture" width={350} height={350} />
+            <span className="flex flex-col">
+              <h2 className="text-xl font-semibold">User Information</h2>
+              <span className="flex flex-col w-36">
+                <span className="flex w-full justify-center gap-2">
+                  <span>{user?.firstname}</span>
+                  <span>{user?.surname}</span>
+                </span>
               </span>
+              <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
+              <table className="flex flex-row w-full border-1 border-neutral-800">
+                <thead className="flex w-full">
+                  <tr className="flex flex-col w-full flex-shrink-0 text-left">
+                    <th className="border-2 border-neutral-800 p-1 font-normal">Applied To:</th>
+                    <th className="border-2 border-neutral-800 p-1 font-normal">Accepted:</th>
+                    <th className="border-2 border-neutral-800 p-1 font-normal">Rejected:</th>
+                    <th className="border-2 border-neutral-800 p-1 font-normal">Response Rate:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="flex flex-col w-fit">
+                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.total ?? 0}</td>
+                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.accepted ?? 0}</td>
+                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.rejected ?? 0}</td>
+                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.responseRate ?? 0.00}%</td>
+                  </tr>
+                </tbody>
+              </table>
             </span>
-            <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
-            <table className="flex flex-row w-full border-1 border-neutral-800">
-              <thead className="flex w-full">
-                <tr className="flex flex-col w-full flex-shrink-0 text-left">
-                  <th className="border-2 border-neutral-800 p-1 font-normal">Applied To:</th>
-                  <th className="border-2 border-neutral-800 p-1 font-normal">Accepted:</th>
-                  <th className="border-2 border-neutral-800 p-1 font-normal">Rejected:</th>
-                  <th className="border-2 border-neutral-800 p-1 font-normal">Response Rate:</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="flex flex-col w-fit">
-                  <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.total ?? 0}</td>
-                  <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.accepted ?? 0}</td>
-                  <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.rejected ?? 0}</td>
-                  <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.responseRate ?? 0.00}%</td>
-                </tr>
-              </tbody>
-            </table>
-          </span>
-        </div>
+          </div>
           <table className="border-2 border-neutral-800">
             <thead className="border-2 border-neutral-800">
               <tr >
