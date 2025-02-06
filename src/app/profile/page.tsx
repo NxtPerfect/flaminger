@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import SkeletonProfile from '@/components/placeholders/SkeletonProfile';
 import { CompletedApplication, DatabaseCompletedApplication, Offer, PendingApplication, StatisticsForUserApplications, StatisticsForUserApplicationsFromDatabase, User } from '@/app/lib/definitions';
+import StatisticsUserTable from '@/components/organisms/StatisticsUserTable';
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -103,27 +104,10 @@ export default function Profile() {
                 </span>
               </span>
               <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
-              <table className="flex flex-row w-full border-1 border-neutral-800">
-                <thead className="flex w-full">
-                  <tr className="flex flex-col w-full flex-shrink-0 text-left">
-                    <th className="border-2 border-neutral-800 p-1 font-normal">Applied To:</th>
-                    <th className="border-2 border-neutral-800 p-1 font-normal">Accepted:</th>
-                    <th className="border-2 border-neutral-800 p-1 font-normal">Rejected:</th>
-                    <th className="border-2 border-neutral-800 p-1 font-normal">Response Rate:</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="flex flex-col w-fit">
-                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.total ?? 0}</td>
-                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.accepted ?? 0}</td>
-                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.rejected ?? 0}</td>
-                    <td className="flex justify-center border-2 border-neutral-800 p-1">{statistics?.responseRate ?? 0.00}%</td>
-                  </tr>
-                </tbody>
-              </table>
+              <StatisticsUserTable statistics={statistics} />
             </span>
           </div>
-          <table className="border-2 border-neutral-800">
+          <table>
             <thead className="border-2 border-neutral-800">
               <tr >
                 <th className="border-2 border-neutral-800 p-2">

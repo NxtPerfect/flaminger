@@ -15,11 +15,11 @@ export async function signToken(payload: SessionPayload) {
     .sign(encodedKey)
 }
 
-export async function verifySession(session: string | undefined = '') {
+export async function verifySession(session: string = '') {
   if (!session) {
     const cookieStore = await cookies();
 
-    session = cookieStore.get('session')?.value;
+    session = cookieStore.get('session')?.value ?? '';
   }
 
   try {
