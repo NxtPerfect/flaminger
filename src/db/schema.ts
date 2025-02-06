@@ -34,7 +34,8 @@ export const jobsTable = pgTable('jobs_table', {
 });
 
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
-  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  id: serial('id').primaryKey(),
+  userId: serial('user_id').references(() => usersTable.id),
   jobId: serial('job_id').references(() => jobsTable.id),
   isApplied: boolean('is_applied').notNull(),
   isApplicationInProgress: boolean('is_application_in_progress').notNull(),

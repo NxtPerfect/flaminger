@@ -21,9 +21,9 @@ export type Requirement = {
 }
 
 export type OfferWithCompanyInfo = {
-  jobs_table: Offer
-  companies_table: Company
-  jobs_to_users_table: UserApplications
+  jobsTable: Offer
+  companiesTable: Company
+  jobsToUsersTable: UserApplications
 }
 
 export type Offer = {
@@ -37,15 +37,41 @@ export type Offer = {
   // state: "new" | "applied" | "accepted" | "rejected"
 }
 
+export type StatisticsForUserApplicationsFromDatabase = {
+  accepted: { count: number }
+  rejected: { count: number }
+  total: { count: number }
+  responseRate?: string
+}
+
 export type StatisticsForUserApplications = {
   accepted: number
   rejected: number
   total: number
-  responseRate?: string
+  responseRate: string
 }
 
-export type PendingApplication = {}
-export type CompletedApplication = {}
+export type PendingApplication = {
+  jobsTable: Partial<Offer>
+  company: string
+}
+
+export type DatabaseCompletedApplication = {
+  jobsTable: Offer
+  company: string
+  isAccepted: boolean
+  rejectionReason: string
+}
+
+export type CompletedApplication = {
+  id: number
+  company: string
+  title: string
+  description: string
+  byCompanyId: number
+  isAccepted: boolean
+  rejectionReason: string
+}
 
 export type Company = {
   id: number
@@ -56,6 +82,7 @@ export type Company = {
 }
 
 export type UserApplications = {
+  id: number
   userId: number
   jobId: number
   isApplied: boolean

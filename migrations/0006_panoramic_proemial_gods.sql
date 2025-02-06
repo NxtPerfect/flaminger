@@ -1,0 +1,1 @@
+ALTER TABLE "jobs_to_users_table" ADD PRIMARY KEY ("job_id");
