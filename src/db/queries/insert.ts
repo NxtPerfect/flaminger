@@ -5,7 +5,7 @@ export async function createUser(data: InsertUser) {
   try {
     await db.insert(usersTable).values(data);
   } catch (e) {
-    throw new Error("User exists");
+    throw new Error(`User exists ${e}`);
   }
 }
 

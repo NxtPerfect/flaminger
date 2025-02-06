@@ -18,13 +18,13 @@ export default function Profile() {
         .then(async (res) => {
           const responseJson = await res.json();
           setUserDataFromApi(responseJson.userData);
-          // setStatisticsFromApi(responseJson.statistics);
+          setStatisticsFromApi(responseJson.statistics);
           setPendingApplicationsFromApi(responseJson.pendingApplications);
           setIsLoading(false);
         })
     }
     getProfile();
-  }, [])
+  })
 
   function setUserDataFromApi(userRawData: User) {
     const userData: User = {

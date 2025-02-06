@@ -19,7 +19,7 @@ export async function verifySession(session: string | undefined = '') {
   if (!session) {
     const cookieStore = await cookies();
 
-    const session = cookieStore.get('session')?.value;
+    session = cookieStore.get('session')?.value;
   }
 
   try {

@@ -3,7 +3,7 @@ import { isValidEmail, isValidPassword } from "@/app/lib/validation";
 import { getUserByEmail } from "@/db/queries/select";
 import { compare, hash } from "bcryptjs";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const formData = await req.formData();
   if (!formData.get("email") || !formData.get("password")) {
     return Response.json({ errorType: "emptyFields" }, { status: 400 });

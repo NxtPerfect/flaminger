@@ -37,7 +37,7 @@ export default function LinkButton({ variant, href, className, children }: Props
 
   async function handleLogout() {
     await fetch('/api/logout', { method: "DELETE" })
-      .then((_) => {
+      .then(() => {
         router.push('/');
         router.refresh();
       })

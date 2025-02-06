@@ -4,7 +4,7 @@ import { createUser } from "@/db/queries/insert";
 import { getUserByEmail } from "@/db/queries/select";
 import { hash } from "bcryptjs";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const formData = await req.formData();
 
   const userData = getUserDataFromForm(formData);
@@ -29,6 +29,7 @@ export async function POST(req: Request, res: Response) {
   try {
     createUser({ email: userData.email!.toString(), firstname: userData.firstname!.toString(), surname: userData.surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: userData.mailingConsent != null });
   } catch (error) {
+    console.error(error);
     return Response.json({ errorType: "userExists" }, { status: 400 });
   }
 

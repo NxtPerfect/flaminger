@@ -1,17 +1,7 @@
 import { getUserId } from "@/app/lib/session"
 import { createJobToUser } from "@/db/queries/insert"
 
-interface UserApplicationData {
-  firstname: string
-  surname: string
-  location: string
-  expectedPay: number
-  overallTotalExperience: number
-  curriculumVitae: File
-  answersToQuestions?: string[]
-}
-
-export async function PUT(req: Request, res: Response) {
+export async function PUT(req: Request) {
   const formData = await req.formData();
   const userId = await getUserId();
 

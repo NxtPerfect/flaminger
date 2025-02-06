@@ -9,7 +9,7 @@ type Props = {
   readonly jobId: number
 }
 
-type FormType = typeof FORM_VARIANTS[keyof typeof FORM_VARIANTS]
+type FormType = FORM_VARIANTS[keyof FORM_VARIANTS]
 
 type ReturnData = {
   readonly errorType?: ErrorVariant
@@ -18,7 +18,7 @@ type ReturnData = {
 
 type ErrorVariant = typeof ERROR_VARIANTS[keyof typeof ERROR_VARIANTS]
 
-const FORM_VARIANTS = {
+type FORM_VARIANTS = {
   LOGIN: "login",
   REGISTER: "register",
   APPLICATION: "applyToJob"
@@ -180,7 +180,7 @@ export default function Form({ formType, jobId }: Props) {
         method: "PUT",
         body: formData
       })
-        .then((_) => {
+        .then(() => {
           router.push('/');
           router.refresh();
         }

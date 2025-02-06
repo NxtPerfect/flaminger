@@ -1,4 +1,4 @@
-import { and, eq, not, sql } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, jobsTable, jobsToUsersTable, SelectCompany, SelectUser, usersTable } from "../schema";
 

@@ -3,7 +3,7 @@ import Form from '@/components/Form';
 import { useParams } from 'next/navigation';
 import React from 'react'
 
-export default function page() {
+export default function Page() {
   const params = useParams<{ id: string }>();
 
 
