@@ -86,7 +86,7 @@ export async function getPendingUserApplicationsByUserId(id: SelectUser['id']) {
 }
 
 export async function getAllJobsWithCompanyInfo() {
-  return db.select()
+  return db.select({ jobsTable, companiesTable })
     .from(jobsTable)
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id));
 }

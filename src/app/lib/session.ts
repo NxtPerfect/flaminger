@@ -63,5 +63,8 @@ export async function getUserId(): Promise<number> {
   if (!session)
     return -1;
   const payload = await verifySession(session);
-  return payload ? payload.userId : -1;
+  if (!payload)
+    return -1
+  console.log(typeof payload.userId);
+  return Number.parseInt(payload.userId);
 }

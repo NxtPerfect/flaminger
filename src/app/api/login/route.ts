@@ -1,7 +1,7 @@
 import { createSession } from "@/app/lib/session";
 import { isValidEmail, isValidPassword } from "@/app/lib/validation";
 import { getUserByEmail } from "@/db/queries/select";
-import { compare, hash } from "bcryptjs";
+import { compare } from "bcryptjs";
 
 export async function POST(req: Request) {
   const formData = await req.formData();
@@ -12,12 +12,12 @@ export async function POST(req: Request) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  const hashedPassword = await hash(formData.get("password")!.toString(), 12);
-  const userData = await getUserByEmail(formData.get("email")!.toString());
-  if (!compare(hashedPassword, userData[0].password)) {
+  const [userData] = await getUserByEmail(formData.get("email")!.toString());
+  const arePasswordsSame = await compare(formData.get("password")!.toString().trim(), userData.password)
+  if (!arePasswordsSame) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  await createSession(userData[0].id.toString());
+  await createSession(userData.id.toString());
   return Response.json({ status: 200 });
 }

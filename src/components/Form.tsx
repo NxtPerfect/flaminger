@@ -6,7 +6,7 @@ import { createSession } from '@/app/lib/session'
 
 type Props = {
   readonly formType: FormType
-  readonly jobId: number
+  readonly jobId?: number
 }
 
 type FormType = FORM_VARIANTS[keyof FORM_VARIANTS]
@@ -131,6 +131,7 @@ export default function Form({ formType, jobId }: Props) {
       })
 
       const data = await response.json();
+      console.log(data);
       if (isBadData(data)) {
         setError(ERROR_MESSAGES[ERROR_VARIANTS.BAD_DATA]);
         return;
@@ -236,7 +237,7 @@ export default function Form({ formType, jobId }: Props) {
       <label htmlFor="password">Password*</label>
       <input type="password" name="password" placeholder="******" required className={inputStyle} />
       {error ? <span className="text-red-500">{error}</span> : null}
-      <ActionButton variant="formSubmit">Login</ActionButton>
+      <ActionButton variant="formSubmit" isLoading={isLoading}>Login</ActionButton>
     </form>
   )
 }
