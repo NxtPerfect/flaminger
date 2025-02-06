@@ -10,7 +10,7 @@ type Props = {
   company: string
   acceptanceRate: number
   requirements?: { language: string, minimumExperienceInYears: number }[]
-  status: "in progress" | "accepted" | "rejected" | "new" | "closed"
+  status: string
 }
 
 export default function JobOffer({ id, title, description, logoPath, company, acceptanceRate, requirements, status }: Props) {

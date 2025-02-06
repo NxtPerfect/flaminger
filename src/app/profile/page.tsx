@@ -141,10 +141,14 @@ export default function Profile() {
                       {application.title ?? "Error"}
                     </td>
                     <td className="border-2 border-neutral-800 p-2">
-                      {application.city ?? "NaN"}
+                      {
+                        "Nan" //application.city ?? "NaN"
+                      }
                     </td>
                     <td className="border-2 border-neutral-800 p-2">
-                      {application.salary ?? "NaN"}
+                      {
+                        "Nan" //application.salary ?? "NaN"
+                      }
                     </td>
                     <td className="border-2 border-neutral-800 p-2">
                       Pending
@@ -165,10 +169,14 @@ export default function Profile() {
                       {application.title}
                     </td>
                     <td className="border-2 border-neutral-800 p-2">
-                      {application.city ?? "NaN"}
+                      {
+                        "NaN" // application.city ?? "NaN"}
+                      }
                     </td>
                     <td className="border-2 border-neutral-800 p-2">
-                      {application.salary ?? "NaN"}
+                      {
+                        "NaN" // application.salary ?? "NaN"}
+                      }
                     </td>
                     <td className={`border-2 border-neutral-800 p-2 ${application.isAccepted ? "text-green-500" : "text-red-500"}`}>
                       {application.isAccepted ? "Accepted" : "Rejected"}

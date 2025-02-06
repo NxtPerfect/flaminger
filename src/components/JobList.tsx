@@ -53,7 +53,7 @@ export default function JobList() {
         }
         return (
           <li key={offer.id}>
-            <JobOffer id={offer.id} title={offer.title} description={offer.description} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} isClosed={offer.isClosed} status={status ?? "new"} rejectionReason={applicationStatus?.rejectionReason || ""} />
+            <JobOffer id={offer.id} title={offer.title} description={offer.description} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} status={status ?? "new"} />
           </li>
         )
       })}

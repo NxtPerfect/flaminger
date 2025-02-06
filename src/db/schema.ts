@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { integer, pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users_table', {
@@ -15,11 +16,16 @@ export const companiesTable = pgTable('companies_table', {
   jobsAccepted: integer('jobs_accepted').default(0),
   jobsRejected: integer('jobs_rejected').default(0),
   acceptanceRate: integer('acceptance_rate').default(
-    (inserted) => {
-      return Number.parseFloat((inserted.jobsAccepted / (inserted.jobsAccepted + inserted.jobsRejected) * 100).toFixed(4))
-    }).$onUpdate((update) => {
-      return Number.parseFloat((update.jobsAccepted / (update.jobsAccepted + update.jobsRejected) * 100).toFixed(4))
-    }),
+    sql`CASE
+    WHEN "jobs_accepted" + "jobs_rejected" = 0 THEN 0
+    ELSE ROUND((CAST("jobs_accepted" AS FLOAT) / CAST("jobs_accepted" + "jobs_rejected" AS FLOAT)) * 100, 4)
+    END`
+  ).$onUpdate(() => {
+    return sql`CASE
+    WHEN "jobs_accepted" + "jobs_rejected" = 0 THEN 0
+    ELSE ROUND((CAST("jobs_accepted" AS FLOAT) / CAST("jobs_accepted" + "jobs_rejected" AS FLOAT)) * 100, 4)
+    END`
+  }),
 });
 
 export const jobsTable = pgTable('jobs_table', {
