@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 
 export default async function Header() {
   const cookieStore = await cookies();
+  const isEmployer = false;
 
   if (cookieStore.get("session")?.value) {
     return (
@@ -14,6 +15,7 @@ export default async function Header() {
         <LinkButton variant="header" href="/about_us">About us</LinkButton>
         <LinkButton variant="header" href="/profile">My Profile</LinkButton>
         <LinkButton variant="logout" href="/">Logout</LinkButton>
+        {isEmployer && <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
       </header>
     )
   }

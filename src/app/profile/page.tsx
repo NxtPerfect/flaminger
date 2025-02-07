@@ -148,12 +148,12 @@ export default function Profile() {
                     </td>
                     <td className="border-2 border-neutral-800 p-2 w-1/6">
                       {
-                        "Nan" //application.city ?? "NaN"
+                        "NaN" //application.city ?? "NaN"
                       }
                     </td>
                     <td className="border-2 border-neutral-800 p-2 w-1/6">
                       {
-                        "Nan" //application.salary ?? "NaN"
+                        "NaN" //application.salary ?? "NaN"
                       }
                     </td>
                     <td className="border-2 border-neutral-800 p-2 w-1/6">

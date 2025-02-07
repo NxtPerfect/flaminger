@@ -1,0 +1,32 @@
+"use client";
+import React, { Dispatch, SetStateAction } from 'react'
+import Radio from '../atoms/Radio';
+
+type Props = {
+  className?: string
+  children: React.ReactNode
+  whichRadioIsActive: number
+  setWhichRadioIsActiveAction: Dispatch<SetStateAction<number>>
+  radioId: number
+  text: string
+}
+
+export default function RadioWithTextSquare(
+  {
+    className,
+    children,
+    whichRadioIsActive,
+    setWhichRadioIsActiveAction,
+    radioId,
+    text
+  }: Props) {
+  const activeStyle = "border-orange-600 bg-neutral-600";
+  const style = `border-2 flex flex-row gap-2 justify-between items-center rounded-md group hover:border-orange-600 transition duration-75 w-1/3 min-h-[4lh] p-4 cursor-pointer ${className} ${radioId === whichRadioIsActive ? activeStyle : "bg-neutral-700"}`.trim();
+  return (
+    <div className={style} onClick={() => setWhichRadioIsActiveAction(radioId)}>
+      {children}
+      <Radio isActive={radioId === whichRadioIsActive} name="radio">{text}</Radio>
+    </div>
+  )
+}
+
