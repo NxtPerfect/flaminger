@@ -98,4 +98,5 @@ export type User = {
   email: string
   password: string
   mailingConsent: boolean
+  isEmployer: boolean
 }

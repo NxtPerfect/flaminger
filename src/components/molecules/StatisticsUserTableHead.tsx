@@ -5,8 +5,8 @@ import TableHeading from '../atoms/TableHeading'
 
 export default function StatisticsUserTableHead() {
   return (
-    <TableHead>
-      <TableRow className="flex-shrink-0 text-left">
+    <TableHead className="flex flex-col">
+      <TableRow className="flex flex-col flex-shrink-0 text-left w-full">
         <TableHeading>
           Applied To:
         </TableHeading>

@@ -16,6 +16,6 @@ export function isValidSurName(name: string) {
 }
 
 export function isValidPassword(password: string) {
-  const re = /^(?=.{1,64}$)[a-z0-9]+$/i;
+  const re = /^(?=.{8,64}$)[a-z0-9]+$/i;
   return password.length >= MINIMUM_PASSWORD_LENGTH && re.test(password);
 }

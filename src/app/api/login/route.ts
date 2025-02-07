@@ -5,15 +5,22 @@ import { compare } from "bcryptjs";
 
 export async function POST(req: Request) {
   const formData = await req.formData();
-  if (!formData.get("email") || !formData.get("password")) {
+
+  const email = formData.get("email")?.toString().trim();
+  const password = formData.get("password")?.toString().trim();
+  if (!email || !password) {
     return Response.json({ errorType: "emptyFields" }, { status: 400 });
   }
-  if (!isValidPassword(formData.get("password")!.toString()!) || !isValidEmail(formData.get("email")!.toString()!)) {
+  if (!isValidPassword(password) || !isValidEmail(email)) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  const [userData] = await getUserByEmail(formData.get("email")!.toString());
-  const arePasswordsSame = await compare(formData.get("password")!.toString().trim(), userData.password)
+  const [userData] = await getUserByEmail(email);
+  if (!userData) {
+    return Response.json({ errorType: "badData" }, { status: 400 });
+  }
+
+  const arePasswordsSame = await compare(password, userData.password)
   if (!arePasswordsSame) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }

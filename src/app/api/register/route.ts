@@ -33,9 +33,9 @@ export async function POST(req: Request) {
     return Response.json({ errorType: "userExists" }, { status: 400 });
   }
 
-  const user = await getUserByEmail(userData.email.toString());
-  await createSession(user[0].id.toString());
-  return Response.json({ userId: user[0].id }, { status: 200 });
+  const [user] = await getUserByEmail(userData.email.toString());
+  await createSession(user.id.toString());
+  return Response.json({ userId: user.id }, { status: 200 });
 }
 
 function isValidUserData(email: FormDataEntryValue, firstname: FormDataEntryValue, surname: FormDataEntryValue) {

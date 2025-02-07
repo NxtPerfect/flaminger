@@ -10,8 +10,8 @@ type Props = {
 
 export default function StatisticsUserTableBody({ statistics }: Props) {
   return (
-    <TableBody>
-      <TableRow>
+    <TableBody className="flex flex-col w-1/3">
+      <TableRow className="flex flex-col w-full">
         <TableColumn>
           {statistics?.total ?? 0}
         </TableColumn>

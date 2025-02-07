@@ -8,6 +8,7 @@ export const usersTable = pgTable('users_table', {
   email: text('email').notNull().unique(),
   password: text('password').notNull(),
   mailingConsent: boolean('mailing_consent').notNull(),
+  isEmployer: boolean('is_employer').notNull().default(sql`FALSE`),
 });
 
 export const companiesTable = pgTable('companies_table', {
@@ -15,12 +16,7 @@ export const companiesTable = pgTable('companies_table', {
   name: text('name').notNull().unique(),
   jobsAccepted: integer('jobs_accepted').default(0),
   jobsRejected: integer('jobs_rejected').default(0),
-  acceptanceRate: integer('acceptance_rate').default(
-    sql`CASE
-    WHEN "jobs_accepted" + "jobs_rejected" = 0 THEN 0
-    ELSE ROUND((CAST("jobs_accepted" AS FLOAT) / CAST("jobs_accepted" + "jobs_rejected" AS FLOAT)) * 100, 4)
-    END`
-  ).$onUpdate(() => {
+  acceptanceRate: integer('acceptance_rate').default(0).$onUpdate(() => {
     return sql`CASE
     WHEN "jobs_accepted" + "jobs_rejected" = 0 THEN 0
     ELSE ROUND((CAST("jobs_accepted" AS FLOAT) / CAST("jobs_accepted" + "jobs_rejected" AS FLOAT)) * 100, 4)
