@@ -5,6 +5,7 @@ interface Props {
   readonly children?: React.ReactNode
   readonly className?: string
   readonly isLoading?: boolean
+  readonly onClick?: () => void
 }
 
 const BUTTON_VARIANTS = {
@@ -26,12 +27,12 @@ const BUTTON_STYLES = {
 
 type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
 
-export default function ActionButton({ variant = null, children, className, isLoading = false }: Props) {
+export default function ActionButton({ variant = null, children, className, isLoading = false, onClick }: Props) {
 
   const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
   const combinedStyle = `${buttonStyle} + ${isLoading ? "bg-neutral-600 cursor-wait hover:bg-neutral-600/80" : ""} + ${className}`.trim();
   const buttonType = variant === "formSubmit" ? "submit" : "button";
 
-  return <button type={buttonType} className={combinedStyle} disabled={isLoading}>{children}</button>;
+  return <button type={buttonType} className={combinedStyle} disabled={isLoading} onClick={onClick}>{children}</button>;
 }
 
