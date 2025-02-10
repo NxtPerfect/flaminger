@@ -8,13 +8,26 @@ type Props = {
 }
 
 export default function InputNewTechnology({ name, minimumYearsOfExperience }: Props) {
+  function handleNumberInput(e: React.ChangeEvent<HTMLInputElement>) {
+    var parsedNumber = Number.parseInt(e.currentTarget.value) ?? 0;
+    if (parsedNumber < 0 || parsedNumber > 99) {
+      parsedNumber = 0;
+    }
+    minimumYearsOfExperience = parsedNumber;
+  }
+
+  function handleTextInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    name = parsedName;
+  }
+
   return (
     <div className="flex flex-row gap-3 w-full px-2">
       <div className="w-2/3">
-        <TextInput name="text" placeholder="Javascript" pattern="(\w){2:64}" value={name} />
+        <TextInput name="text" placeholder="Javascript" pattern="^\D{2,64}$" onChange={handleTextInput} />
       </div>
       <div className="w-1/4">
-        <NumberInput name="number" placeholder="2" pattern="(\d){1:2}" value={minimumYearsOfExperience} />
+        <NumberInput name="number" min={0} max={99} placeholder="2" pattern="^\d{1,2}$" onChange={handleNumberInput} />
       </div>
     </div>
   )

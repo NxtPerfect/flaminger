@@ -8,14 +8,15 @@ type Props = {
   pattern?: string
   children?: React.ReactNode
   value?: string
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function TextInput({ className, name, placeholder, required, pattern, children, value }: Props) {
+export default function TextInput({ className, name, placeholder, required, pattern, children, onChange }: Props) {
   const style = `w-[100%] rounded-md px-2 py-1 text-black invalid:[&:not(:placeholder-shown):not(:focus)]:bg-red-300/80 ${className}`.trim();
   return (
     <div className="flex flex-col">
       <label htmlFor={name}>{required && "*"}{children}</label>
-      <input type={name === "email" ? "email" : "text"} name={name} placeholder={placeholder} pattern={pattern} required={required} className={style} value={value} />
+      <input type={name === "email" ? "email" : "text"} name={name} placeholder={placeholder} pattern={pattern} required={required} className={style} onChange={onChange} />
     </div>
   )
 }
