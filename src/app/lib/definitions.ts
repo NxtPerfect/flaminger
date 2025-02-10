@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 export type JobOffer = {
   id: string
   title: string
@@ -15,9 +17,9 @@ export type SessionPayload = {
   expiresAt: Date
 }
 
-export type Requirement = {
-  languages: string
-  minimumExperienceInYears: number
+export type RequiredTechnology = {
+  name: string
+  minimumYearsOfExperience: number
 }
 
 export type OfferWithCompanyInfo = {
@@ -99,4 +101,14 @@ export type User = {
   password: string
   mailingConsent: boolean
   isEmployer: boolean
+}
+
+export type SvgProps = {
+  className?: string
+  imageAlt?: string
+}
+
+export type PickerProps = {
+  whichRadioIsActive: number
+  setWhichRadioIsActiveAction: Dispatch<SetStateAction<number>>
 }

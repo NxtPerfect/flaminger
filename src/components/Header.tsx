@@ -6,10 +6,11 @@ import { cookies } from 'next/headers';
 export default async function Header() {
   const cookieStore = await cookies();
   const isEmployer = false;
+  const headerStyle = "sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50";
 
   if (cookieStore.get("session")?.value) {
     return (
-      <header className="sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50">
+      <header className={headerStyle}>
         <LinkButton variant="header" href="/">Home</LinkButton>
         <LinkButton variant="header" href="/offers">Job offers</LinkButton>
         <LinkButton variant="header" href="/about_us">About us</LinkButton>
@@ -20,7 +21,7 @@ export default async function Header() {
     )
   }
   return (
-    <header className="sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50">
+    <header className={headerStyle}>
       <LinkButton variant="header" href="/">Home</LinkButton>
       <LinkButton variant="header" href="/offers">Job offers</LinkButton>
       <LinkButton variant="header" href="/about_us">About us</LinkButton>

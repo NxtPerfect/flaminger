@@ -1,21 +1,30 @@
+"use client";
 import TextAreaInput from '@/components/atoms/TextAreaInput'
 import TextInput from '@/components/atoms/TextInput'
 import CityPicker from '@/components/molecules/CityPicker'
+import ContractTypePicker from '@/components/molecules/ContractTypePicker'
 import EmploymentTypePicker from '@/components/molecules/EmploymentTypePicker'
 import SalaryRange from '@/components/molecules/SalaryRange'
 import TechnologiesPicker from '@/components/molecules/TechnologiesPicker'
-import React from 'react'
+import WorkhourTypePicker from '@/components/molecules/WorkhourTypePicker'
+import React, { useState } from 'react'
 
-export default function page() {
+export default function Page() {
+  const [employmentActiveRadio, setEmploymentActiveRadio] = useState<number>(0);
+  const [contractActiveRadio, setContractActiveRadio] = useState<number>(0);
+  const [workhourActiveRadio, setWorkhourActiveRadio] = useState<number>(0);
+
   return (
     <form
-      className="flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[80ch]"
+      className="flex flex-col gap-8 bg-neutral-800 rounded-md px-8 py-4 w-[70ch] min-w-[30ch] max-w-[80ch]"
     >
       <TextInput name="jobName" placeholder="Junior React Developer" required={true} pattern="^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$">Job name:</TextInput>
       <TextAreaInput name="description" required={true} placeholder="Our flexible and dynamic team is looking for a passionate developer.">Description:</TextAreaInput>
       <SalaryRange />
       <CityPicker />
-      <EmploymentTypePicker />
+      <EmploymentTypePicker whichRadioIsActive={employmentActiveRadio} setWhichRadioIsActiveAction={setEmploymentActiveRadio} />
+      <ContractTypePicker whichRadioIsActive={contractActiveRadio} setWhichRadioIsActiveAction={setContractActiveRadio} />
+      <WorkhourTypePicker whichRadioIsActive={workhourActiveRadio} setWhichRadioIsActiveAction={setWorkhourActiveRadio} />
       <TechnologiesPicker />
     </form>
   )

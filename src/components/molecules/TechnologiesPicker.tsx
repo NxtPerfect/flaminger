@@ -15,10 +15,12 @@ export default function TechnologiesPicker() {
   const [technologies, setTechnologies] = useState<TechnologyRequirement[]>([]);
 
   function addTechnologyInput() {
+    if (technologies.length > 20) return;
     setTechnologies(() => [...technologies, { name: "Example", minimumYearsOfExperience: 0 }]);
   }
 
   function removeTechnology(index: number) {
+    if (technologies.length == 0) return;
     setTechnologies(() => technologies.filter((_, techIndex) => techIndex !== index));
   }
 
@@ -31,7 +33,7 @@ export default function TechnologiesPicker() {
           return (
             <div key={index} className="flex flex-row items-center">
               <InputNewTechnology name={technology.name} minimumYearsOfExperience={technology.minimumYearsOfExperience} />
-              <ActionButton variant="formSubmit" className="h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75" onClick={() => removeTechnology(index)}><TrashBinSvg className="size-4" /></ActionButton>
+              <ActionButton variant="formSubmit" className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75" onClick={() => removeTechnology(index)}><TrashBinSvg className="size-4 h-5" /></ActionButton>
             </div>
           )
         })}
