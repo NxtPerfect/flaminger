@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
   const hashedUserPassword = await hash(userData.password!.toString(), 12);
   try {
-    await createUser({ email: userData.email!.toString(), firstname: userData.firstname!.toString(), surname: userData.surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: userData.mailingConsent != null });
+    await createUser({ email: userData.email!.toString(), firstname: userData.firstname!.toString(), surname: userData.surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: userData.mailingConsent != null, isEmployer: false, employerCompanyId: 1 });
   } catch (error) {
     console.error(error);
     return Response.json({ errorType: "userExists" }, { status: 400 });
