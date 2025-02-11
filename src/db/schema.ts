@@ -9,6 +9,7 @@ export const usersTable = pgTable('users_table', {
   password: text('password').notNull(),
   mailingConsent: boolean('mailing_consent').notNull(),
   isEmployer: boolean('is_employer').notNull().default(sql`FALSE`),
+  employerCompanyId: serial('employer_company_id').references(() => companiesTable.id),
 });
 
 export const companiesTable = pgTable('companies_table', {

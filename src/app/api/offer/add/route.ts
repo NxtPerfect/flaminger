@@ -1,4 +1,7 @@
 import { RequiredTechnology } from "@/app/lib/definitions";
+import { getUserId } from "@/app/lib/session";
+import { createJob } from "@/db/queries/insert";
+import { getUserById } from "@/db/queries/select";
 // import { verifySession } from "@/app/lib/session";
 
 export async function PUT(req: Request) {
@@ -6,9 +9,19 @@ export async function PUT(req: Request) {
   // Verify if user is employer
   // verifySession()
   const offerData = parseOfferData(formData);
+  const userId = await getUserId();
+  const [userData] = await getUserById(userId);
+  const companyId = userData.employerCompanyId;
 
   try {
-    return Response.json({ data: offerData }, { status: 200 });
+    await createJob({
+      title: offerData.title,
+      description: offerData.description,
+      byCompanyId: companyId,
+      isClosed: false,
+    }).then(() => {
+      return Response.json({ data: offerData }, { status: 200 });
+    })
   } catch (error) {
     return Response.json({ error: error }, { status: 400 });
   }
@@ -38,7 +51,7 @@ function parseOfferData(formData: FormData): offerData {
   const parsedTechnologies: RequiredTechnology[] = [];
   for (
     let i = 0;
-    i < Math.min(namesOfRequiredTechnologies.length, minimumYearsOfRequiredTechnologies.length);
+    i < namesOfRequiredTechnologies.length;
     i++) {
     parsedTechnologies.push(
       {

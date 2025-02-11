@@ -20,6 +20,14 @@ export async function getCompanyById(id: SelectCompany['id']) {
     .where(eq(companiesTable.id, id));
 }
 
+export async function getCompanyIdByEmployerid(id: SelectUser['id']) {
+  return db.select({
+    companyId: usersTable.employerCompanyId
+  })
+    .from(usersTable)
+    .where(eq(usersTable.id, id))
+}
+
 export async function getStatisticsOfUserApplicationsByUserId(id: SelectUser['id']) {
   const [accepted] = await getAcceptedJobsForUsersbyUserId(id);
 

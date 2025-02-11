@@ -18,7 +18,6 @@ export async function signToken(payload: SessionPayload) {
 export async function verifySession(session: string = '') {
   if (!session) {
     const cookieStore = await cookies();
-
     session = cookieStore.get('session')?.value ?? '';
   }
 
