@@ -2,14 +2,11 @@ import { RequiredTechnology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { createJob } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
-// import { verifySession } from "@/app/lib/session";
 
 export async function PUT(req: Request) {
   const formData = await req.formData();
-
-  // Verify if user is employer
-  // verifySession()
   const offerData = parseOfferData(formData);
+
   const userId = await getUserId();
   const [userData] = await getUserById(userId);
   if (userData.isEmployer === false) {

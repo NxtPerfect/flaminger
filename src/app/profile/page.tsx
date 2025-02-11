@@ -4,10 +4,6 @@ import Image from 'next/image'
 import SkeletonProfile from '@/components/placeholders/SkeletonProfile';
 import { CompletedApplication, DatabaseCompletedApplication, Offer, PendingApplication, StatisticsForUserApplications, StatisticsForUserApplicationsFromDatabase, User } from '@/app/lib/definitions';
 import StatisticsUserTable from '@/components/organisms/StatisticsUserTable';
-import Table from '@/components/atoms/Table';
-import TableHead from '@/components/atoms/TableHead';
-import TableRow from '@/components/atoms/TableRow';
-import TableBody from '@/components/atoms/TableBody';
 import JobApplicationsForUserProfile from '@/components/organisms/JobApplicationsForUserProfile';
 
 export default function Profile() {
@@ -70,7 +66,7 @@ export default function Profile() {
         byCompanyId: singleApplication.byCompanyId,
         isClosed: false
       }
-      setPendingApplications([...pendingApplications, application]);
+      setPendingApplications((pending) => [...pending, application]);
     }
   }
 
@@ -88,8 +84,8 @@ export default function Profile() {
         byCompanyId: singleApplication.byCompanyId,
         isAccepted: isAccepted,
         rejectionReason: rejectionReason,
-      }
-      setCompletedApplications([...completedApplications, application]);
+      };
+      setCompletedApplications((completed) => [...completed, application]);
     }
   }
 

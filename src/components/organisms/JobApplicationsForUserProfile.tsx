@@ -36,7 +36,7 @@ export default function JobApplicationsForUserProfile({ pendingApplications, com
         </TableRow>
       </TableHead>
       <TableBody className="w-full">
-        {pendingApplications && pendingApplications.map((application) => {
+        {pendingApplications && pendingApplications.map((application: Partial<Offer>) => {
           return (
             <TableRow className="w-full" key={application.id}>
               <td className="border-2 border-neutral-800 p-2 w-1/6">
@@ -64,7 +64,7 @@ export default function JobApplicationsForUserProfile({ pendingApplications, com
             </TableRow>
           )
         })}
-        {completedApplications && completedApplications.map((application) => {
+        {completedApplications && completedApplications.map((application: CompletedApplication) => {
           return (
             <TableRow className="w-full" key={application.id}>
               <td className="border-2 border-neutral-800 p-2 w-1/6">
