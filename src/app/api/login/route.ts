@@ -25,6 +25,6 @@ export async function POST(req: Request) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  await createSession(userData.id.toString());
+  await createSession(userData.id.toString(), userData.isEmployer);
   return Response.json({ status: 200 });
 }

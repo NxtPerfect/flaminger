@@ -52,7 +52,7 @@ export default function RegisterForm() {
         return;
       }
 
-      await createSession(data.userId);
+      await createSession(data.userId, data.isEmployer ?? false);
       router.push('/profile');
       router.refresh();
     } finally {

@@ -44,7 +44,6 @@ function parseOfferData(formData: FormData): offerData {
   const namesOfRequiredTechnologies = formData.getAll("name");
   const minimumYearsOfRequiredTechnologies = formData.getAll("minimumYearsOfExperience");
 
-  // Check if any value is not a valid string
   const parameters = { title, description, minSalary, maxSalary, city, employmentType, contractType, workhourType };
   for (const param in parameters) {
     if (!param) {

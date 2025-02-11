@@ -14,6 +14,7 @@ export type JobOffer = {
 
 export type SessionPayload = {
   userId: string
+  isEmployer: boolean
   expiresAt: Date
 }
 

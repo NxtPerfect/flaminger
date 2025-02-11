@@ -31,9 +31,9 @@ export async function verifySession(session: string = '') {
   }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(userId: string, isEmployer: boolean) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  const session = await signToken({ userId, expiresAt })
+  const session = await signToken({ userId, isEmployer, expiresAt })
   const cookieStore = await cookies()
 
   cookieStore.set('session', session, {
@@ -64,5 +64,17 @@ export async function getUserId(): Promise<number> {
   const payload = await verifySession(session);
   if (typeof payload?.userId === "string")
     return Number.parseInt(payload.userId);
-  return -1
+  return -1;
+}
+
+export async function getIsUserEmployer(): Promise<boolean> {
+  const cookieStore = await cookies();
+
+  const session = cookieStore.get('session')?.value;
+  if (!session)
+    return false;
+  const payload = await verifySession(session);
+  if (typeof payload?.isEmployer === "boolean")
+    return payload.isEmployer;
+  return false;
 }

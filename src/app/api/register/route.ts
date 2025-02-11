@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   }
 
   const [user] = await getUserByEmail(userData.email.toString());
-  await createSession(user.id.toString());
+  await createSession(user.id.toString(), user.isEmployer);
   return Response.json({ userId: user.id }, { status: 200 });
 }
 
