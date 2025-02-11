@@ -71,6 +71,13 @@
       "when": 1738910012684,
       "tag": "0009_wooden_songbird",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1739252435057,
+      "tag": "0010_dear_proteus",
+      "breakpoints": true
     }
   ]
 }

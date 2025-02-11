@@ -6,6 +6,7 @@ import { getUserById } from "@/db/queries/select";
 
 export async function PUT(req: Request) {
   const formData = await req.formData();
+  console.log("Got data for new offer", formData);
   // Verify if user is employer
   // verifySession()
   const offerData = parseOfferData(formData);
@@ -25,6 +26,7 @@ export async function PUT(req: Request) {
   } catch (error) {
     return Response.json({ error: error }, { status: 400 });
   }
+  return Response.json({ error: "badData" }, { status: 400 });
 }
 
 function parseOfferData(formData: FormData): offerData {
@@ -36,8 +38,8 @@ function parseOfferData(formData: FormData): offerData {
   const employmentType = formData.get("employmentType");
   const contractType = formData.get("contractType");
   const workhourType = formData.get("workhourType");
-  const namesOfRequiredTechnologies = formData.getAll("nameOfTechnology");
-  const minimumYearsOfRequiredTechnologies = formData.getAll("minimumYearOfTechnology");
+  const namesOfRequiredTechnologies = formData.getAll("name");
+  const minimumYearsOfRequiredTechnologies = formData.getAll("minimumYearsOfExperience");
 
   // Check if any value is not a valid string
   const parameters = { title, description, minSalary, maxSalary, city, employmentType, contractType, workhourType };

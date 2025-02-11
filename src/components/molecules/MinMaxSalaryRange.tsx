@@ -15,9 +15,8 @@ export default function MinMaxSalaryInput({ className, min, max }: Props) {
 
   function handleMin(e: React.ChangeEvent<HTMLInputElement>) {
     let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
-    console.log("Min", parsedNumber);
-    if (parsedNumber > maxVal || parsedNumber > max) {
-      parsedNumber = maxVal;
+    if (parsedNumber > max) {
+      parsedNumber = max;
       e.currentTarget.valueAsNumber = maxVal;
     }
     if (parsedNumber < min) {
@@ -25,14 +24,12 @@ export default function MinMaxSalaryInput({ className, min, max }: Props) {
       e.currentTarget.valueAsNumber = min;
     }
     setMin(parsedNumber);
-    console.log("Min val", minVal);
   }
 
   function handleMax(e: React.ChangeEvent<HTMLInputElement>) {
     let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
-    console.log("Max", parsedNumber);
-    if (parsedNumber < minVal || parsedNumber < min) {
-      parsedNumber = minVal;
+    if (parsedNumber < min) {
+      parsedNumber = min;
       e.currentTarget.valueAsNumber = minVal;
     }
     if (parsedNumber > max) {
@@ -40,7 +37,6 @@ export default function MinMaxSalaryInput({ className, min, max }: Props) {
       e.currentTarget.valueAsNumber = max;
     }
     setMax(parsedNumber);
-    console.log("Max val", maxVal);
   }
 
   return (

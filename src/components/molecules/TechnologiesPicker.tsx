@@ -1,27 +1,31 @@
 "use client";
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import AddItemButton from './AddItemButton'
 import InputNewTechnology from '../molecules/InputNewTechnology';
 import TrashBinSvg from './TrashBinSvg';
 import ActionButton from '../ActionButton';
+import { RequiredTechnology } from '@/app/lib/definitions';
+
+type Props = {
+  technologies: TechnologyRequirement[]
+  setTechnologiesAction: Dispatch<SetStateAction<RequiredTechnology[]>>;
+}
 
 type TechnologyRequirement = {
   name: string
   minimumYearsOfExperience: number
 }
 
-export default function TechnologiesPicker() {
-
-  const [technologies, setTechnologies] = useState<TechnologyRequirement[]>([]);
+export default function TechnologiesPicker({ technologies, setTechnologiesAction }: Props) {
 
   function addTechnologyInput() {
     if (technologies.length > 20) return;
-    setTechnologies(() => [...technologies, { name: "Example", minimumYearsOfExperience: 0 }]);
+    setTechnologiesAction(() => [...technologies, { name: "Example", minimumYearsOfExperience: 0 }]);
   }
 
   function removeTechnology(index: number) {
     if (technologies.length == 0) return;
-    setTechnologies(() => technologies.filter((_, techIndex) => techIndex !== index));
+    setTechnologiesAction(() => technologies.filter((_, techIndex) => techIndex !== index));
   }
 
   return (

@@ -24,10 +24,10 @@ export default function InputNewTechnology({ name, minimumYearsOfExperience }: P
   return (
     <div className="flex flex-row gap-3 w-full px-2">
       <div className="w-2/3">
-        <TextInput name="text" placeholder="Javascript" pattern="^\D{2,64}$" onChange={handleTextInput} defaultValue={name} />
+        <TextInput name="name" placeholder="Javascript" pattern="^\D{2,64}$" onChange={handleTextInput} defaultValue={name} />
       </div>
       <div className="w-1/4">
-        <NumberInput name="number" min={0} max={99} placeholder="2" pattern="^\d{1,2}$" onChange={handleNumberInput} defaultValue={minimumYearsOfExperience} />
+        <NumberInput name="minimumYearsOfExperience" min={0} max={99} placeholder="2" pattern="^\d{1,2}$" onChange={handleNumberInput} defaultValue={minimumYearsOfExperience} />
       </div>
     </div>
   )

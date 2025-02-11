@@ -8,9 +8,23 @@ import { PickerProps } from "@/app/lib/definitions";
 
 export default function WorkhourTypePicker({ whichRadioIsActive, setWhichRadioIsActiveAction }: PickerProps) {
 
+  function getWorkhourTypeByRadioId(id: number) {
+    switch (id) {
+      case 0:
+        return "Full";
+      case 1:
+        return "Part";
+      case 2:
+        return "Intern";
+      default:
+        return "None";
+    }
+  }
+
   return (
     <div className="flex flex-col">
       <label htmlFor="workhourType">*Workhour Type:</label>
+      <input type="hidden" name="workhourType" value={getWorkhourTypeByRadioId(whichRadioIsActive)} />
       <div className="flex flex-row gap-2">
         <RadioWithTextSquare
           radioId={0}

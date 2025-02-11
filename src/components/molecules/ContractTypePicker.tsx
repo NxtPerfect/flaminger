@@ -7,9 +7,21 @@ import { PickerProps } from '@/app/lib/definitions';
 
 export default function ContractTypePicker({ whichRadioIsActive, setWhichRadioIsActiveAction }: PickerProps) {
 
+  function getContractTypeByRadioId(id: number) {
+    switch (id) {
+      case 0:
+        return "B2B";
+      case 1:
+        return "EmploymentContract";
+      default:
+        return "None";
+    }
+  }
+
   return (
     <div className="flex flex-col">
       <label htmlFor="contractType">*Contract Type:</label>
+      <input type="hidden" name="contractType" value={getContractTypeByRadioId(whichRadioIsActive)} />
       <div className="flex flex-row gap-2">
         <RadioWithTextSquare
           radioId={0}
