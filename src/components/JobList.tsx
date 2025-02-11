@@ -4,7 +4,11 @@ import JobOffer from './JobOffer'
 import { OfferWithCompanyInfo, UserApplications } from '@/app/lib/definitions';
 import SkeletonJobOffer from './placeholders/SkeletonJobOffer';
 
-export default function JobList() {
+type Props = {
+  isNotLoggedIn: boolean
+}
+
+export default function JobList({ isNotLoggedIn }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [offers, setOffers] = useState<OfferWithCompanyInfo[]>();
 
@@ -51,7 +55,17 @@ export default function JobList() {
         }
         return (
           <li key={offer.id}>
-            <JobOffer id={offer.id} title={offer.title} description={offer.description} logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`} company={company.name} acceptanceRate={company.acceptanceRate} requirements={[]} status={status ?? "new"} />
+            <JobOffer
+              id={offer.id}
+              title={offer.title}
+              description={offer.description}
+              logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`}
+              company={company.name}
+              acceptanceRate={company.acceptanceRate}
+              requirements={[]}
+              status={status ?? "new"}
+              isNotLoggedIn={isNotLoggedIn}
+            />
           </li>
         )
       })}

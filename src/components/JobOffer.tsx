@@ -11,9 +11,10 @@ type Props = {
   acceptanceRate: number
   requirements?: { language: string, minimumExperienceInYears: number }[]
   status: string
+  isNotLoggedIn: boolean
 }
 
-export default function JobOffer({ id, title, description, logoPath, company, acceptanceRate, requirements, status }: Props) {
+export default function JobOffer({ id, title, description, logoPath, company, acceptanceRate, requirements, status, isNotLoggedIn }: Props) {
   let linkText;
   let statusText;
   let isReject = false;
@@ -62,24 +63,27 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
             </div>
           })}
         </span>
-        {linkText &&
+        {!isNotLoggedIn && linkText &&
           <span className="flex flex-row gap-8">
             <LinkButton variant="alt" href={`/offer/${id}`}>Read More</LinkButton>
             <LinkButton variant="offerLink" href={`/offer/${id}/apply`}>{linkText}</LinkButton>
           </span>}
-        {isReject &&
+        {!isNotLoggedIn && isReject &&
           <span className="flex flex-row gap-8">
             <span className="text-neutral-600 select-none">{statusText}</span>
             <LinkButton variant="alt" href={`/profile/offer/${id}/apply`}>Check Reason</LinkButton>
           </span>}
-        {isAccepted &&
+        {!isNotLoggedIn && isAccepted &&
           <span className="flex flex-row gap-8">
             <span className="text-green-600 select-none">{statusText}</span>
           </span>}
-        {isApplied &&
+        {!isNotLoggedIn && isApplied &&
           <span className="flex flex-row gap-8">
             <span className="text-neutral-600 select-none">{statusText}</span>
           </span>}
+        {isNotLoggedIn &&
+          <LinkButton variant="offerLink" href={`/login`}>Signin</LinkButton>
+        }
       </span>
     </div>
   )

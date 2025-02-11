@@ -12,19 +12,20 @@ export default async function Header() {
     return (
       <header className={headerStyle}>
         <LinkButton variant="header" href="/">Home</LinkButton>
-        <LinkButton variant="header" href="/offers">Job offers</LinkButton>
-        <LinkButton variant="header" href="/about_us">About us</LinkButton>
+        <LinkButton variant="header" href="/offers">Job Offers</LinkButton>
+        <LinkButton variant="header" href="/about_us">About Us</LinkButton>
         <LinkButton variant="header" href="/profile">My Profile</LinkButton>
         <LinkButton variant="logout" href="/">Logout</LinkButton>
         {isEmployer && <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
+        {isEmployer && <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>}
       </header>
     )
   }
   return (
     <header className={headerStyle}>
       <LinkButton variant="header" href="/">Home</LinkButton>
-      <LinkButton variant="header" href="/offers">Job offers</LinkButton>
-      <LinkButton variant="header" href="/about_us">About us</LinkButton>
+      <LinkButton variant="header" href="/offers">Job Offers</LinkButton>
+      <LinkButton variant="header" href="/about_us">About Us</LinkButton>
       <LinkButton variant="header" href="/login">Signin</LinkButton>
       <LinkButton variant="header" href="/register">Signup</LinkButton>
     </header>
