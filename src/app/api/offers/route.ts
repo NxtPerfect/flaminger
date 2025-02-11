@@ -11,6 +11,5 @@ export async function GET() {
     offers = await getAllJobsWithCompanyInfo();
   }
 
-  // console.log(offers);
   return Response.json({ offers }, { status: 200 })
 }

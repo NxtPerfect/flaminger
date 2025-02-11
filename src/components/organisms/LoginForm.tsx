@@ -42,7 +42,6 @@ export default function LoginForm() {
       })
 
       const data = await response.json();
-      console.log(data);
       if (isBadData(data)) {
         setError(ERROR_MESSAGES[ERROR_VARIANTS.BAD_DATA]);
         return;

@@ -6,7 +6,6 @@ import { getUserById } from "@/db/queries/select";
 
 export async function PUT(req: Request) {
   const formData = await req.formData();
-  console.log("Got data for new offer", formData);
 
   // Verify if user is employer
   // verifySession()

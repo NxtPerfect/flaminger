@@ -20,9 +20,7 @@ export default function JobList() {
     const fetchOffers = async () => {
       await fetch('/api/offers')
         .then(async (res) => {
-          console.log("Response", res);
           const responseJson = await res.json();
-          console.log("Companies", responseJson);
           setOffers(responseJson.offers);
           setIsLoading(false);
         })

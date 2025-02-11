@@ -20,14 +20,8 @@ export default function Page() {
   const router = useRouter();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    // get salary range
-    // get city
-    // get employment, contract and workhour type
-    // get technologies
     e.preventDefault();
-    console.log(e.currentTarget);
     const formData = new FormData(e.currentTarget);
-    console.log(formData);
 
     const addOffer = async () => {
       await fetch('/api/offer/add', {

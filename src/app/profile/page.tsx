@@ -35,7 +35,6 @@ export default function Profile() {
   }, [getProfile]);
 
   function setUserDataFromApi(userRawData: User) {
-    console.log(userRawData);
     const userData: User = {
       id: userRawData.id,
       firstname: userRawData.firstname,
