@@ -9,8 +9,6 @@ export function middleware(request: NextRequest) {
   const isOffer = request.nextUrl.pathname.startsWith('/offer');
   const isProfile = request.nextUrl.pathname.startsWith('/profile');
 
-  console.log(hasSession, isLogin, isRegister, isOffer, isProfile);
-
   if (hasSession && (isLogin || isRegister)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
