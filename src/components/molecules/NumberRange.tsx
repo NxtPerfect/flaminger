@@ -9,9 +9,10 @@ type Props = {
   placeholder?: number
   name?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  required: boolean
 }
 
-export default function NumberRange({ className = "", children, min, max, placeholder = 2469, name, onChange }: Props) {
+export default function NumberRange({ className = "", children, min, max, placeholder = 2469, name, onChange, required }: Props) {
   const style = `flex flex-col ${className}`.trim();
   const formatter = Intl.NumberFormat('en-US', {
     style: "currency",
@@ -22,7 +23,7 @@ export default function NumberRange({ className = "", children, min, max, placeh
   return (
     <div className={style}>
       <label htmlFor={name ?? "number"}>{children}</label>
-      <NumberInput onChange={onChange} min={min} max={max} className="w-full" name={name ?? "number"} placeholder={formatter.format(placeholder)} />
+      <NumberInput onChange={onChange} min={min} max={max} className="w-full" name={name ?? "number"} placeholder={formatter.format(placeholder)} required={required} />
     </div>
   )
 }

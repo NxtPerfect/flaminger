@@ -42,10 +42,10 @@ export default function MinMaxSalaryInput({ className, min, max }: Props) {
   return (
     <div className={style}>
       <div className="flex flex-row w-full gap-2 justify-between">
-        <NumberRange onChange={handleMin} name="minSalary" className="w-1/3" min={min} max={Math.max(max, maxVal)} placeholder={1000}>
+        <NumberRange onChange={handleMin} name="minSalary" className="w-1/3" min={min} max={Math.max(max, maxVal)} placeholder={1000} required={true}>
           *Min. Salary
         </NumberRange>
-        <NumberRange onChange={handleMax} name="maxSalary" className="w-1/3" min={Math.max(min, minVal)} max={max} placeholder={50000}>
+        <NumberRange onChange={handleMax} name="maxSalary" className="w-1/3" min={Math.max(min, minVal)} max={max} placeholder={50000} required={true}>
           *Max. Salary
         </NumberRange>
       </div>

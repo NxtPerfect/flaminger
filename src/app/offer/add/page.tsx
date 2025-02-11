@@ -16,7 +16,7 @@ export default function Page() {
   const [employmentActiveRadio, setEmploymentActiveRadio] = useState<number>(0);
   const [contractActiveRadio, setContractActiveRadio] = useState<number>(0);
   const [workhourActiveRadio, setWorkhourActiveRadio] = useState<number>(0);
-  const [technologies, setTechnologies] = useState<RequiredTechnology[]>([]);
+  const [technologies, setTechnologies] = useState<RequiredTechnology[]>([{ name: "Javascript", minimumYearsOfExperience: 2 }]);
   const router = useRouter();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {

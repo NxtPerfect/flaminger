@@ -20,7 +20,7 @@ export default function TechnologiesPicker({ technologies, setTechnologiesAction
 
   function addTechnologyInput() {
     if (technologies.length > 20) return;
-    setTechnologiesAction(() => [...technologies, { name: "Example", minimumYearsOfExperience: 0 }]);
+    setTechnologiesAction(() => [...technologies, { name: "Javascript", minimumYearsOfExperience: 2 }]);
   }
 
   function removeTechnology(index: number) {

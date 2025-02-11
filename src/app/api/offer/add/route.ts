@@ -7,11 +7,15 @@ import { getUserById } from "@/db/queries/select";
 export async function PUT(req: Request) {
   const formData = await req.formData();
   console.log("Got data for new offer", formData);
+
   // Verify if user is employer
   // verifySession()
   const offerData = parseOfferData(formData);
   const userId = await getUserId();
   const [userData] = await getUserById(userId);
+  if (userData.isEmployer === false) {
+    return Response.json({ status: 401 });
+  }
   const companyId = userData.employerCompanyId;
 
   try {
