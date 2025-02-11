@@ -9,7 +9,7 @@ export const usersTable = pgTable('users_table', {
   password: text('password').notNull(),
   mailingConsent: boolean('mailing_consent').notNull(),
   isEmployer: boolean('is_employer').notNull().default(sql`FALSE`),
-  employerCompanyId: serial('employer_company_id').references(() => companiesTable.id),
+  employerCompanyId: serial('employer_company_id').references(() => companiesTable.id).default(1),
 });
 
 export const companiesTable = pgTable('companies_table', {
@@ -33,7 +33,7 @@ export const jobsTable = pgTable('jobs_table', {
     .notNull()
     .references(() => companiesTable.id, { onDelete: 'no action' }),
   createdAt: timestamp('created_at').notNull().defaultNow(),
-  isClosed: boolean('is_closed')
+  isClosed: boolean('is_closed').default(false),
 });
 
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
