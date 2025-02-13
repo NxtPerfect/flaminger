@@ -15,6 +15,7 @@ const BUTTON_VARIANTS = {
   ALT: "alt",
   HEADER: "header",
   LOGOUT: "logout",
+  PROFILE: "profile"
 }
 
 const BUTTON_STYLES = {
@@ -26,6 +27,8 @@ const BUTTON_STYLES = {
     "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.LOGOUT]:
     "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
+  [BUTTON_VARIANTS.PROFILE]:
+    "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-[1rem] leading-tight hover:bg-red-600 hover:ease-in-out duration-75",
   default:
     "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1"
 }
