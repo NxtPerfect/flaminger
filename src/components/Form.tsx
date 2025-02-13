@@ -3,6 +3,7 @@ import React from 'react'
 import RegisterForm from './organisms/RegisterForm'
 import LoginForm from './organisms/LoginForm'
 import ApplyToJobForm from './organisms/ApplyToJobForm'
+import SettingsForm from './organisms/SettingsForm'
 
 type Props = {
   readonly formType: FormType
@@ -14,7 +15,8 @@ type FormType = FORM_VARIANTS[keyof FORM_VARIANTS]
 type FORM_VARIANTS = {
   LOGIN: "login",
   REGISTER: "register",
-  APPLICATION: "applyToJob"
+  APPLICATION: "applyToJob",
+  SETTINGS: "settings"
 }
 
 export default function Form({ formType, jobId }: Props) {
@@ -30,8 +32,14 @@ export default function Form({ formType, jobId }: Props) {
     )
   }
 
+  if (formType === "login") {
+    return (
+      <LoginForm />
+    )
+  }
+
 
   return (
-    <LoginForm />
+    <SettingsForm />
   )
 }

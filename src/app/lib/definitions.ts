@@ -102,6 +102,7 @@ export type User = {
   password: string
   mailingConsent: boolean
   isEmployer: boolean
+  city?: string
 }
 
 export type SvgProps = {
