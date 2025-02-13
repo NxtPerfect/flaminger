@@ -113,3 +113,13 @@ export type PickerProps = {
   whichRadioIsActive: number
   setWhichRadioIsActiveAction: Dispatch<SetStateAction<number>>
 }
+
+export type HumanLanguage = {
+  name: string
+  level: "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native" | "H1" | "H2"
+}
+
+export type Technology = {
+  name: string
+  experience: number
+}
