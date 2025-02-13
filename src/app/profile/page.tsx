@@ -6,8 +6,8 @@ import { CompletedApplication, DatabaseCompletedApplication, HumanLanguage, Offe
 import StatisticsUserTable from '@/components/organisms/StatisticsUserTable';
 import JobApplicationsForUserProfile from '@/components/organisms/JobApplicationsForUserProfile';
 import LinkButton from '@/components/LinkButton';
-import UserLanguages from '@/components/molecules/UserLanguages';
-import UserTechnologies from '@/components/molecules/UserTechnologies';
+import UserLanguages from '@/components/organisms/UserLanguages';
+import UserTechnologies from '@/components/organisms/UserTechnologies';
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -124,7 +124,7 @@ export default function Profile() {
         :
         (<>
           <div className="flex flex-col">
-            <div className="grid grid-cols-2 grid-rows-2 justify-items-center items-center w-[50svw] bg-neutral-800/80 rounded-2xl p-4">
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[50svw] bg-neutral-800/80 rounded-2xl p-4">
               <div className="overflow-hidden rounded-full border-4 border-orange-600/60 bg-neutral-600">
                 <Image src="/profile/profile.png" alt="profile picture" width={250} height={250} />
               </div>
@@ -133,18 +133,19 @@ export default function Profile() {
                   Edit Profile
                 </LinkButton>
               </div>
-              <div className="flex flex-col">
-                <div className="flex flex-col w-36">
-                  <div className="flex w-full justify-center gap-2">
-                    <span className="text-2xl font-semibold">{user?.firstname} {user?.surname}</span>
-                  </div>
+              <div className="flex flex-col items-start justify-items-center max-w-[40ch] h-full">
+                <div className="flex flex-col w-full items-start justify-self-center gap-2">
+                  <span className="text-2xl font-semibold w-full">{user?.firstname} {user?.surname}</span>
+                  <span>{user?.city ?? "Denver, Tennesee, United States of America"}</span>
                 </div>
-                <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
-                <StatisticsUserTable statistics={statistics} />
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 h-full">
                 <UserLanguages languages={languages} />
                 <UserTechnologies technologies={technologies} />
+              </div>
+              <div className="col-span-2 h-full">
+                <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
+                <StatisticsUserTable statistics={statistics} />
               </div>
             </div>
             <JobApplicationsForUserProfile pendingApplications={pendingApplications} completedApplications={completedApplications} />
