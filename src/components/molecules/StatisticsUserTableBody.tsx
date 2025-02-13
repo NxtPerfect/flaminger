@@ -11,7 +11,7 @@ type Props = {
 export default function StatisticsUserTableBody({ statistics }: Props) {
   return (
     <TableBody className="flex flex-col w-1/3">
-      <TableRow className="flex flex-col w-full">
+      <TableRow className="flex flex-col w-full h-full">
         <TableColumn>
           {statistics?.total ?? 0}
         </TableColumn>
@@ -21,7 +21,7 @@ export default function StatisticsUserTableBody({ statistics }: Props) {
         <TableColumn>
           {statistics?.rejected ?? 0}
         </TableColumn>
-        <TableColumn>
+        <TableColumn className="h-full">
           {statistics?.responseRate ?? 0.00}%
         </TableColumn>
       </TableRow>

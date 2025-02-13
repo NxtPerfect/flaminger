@@ -6,7 +6,7 @@ type Props = {
 }
 
 export default function TableColumn({ className, children }: Props) {
-  const style = `flex justify-center border-2 border-neutral-800 p-1 ${className}`.trim()
+  const style = `flex justify-center border-2 border-neutral-800 p-1 w-full ${className}`.trim()
   return (
     <td className={style}>
       {children}
