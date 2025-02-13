@@ -1,6 +1,6 @@
 import { and, count, eq, getTableColumns, not } from "drizzle-orm";
 import { db } from "..";
-import { companiesTable, jobsTable, jobsToUsersTable, SelectCompany, SelectUser, usersTable } from "../schema";
+import { companiesTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectUser, technologiesUsersTable, usersTable } from "../schema";
 
 export async function getUserByEmail(email: SelectUser['email']) {
   return db.select()
@@ -140,4 +140,20 @@ export async function getCompletedUserApplicationsByUserId(id: SelectUser['id'])
     )
     .innerJoin(jobsTable, eq(jobsToUsersTable.jobId, jobsTable.id))
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id));
+}
+
+export async function getHumanLanguagesByUserId(id: SelectUser['id']) {
+  return db.select()
+    .from(humanLanguagesUsersTable)
+    .where(
+      eq(humanLanguagesUsersTable.userId, id)
+    );
+}
+
+export async function getTechnologiesByUserId(id: SelectUser['id']) {
+  return db.select()
+    .from(technologiesUsersTable)
+    .where(
+      eq(technologiesUsersTable.userId, id)
+    );
 }

@@ -1,5 +1,5 @@
 import { getUserId } from "@/app/lib/session";
-import { getCompletedUserApplicationsByUserId, getPendingUserApplicationsByUserId, getStatisticsOfUserApplicationsByUserId, getUserById } from "@/db/queries/select";
+import { getCompletedUserApplicationsByUserId, getHumanLanguagesByUserId, getPendingUserApplicationsByUserId, getStatisticsOfUserApplicationsByUserId, getTechnologiesByUserId, getUserById } from "@/db/queries/select";
 
 export async function POST() {
   const id = await getUserId();
@@ -10,5 +10,14 @@ export async function POST() {
   const statistics = await getStatisticsOfUserApplicationsByUserId(id);
   const pendingApplications = await getPendingUserApplicationsByUserId(id);
   const completedApplications = await getCompletedUserApplicationsByUserId(id);
-  return Response.json({ userData: userData, statistics: statistics, pendingApplications: pendingApplications, completedApplications: completedApplications }, { status: 200 });
+  const humanLanguages = await getHumanLanguagesByUserId(id);
+  const technologies = await getTechnologiesByUserId(id);
+  return Response.json({
+    userData: userData,
+    statistics: statistics,
+    pendingApplications: pendingApplications,
+    completedApplications: completedApplications,
+    humanLanguages: humanLanguages,
+    technologies: technologies
+  }, { status: 200 });
 }

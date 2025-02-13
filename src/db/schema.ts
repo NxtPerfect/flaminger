@@ -9,8 +9,20 @@ export const usersTable = pgTable('users_table', {
   password: text('password').notNull(),
   mailingConsent: boolean('mailing_consent').notNull(),
   isEmployer: boolean('is_employer').notNull().default(sql`FALSE`),
-  employerCompanyId: serial('employer_company_id').references(() => companiesTable.id).default(1),
+  employerCompanyId: integer('employer_company_id').references(() => companiesTable.id).default(1),
 });
+
+export const humanLanguagesUsersTable = pgTable('human_languages_users_table', {
+  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  name: text('name').notNull(),
+  level: text('level').notNull().default("A1"),
+})
+
+export const technologiesUsersTable = pgTable('technologies_users_table', {
+  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  name: text('name').notNull(),
+  experience: text('experience').notNull().default("A1"),
+})
 
 export const companiesTable = pgTable('companies_table', {
   id: serial('id').primaryKey(),
