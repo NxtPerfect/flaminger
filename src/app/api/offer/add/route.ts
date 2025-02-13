@@ -14,6 +14,10 @@ export async function PUT(req: Request) {
   }
   const companyId = userData.employerCompanyId;
 
+  if (!companyId) {
+    return Response.json({ error: "badData" }, { status: 400 });
+  }
+
   try {
     await createJob({
       title: offerData.title,
