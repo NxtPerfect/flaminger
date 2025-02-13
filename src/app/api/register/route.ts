@@ -25,17 +25,25 @@ export async function POST(req: Request) {
     return Response.json({ errorType: "dataConsent" }, { status: 400 });
   }
 
-  const hashedUserPassword = await hash(userData.password!.toString(), 12);
+  const hashedUserPassword = await hash(userData.password.toString(), 12);
   try {
-    await createUser({ email: userData.email!.toString(), firstname: userData.firstname!.toString(), surname: userData.surname!.toString(), password: hashedUserPassword!.toString(), mailingConsent: userData.mailingConsent != null, isEmployer: false, employerCompanyId: 1 });
+    await createUser({
+      email: userData.email.toString(),
+      firstname: userData.firstname.toString(),
+      surname: userData.surname.toString(),
+      password: hashedUserPassword.toString(),
+      mailingConsent: userData.mailingConsent != null,
+      isEmployer: false,
+      employerCompanyId: 1
+    });
+
+    const [user] = await getUserByEmail(userData.email.toString());
+    await createSession(user.id.toString(), user.isEmployer);
+    return Response.json({ userId: user.id }, { status: 200 });
   } catch (error) {
     console.error(error);
     return Response.json({ errorType: "userExists" }, { status: 400 });
   }
-
-  const [user] = await getUserByEmail(userData.email.toString());
-  await createSession(user.id.toString(), user.isEmployer);
-  return Response.json({ userId: user.id }, { status: 200 });
 }
 
 function isValidUserData(email: FormDataEntryValue, firstname: FormDataEntryValue, surname: FormDataEntryValue) {
