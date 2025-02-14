@@ -1,4 +1,4 @@
-import { HumanLanguage, Technology } from "@/app/lib/definitions";
+import { Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 
 export async function PUT(req: Request) {
@@ -8,9 +8,9 @@ export async function PUT(req: Request) {
   }
   const formData = await req.formData();
   // Check if all data is valid
-  const firstname = formData.get("firstname");
-  const surname = formData.get("surname");
-  const city = formData.get("city");
+  // const firstname = formData.get("firstname");
+  // const surname = formData.get("surname");
+  // const city = formData.get("city");
   const nameTechnologies = formData.getAll("name");
   const experienceTechnologies = formData.getAll("experience");
   const technologies = [];
@@ -33,8 +33,9 @@ export async function PUT(req: Request) {
     humanLanguages.push(humanLanguage);
   }
   try {
-    await updateUser();
+    // await updateUser({id: userId, firstname: firstname!.toString(), surname: surname!.toString(), city: city!.toString()}, {technologies}, {humanLanguages});
   } catch (error) {
+    console.log(error);
     return Response.json({ errorType: "emptyFields" }, { status: 400 })
   }
 

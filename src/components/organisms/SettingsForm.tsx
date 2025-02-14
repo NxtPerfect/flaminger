@@ -6,6 +6,7 @@ import TextInput from '../atoms/TextInput'
 import TechnologiesPicker from '../molecules/TechnologiesPicker'
 import { Technology } from '@/app/lib/definitions';
 import { useRouter } from 'next/navigation';
+import ErrorMessage from '../atoms/ErrorMessage';
 
 type ReturnData = {
   readonly errorType?: string
@@ -90,7 +91,8 @@ export default function SettingsForm() {
         <h2 className="text-lg font-semibold">Professional Information</h2>
         <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} />
       </div>
-      <ActionButton variant="formSubmit">Save Settings</ActionButton>
+      <ActionButton variant="formSubmit" isLoading={isLoading}>Save Settings</ActionButton>
+      {error && <ErrorMessage>error</ErrorMessage>}
     </form>
   )
 }

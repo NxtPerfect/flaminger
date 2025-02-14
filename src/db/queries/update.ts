@@ -26,7 +26,7 @@ export async function updateUser(
       .from(technologiesUsersTable)
       .where(eq(technologiesUsersTable.userId, user.id!))
 
-    const techToRemove = technologies
+    technologies
       .filter((tech) => !existingTech.some((t) => t.name === tech.name))
       .map(async (tech) => {
         await tx.delete(technologiesUsersTable)
@@ -37,7 +37,7 @@ export async function updateUser(
             )
           )
       });
-    const techToUpdate = technologies
+    technologies
       .filter((tech) => existingTech.some((t) => t.name === tech.name))
       .map(async (tech) => {
         await tx.insert(technologiesUsersTable)
@@ -52,7 +52,7 @@ export async function updateUser(
       .from(humanLanguagesUsersTable)
       .where(eq(humanLanguagesUsersTable.userId, user.id!));
 
-    const languagesToRemove = humanLanguages
+    humanLanguages
       .filter((lang) => !existingHumanLanguages.some((t) => t.name === lang.name))
       .map(async (lang) => {
         await tx.delete(humanLanguagesUsersTable)
@@ -64,7 +64,7 @@ export async function updateUser(
           )
       });
 
-    const languagesToUpdate = humanLanguages
+    humanLanguages
       .filter((lang) => existingHumanLanguages.some((t) => t.name === lang.name))
       .map(async (lang) => {
         await tx.insert(humanLanguagesUsersTable)
