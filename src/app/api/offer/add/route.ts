@@ -1,4 +1,4 @@
-import { RequiredTechnology } from "@/app/lib/definitions";
+import { Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { createJob } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
@@ -43,7 +43,7 @@ function parseOfferData(formData: FormData): offerData {
   const contractType = formData.get("contractType");
   const workhourType = formData.get("workhourType");
   const namesOfRequiredTechnologies = formData.getAll("name");
-  const minimumYearsOfRequiredTechnologies = formData.getAll("minimumYearsOfExperience");
+  const experienceInYearsInRequiredTechnologies = formData.getAll("experience");
 
   const parameters = { title, description, minSalary, maxSalary, city, employmentType, contractType, workhourType };
   for (const param in parameters) {
@@ -53,7 +53,7 @@ function parseOfferData(formData: FormData): offerData {
   }
 
   // Get string of all technologies names + minimum year
-  const parsedTechnologies: RequiredTechnology[] = [];
+  const parsedTechnologies: Technology[] = [];
   for (
     let i = 0;
     i < namesOfRequiredTechnologies.length;
@@ -61,7 +61,7 @@ function parseOfferData(formData: FormData): offerData {
     parsedTechnologies.push(
       {
         name: namesOfRequiredTechnologies[i].toString(),
-        minimumYearsOfExperience: Number.parseInt(minimumYearsOfRequiredTechnologies[i].toString()) ?? 0
+        experience: Number.parseInt(experienceInYearsInRequiredTechnologies[i].toString()) ?? 0
       });
   }
 
@@ -87,5 +87,5 @@ type offerData = {
   employmentType: string
   contractType: string
   workhourType: string
-  technologies: RequiredTechnology[]
+  technologies: Technology[]
 }

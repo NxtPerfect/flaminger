@@ -1,5 +1,5 @@
 "use client";
-import { RequiredTechnology } from '@/app/lib/definitions';
+import { Technology } from '@/app/lib/definitions';
 import ActionButton from '@/components/ActionButton';
 import TextAreaInput from '@/components/atoms/TextAreaInput'
 import TextInput from '@/components/atoms/TextInput'
@@ -16,7 +16,7 @@ export default function Page() {
   const [employmentActiveRadio, setEmploymentActiveRadio] = useState<number>(0);
   const [contractActiveRadio, setContractActiveRadio] = useState<number>(0);
   const [workhourActiveRadio, setWorkhourActiveRadio] = useState<number>(0);
-  const [technologies, setTechnologies] = useState<RequiredTechnology[]>([{ name: "Javascript", minimumYearsOfExperience: 2 }]);
+  const [technologies, setTechnologies] = useState<Technology[]>([{ name: "Javascript", experience: 2 }]);
   const router = useRouter();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 
 interface Props {
   readonly variant?: ButtonVariant | null
   readonly children?: React.ReactNode
   readonly className?: string
   readonly isLoading?: boolean
-  readonly onClick?: () => void
+  readonly onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 const BUTTON_VARIANTS = {
