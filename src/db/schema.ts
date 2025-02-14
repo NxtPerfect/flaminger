@@ -10,6 +10,7 @@ export const usersTable = pgTable('users_table', {
   mailingConsent: boolean('mailing_consent').notNull(),
   isEmployer: boolean('is_employer').notNull().default(sql`FALSE`),
   employerCompanyId: integer('employer_company_id').references(() => companiesTable.id).default(1),
+  city: text('city').notNull().default("Berlin"),
 });
 
 export const humanLanguagesUsersTable = pgTable('human_languages_users_table', {
@@ -69,3 +70,9 @@ export type SelectJobs = typeof jobsTable.$inferSelect;
 
 export type InsertJobsToUsers = typeof jobsToUsersTable.$inferInsert;
 export type SelectJobsToUsers = typeof jobsToUsersTable.$inferSelect;
+
+export type InsertTechnologiesToUsers = typeof technologiesUsersTable.$inferInsert;
+export type SelectTechnologiesToUsers = typeof technologiesUsersTable.$inferSelect;
+
+export type InsertHumanLanguagesToUsers = typeof humanLanguagesUsersTable.$inferInsert;
+export type SelectHumanLanguagesToUsers = typeof humanLanguagesUsersTable.$inferSelect;
