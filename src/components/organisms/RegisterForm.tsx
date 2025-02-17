@@ -51,8 +51,6 @@ export default function RegisterForm() {
         setError(error);
         return;
       }
-
-      await createSession(data.userId, data.isEmployer ?? false);
       router.push('/profile');
       router.refresh();
     } finally {
