@@ -103,18 +103,16 @@ export default function Profile() {
       }
       setLanguages((current) => [...current, language]);
     }
-    setLanguages((languages) => [...languages, { name: "English", level: "Native" }, { name: "Spanish", level: "C1" }, { name: "German", level: "B2" }]);
   }
 
   function setTechnologiesFromApi(rawTechnologies: Technology[]) {
     for (let i = 0; i < rawTechnologies.length; i++) {
-      const language: Technology = {
+      const tech: Technology = {
         name: rawTechnologies[i].name,
         experience: rawTechnologies[i].experience,
       }
-      setTechnologies((current) => [...current, language]);
+      setTechnologies((current) => [...current, tech]);
     }
-    setTechnologies((technologies) => [...technologies, { name: "Javascript", experience: 3 }, { name: "Pandas", experience: 5 }]);
   }
 
   return (
