@@ -25,10 +25,10 @@ export default function InputNewHumanLanguage({ name, level }: Props) {
   return (
     <div className="flex flex-row gap-3 w-full px-2">
       <div className="w-2/3">
-        <TextInput name="language" placeholder="German" pattern="^\D{2,64}$" onChange={handleTextInput} defaultValue={name} />
+        <TextInput name="language" placeholder="German" pattern="^\w{2,64}$" onChange={handleTextInput} defaultValue={name} />
       </div>
       <div className="w-1/4">
-        <TextInput name="level" placeholder="A1" pattern="^\w{1,6}\d{0,1}$" onChange={handleLevelInput} defaultValue={level} list="languages" />
+        <TextInput name="level" placeholder="A1" pattern="^\w{1,6}\d?$" onChange={handleLevelInput} defaultValue={level} list="languages" />
       </div>
       <HumanLanguagesDatalist />
     </div>

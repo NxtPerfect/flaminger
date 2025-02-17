@@ -12,6 +12,7 @@ export default function HumanLanguagesDatalist() {
       <option value="C2" />
       <option value="H1" />
       <option value="H2" />
+      <option value="Native" />
     </Datalist>
   )
 }
