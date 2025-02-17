@@ -25,7 +25,7 @@ export default function SettingsForm() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    // firstname, surname, city, technologies
+
     try {
       const formData = new FormData(e.currentTarget);
       const response = await fetch('/api/profile/edit', {
