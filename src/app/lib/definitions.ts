@@ -124,3 +124,15 @@ export type Technology = {
   name: string
   experience: number
 }
+
+export const HUMAN_LANGUAGE_LEVELS = [
+  "a1",
+  "a2",
+  "b1",
+  "b2",
+  "c1",
+  "c2",
+  "native",
+  "h1",
+  "h2"
+]
