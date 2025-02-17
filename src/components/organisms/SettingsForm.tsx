@@ -4,9 +4,10 @@ import ActionButton from '../ActionButton'
 import CityPicker from '../molecules/CityPicker'
 import TextInput from '../atoms/TextInput'
 import TechnologiesPicker from '../molecules/TechnologiesPicker'
-import { Technology } from '@/app/lib/definitions';
+import { HumanLanguage, Technology } from '@/app/lib/definitions';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from '../atoms/ErrorMessage';
+import HumanLanguagesPicker from '../molecules/HumanLanguagesPicker';
 
 type ReturnData = {
   readonly errorType?: string
@@ -15,6 +16,7 @@ type ReturnData = {
 
 export default function SettingsForm() {
   const [technologies, setTechnologies] = useState<Technology[]>([]);
+  const [humanLanguages, setHumanLanguages] = useState<HumanLanguage[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -89,7 +91,8 @@ export default function SettingsForm() {
       </div>
       <div className="flex flex-col border-2 bg-neutral-600/20 rounded-md p-4 gap-2">
         <h2 className="text-lg font-semibold">Professional Information</h2>
-        <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} />
+        <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} >Known Technologies:</TechnologiesPicker>
+        <HumanLanguagesPicker humanLanguages={humanLanguages} setHumanLanguagesAction={setHumanLanguages}>Known Languages:</HumanLanguagesPicker>
       </div>
       <ActionButton variant="formSubmit" isLoading={isLoading}>Save Settings</ActionButton>
       {error && <ErrorMessage>error</ErrorMessage>}
