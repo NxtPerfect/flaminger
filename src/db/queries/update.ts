@@ -6,14 +6,15 @@ export async function updateUser(
   user: Partial<InsertUser>,
   technologies: InsertTechnologiesToUsers[],
   humanLanguages: InsertHumanLanguagesToUsers[]) {
+  const updateFields: Partial<InsertUser> = {};
+  if (user.firstname) updateFields.firstname = user.firstname;
+  if (user.surname) updateFields.surname = user.surname;
+  if (user.city) updateFields.city = user.city;
+
   await db.transaction(async (tx) => {
-    if (user.firstname && user.surname && user.city) {
+    if (Object.keys(updateFields).length > 0) {
       await tx.update(usersTable)
-        .set({
-          firstname: user.firstname,
-          surname: user.surname,
-          city: user.city,
-        })
+        .set(updateFields)
         .where(eq(usersTable.id, user.id!));
     }
 
@@ -38,26 +39,5 @@ export async function updateUser(
           set: { level: sql`EXCLUDED.level` }
         });
     }
-    // await Promise.allSettled(technologies
-    //   .map(async (tech) => {
-    //     console.log("New tech", tech);
-    //     await tx.insert(technologiesUsersTable)
-    //       .values({ userId: user.id!, ...tech })
-    //       .onConflictDoUpdate({
-    //         target: [technologiesUsersTable.userId, technologiesUsersTable.name],
-    //         set: { experience: tech.experience }
-    //       });
-    //   }));
-    //
-    // await Promise.allSettled(humanLanguages
-    //   .map(async (lang) => {
-    //     console.log("New lang", lang);
-    //     await tx.insert(humanLanguagesUsersTable)
-    //       .values({ userId: user.id!, ...lang })
-    //       .onConflictDoUpdate({
-    //         target: [humanLanguagesUsersTable.userId, humanLanguagesUsersTable.name],
-    //         set: { level: lang.level }
-    //       });
-    //   }));
   })
 }
