@@ -1,4 +1,3 @@
-import { createSession } from '@/app/lib/session';
 import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react'
 import EmailInput from '../molecules/EmailInput';
