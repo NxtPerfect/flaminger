@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { integer, pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, text, timestamp, boolean, unique } from 'drizzle-orm/pg-core';
 
 export const usersTable = pgTable('users_table', {
   id: serial('id').primaryKey(),
@@ -14,16 +14,20 @@ export const usersTable = pgTable('users_table', {
 });
 
 export const humanLanguagesUsersTable = pgTable('human_languages_users_table', {
-  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  userId: integer('user_id').references(() => usersTable.id),
   name: text('name').notNull(),
   level: text('level').notNull().default("A1"),
-})
+}, (t) => [
+  unique().on(t.userId, t.name)
+]);
 
 export const technologiesUsersTable = pgTable('technologies_users_table', {
-  userId: serial('user_id').primaryKey().references(() => usersTable.id),
+  userId: integer('user_id').references(() => usersTable.id),
   name: text('name').notNull(),
-  experience: text('experience').notNull().default("A1"),
-})
+  experience: text('experience').notNull().default("5"),
+}, (t) => [
+  unique().on(t.userId, t.name)
+]);
 
 export const companiesTable = pgTable('companies_table', {
   id: serial('id').primaryKey(),

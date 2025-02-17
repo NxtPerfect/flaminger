@@ -132,7 +132,7 @@ export const HUMAN_LANGUAGE_LEVELS = [
   "b2",
   "c1",
   "c2",
-  "native",
   "h1",
-  "h2"
+  "h2",
+  "native"
 ]

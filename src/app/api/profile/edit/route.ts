@@ -19,12 +19,11 @@ export async function PUT(req: Request) {
   for (let i = 0; i < Math.min(nameTechnologies.length, experienceTechnologies.length); i++) {
     const technology: InsertTechnologiesToUsers = {
       name: nameTechnologies[i].toString(),
-      experience: experienceTechnologies[i].toString() ?? 0,
+      experience: experienceTechnologies[i].toString() ?? "0",
       userId: userId
     };
     technologies.push(technology);
   }
-  console.log("Tech", technologies);
 
   const nameHumanLanguages = formData.getAll("language");
   const levelHumanLanguages = formData.getAll("level");
@@ -32,12 +31,12 @@ export async function PUT(req: Request) {
   for (let i = 0; i < Math.min(nameHumanLanguages.length, levelHumanLanguages.length); i++) {
     const humanLanguage: InsertHumanLanguagesToUsers = {
       name: nameHumanLanguages[i].toString(),
-      level: levelHumanLanguages[i].toString(),
+      level: levelHumanLanguages[i].toString() ?? "A1",
       userId: userId
     }
     humanLanguages.push(humanLanguage);
   }
-  console.log("Lang", humanLanguages);
+
   try {
     await updateUser({
       id: userId,
