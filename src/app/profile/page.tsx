@@ -141,7 +141,7 @@ export default function Profile() {
                 <UserLanguages languages={languages} />
                 <UserTechnologies technologies={technologies} />
               </div>
-              <div className="col-span-2 h-full bg-neutral-800/60 rounded-md">
+              <div className="px-4 col-span-2 h-full bg-neutral-800/60 rounded-md">
                 <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
                 <StatisticsUserPieChart statistics={statistics} />
               </div>
