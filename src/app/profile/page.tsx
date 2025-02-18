@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import SkeletonProfile from '@/components/placeholders/SkeletonProfile';
 import { CompletedApplication, DatabaseCompletedApplication, HumanLanguage, Offer, PendingApplication, StatisticsForUserApplications, StatisticsForUserApplicationsFromDatabase, Technology, User } from '@/app/lib/definitions';
-import StatisticsUserTable from '@/components/organisms/StatisticsUserTable';
 import JobApplicationsForUserProfile from '@/components/organisms/JobApplicationsForUserProfile';
 import LinkButton from '@/components/LinkButton';
 import UserLanguages from '@/components/organisms/UserLanguages';
 import UserTechnologies from '@/components/organisms/UserTechnologies';
+import StatisticsUserPieChart from '@/components/organisms/StatisticsUserPieChart';
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -141,9 +141,9 @@ export default function Profile() {
                 <UserLanguages languages={languages} />
                 <UserTechnologies technologies={technologies} />
               </div>
-              <div className="col-span-2 h-full">
+              <div className="col-span-2 h-full bg-neutral-800/60 rounded-md">
                 <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
-                <StatisticsUserTable statistics={statistics} />
+                <StatisticsUserPieChart statistics={statistics} />
               </div>
             </div>
             <JobApplicationsForUserProfile pendingApplications={pendingApplications} completedApplications={completedApplications} />
