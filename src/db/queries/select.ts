@@ -157,3 +157,17 @@ export async function getTechnologiesByUserId(id: SelectUser['id']) {
       eq(technologiesUsersTable.userId, id)
     );
 }
+
+export async function getApplicationsByCompanyId(companyId: SelectCompany['id']) {
+  return db.select()
+    .from(jobsToUsersTable)
+    .innerJoin(jobsTable,
+      and(
+        eq(jobsToUsersTable.jobId, jobsTable.id),
+        eq(jobsTable.byCompanyId, companyId)
+      )
+    )
+    .innerJoin(usersTable,
+      eq(jobsToUsersTable.userId, usersTable.id))
+    .limit(20);
+}
