@@ -149,9 +149,9 @@ export default function Page() {
                     <ActionButton variant="formSubmit"
                       onClick={() =>
                         handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
-                      }>Reject</ActionButton>
+                      } disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>Reject</ActionButton>
                     {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
-                    {rejectionReason.length > MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                    {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
                   </div>
                   <TextInput name="rejectionReason" defaultValue={rejectionReason}
                     onChange={

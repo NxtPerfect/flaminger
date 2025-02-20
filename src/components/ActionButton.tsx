@@ -7,6 +7,7 @@ interface Props {
   readonly className?: string
   readonly isLoading?: boolean
   readonly onClick?: MouseEventHandler<HTMLButtonElement>
+  readonly disabled?: boolean
 }
 
 const BUTTON_VARIANTS = {
@@ -28,14 +29,15 @@ const BUTTON_STYLES = {
 
 type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
 
-export default function ActionButton({ variant = null, children, className, isLoading = false, onClick }: Props) {
+export default function ActionButton({ variant = null, children, className, isLoading = false, onClick, disabled }: Props) {
 
   const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
-  const combinedStyle = `${buttonStyle} ${className}`.trim();
+  const disabledStyle = "mt-2 cursor-not-allowed text-[1rem] leading-tight bg-neutral-800 px-4 py-2 rounded-md text-white";
+  const combinedStyle = `${disabled ? disabledStyle : buttonStyle} ${className}`.trim();
   const buttonType = variant === "formSubmit" ? "submit" : "button";
 
   return <>
-    {isLoading ? <Spinner /> : <button type={buttonType} className={combinedStyle} disabled={isLoading} onClick={onClick}>{isLoading ? <Spinner /> : children}</button>}
+    {isLoading ? <Spinner /> : <button type={buttonType} className={combinedStyle} disabled={isLoading} onClick={disabled ? () => { } : onClick}>{isLoading ? <Spinner /> : children}</button>}
   </>
 }
 
