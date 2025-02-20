@@ -1,16 +1,24 @@
 "use client";
 import { useCallback, useEffect, useState } from 'react'
-import { SelectJobs, SelectJobsToUsers, SelectUser } from '@/db/schema';
+import { SelectHumanLanguagesToUsers, SelectJobs, SelectJobsToUsers, SelectTechnologiesToUsers, SelectUser } from '@/db/schema';
+import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckApplications';
+import ErrorMessage from '@/components/atoms/ErrorMessage';
 
 type ResponseData = {
   jobs_table: SelectJobs
   jobs_to_users_table: SelectJobsToUsers
-  users_table: SelectUser
+  user: SelectUser
+  technologies: SelectTechnologiesToUsers
+  human_languages: SelectHumanLanguagesToUsers
 }
 
 type Application = {
   job: SelectJobs
-  candidate: SelectUser
+  candidate: {
+    personalInformation: SelectUser,
+    technologies: SelectTechnologiesToUsers,
+    humanLanguages: SelectHumanLanguagesToUsers,
+  }
 }
 
 export default function Page() {
@@ -34,6 +42,7 @@ export default function Page() {
         setApplicationsFromResponse(responseJson.data);
         setIsLoading(false);
       })
+      .catch(err => setError(err))
   }, []);
 
   useEffect(() => {
@@ -48,7 +57,11 @@ export default function Page() {
           [...current,
           {
             job: currentApplication.jobs_table,
-            candidate: currentApplication.users_table
+            candidate: {
+              personalInformation: { ...currentApplication.user },
+              technologies: currentApplication.technologies,
+              humanLanguages: currentApplication.human_languages
+            }
           }
           ]
       );
@@ -59,15 +72,53 @@ export default function Page() {
 
   return (
     <>
-      {applications.length === 0 && <p>It's empty, add more job offers and wait for candidates to apply!</p>}
+      {isLoading && <SkeletonCheckApplications />}
+      {applications.length === 0 && <p>It&apos;s empty, add more job offers and wait for candidates to apply!</p>}
       <div>
         Job offer info
         <div>
-          {applications && applications.map((curApplication) => {
-            return (<div key={curApplication.job.id}>{curApplication.job.title}</div>)
+          {applications && applications.map((curApplication, index) => {
+            const job = curApplication.job;
+            const candidate = curApplication.candidate;
+            console.log("Candidate", applications[0].candidate);
+            return (
+              <div key={index}>
+                <div>
+                  {job.title}
+                </div>
+                <div>
+                  {job.description}
+                </div>
+                <div>
+                  {candidate.personalInformation.firstname} {candidate.personalInformation.surname}
+                </div>
+                <div>
+                  {candidate.personalInformation.city}
+                </div>
+                <div>
+                  {candidate.technologies.map((tech, index) => {
+                    return (
+                      <div key={index}>
+                        {tech.name} {tech.experience}y
+                      </div>);
+                  }
+                  )}
+                </div>
+                <div>
+                  {candidate.humanLanguages.map((lang, index) => {
+                    return (
+                      <div key={index}>
+                        {lang.name} {lang.level}
+                      </div>);
+                  }
+                  )}
+                </div>
+              </div>
+            )
           })
           }
         </div>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </div>
     </>
   )

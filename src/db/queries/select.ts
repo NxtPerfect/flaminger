@@ -167,7 +167,5 @@ export async function getApplicationsByCompanyId(companyId: SelectCompany['id'])
         eq(jobsTable.byCompanyId, companyId)
       )
     )
-    .innerJoin(usersTable,
-      eq(jobsToUsersTable.userId, usersTable.id))
     .limit(20);
 }
