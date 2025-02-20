@@ -5,6 +5,8 @@ import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckAppli
 import ErrorMessage from '@/components/atoms/ErrorMessage';
 import ActionButton from '@/components/ActionButton';
 import TextInput from '@/components/atoms/TextInput';
+import JobInformationApplication from '@/components/molecules/JobInformationApplication';
+import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -26,8 +28,7 @@ type Application = {
 export default function Page() {
   const [rejectionReason, setRejectionReason] = useState<string>("");
   const MIN_LENGTH_REJECTION_REASON = 50;
-  // Don't get all offers at once
-  // rather batch them by 20?
+
   async function handleReview(userId: number, jobId: number, status: "accepted" | "rejected") {
     const formData = new FormData();
     formData.set("status", status);
@@ -104,60 +105,28 @@ export default function Page() {
             const candidate = curApplication.candidate;
             return (
               <div key={index}>
-                <div>
-                  {job.title}
-                </div>
-                <div>
-                  {job.description}
-                </div>
-                <div>
-                  {candidate.personalInformation.firstname} {candidate.personalInformation.surname}
-                </div>
-                <div>
-                  {candidate.personalInformation.city}
-                </div>
-                <div>
-                  Technologies:
-                  <ul>
-                    {candidate.technologies.map((tech: SelectTechnologiesToUsers, index: number) => {
-                      return (
-                        <li key={index}>
-                          {tech.name} {tech.experience}y
-                        </li>);
-                    }
-                    )}
-                  </ul>
-                </div>
-                <div>
-                  Languages:
-                  <ul>
-                    {candidate.humanLanguages.map((lang: SelectHumanLanguagesToUsers, index: number) => {
-                      return (
-                        <li key={index}>
-                          {lang.name} {lang.level}
-                        </li>);
-                    }
-                    )}
-                  </ul>
-                </div>
-                <ActionButton variant="formSubmit"
-                  onClick={() =>
-                    handleReview(candidate.personalInformation.id, curApplication.job.id, "accepted")
-                  }>Accept</ActionButton>
-                <div>
-                  <div>
-                    <ActionButton variant="formSubmit"
-                      onClick={() =>
-                        handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
-                      } disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>Reject</ActionButton>
-                    {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
-                    {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                <JobInformationApplication job={job} />
+                <CandidateInformationApplication candidate={candidate} />
+                <div className="flex flex-row justify-between w-full">
+                  <ActionButton variant="formSubmit"
+                    onClick={() =>
+                      handleReview(candidate.personalInformation.id, curApplication.job.id, "accepted")
+                    }>Accept</ActionButton>
+                  <div className="flex flex-row justify-between">
+                    <div className="flex flex-col">
+                      <ActionButton variant="formSubmit"
+                        onClick={() =>
+                          handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
+                        } disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>Reject</ActionButton>
+                      {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
+                      {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                    </div>
+                    <TextInput name="rejectionReason" defaultValue={rejectionReason}
+                      onChange={
+                        (e) =>
+                          setRejectionReason(e.currentTarget.value)
+                      }>Rejection Reason</TextInput>
                   </div>
-                  <TextInput name="rejectionReason" defaultValue={rejectionReason}
-                    onChange={
-                      (e) =>
-                        setRejectionReason(e.currentTarget.value)
-                    }>Rejection Reason</TextInput>
                 </div>
               </div>
             )
