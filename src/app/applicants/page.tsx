@@ -4,6 +4,7 @@ import { SelectHumanLanguagesToUsers, SelectJobs, SelectJobsToUsers, SelectTechn
 import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckApplications';
 import ErrorMessage from '@/components/atoms/ErrorMessage';
 import ActionButton from '@/components/ActionButton';
+import TextInput from '@/components/atoms/TextInput';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -23,12 +24,8 @@ type Application = {
 }
 
 export default function Page() {
-  // get all jobs from jobs_to_users
-  // where byCompanyId in jobs table
-  // matches company user is in
-  // then on reject/accept
-  // simply change job's status
-  //
+  const [rejectionReason, setRejectionReason] = useState<string>("");
+  const MIN_LENGTH_REJECTION_REASON = 50;
   // Don't get all offers at once
   // rather batch them by 20?
   async function handleReview(userId: number, jobId: number, status: "accepted" | "rejected") {
@@ -36,6 +33,7 @@ export default function Page() {
     formData.set("status", status);
     formData.set("jobId", jobId.toString());
     formData.set("userId", userId.toString());
+    formData.set("rejectionReason", rejectionReason);
     await fetch('/api/applications/review', {
       method: "POST",
       body: formData
@@ -46,6 +44,11 @@ export default function Page() {
             application.job.id !== jobId &&
             application.candidate.personalInformation.id !== userId)
         setApplications(filteredApplications);
+      })
+      .then(() => {
+        if (applications.length == 0) {
+          getApplications();
+        }
       })
       .catch(err => setError(err));
   }
@@ -63,7 +66,6 @@ export default function Page() {
         setIsLoading(false);
       })
       .catch(err => setError(err))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -95,7 +97,7 @@ export default function Page() {
       {isLoading && <SkeletonCheckApplications />}
       {applications.length === 0 && <p>It&apos;s empty, add more job offers and wait for candidates to apply!</p>}
       <div>
-        Job offer info
+        {applications.length > 0 && "Job offer info"}
         <div>
           {applications && applications.map((curApplication, index) => {
             const job = curApplication.job;
@@ -142,10 +144,21 @@ export default function Page() {
                   onClick={() =>
                     handleReview(candidate.personalInformation.id, curApplication.job.id, "accepted")
                   }>Accept</ActionButton>
-                <ActionButton variant="formSubmit"
-                  onClick={() =>
-                    handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
-                  }>Reject</ActionButton>
+                <div>
+                  <div>
+                    <ActionButton variant="formSubmit"
+                      onClick={() =>
+                        handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
+                      }>Reject</ActionButton>
+                    {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
+                    {rejectionReason.length > MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                  </div>
+                  <TextInput name="rejectionReason" defaultValue={rejectionReason}
+                    onChange={
+                      (e) =>
+                        setRejectionReason(e.currentTarget.value)
+                    }>Rejection Reason</TextInput>
+                </div>
               </div>
             )
           })

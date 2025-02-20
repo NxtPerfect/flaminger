@@ -27,7 +27,11 @@ export async function POST(req: Request) {
       await updateJobAcceptedForUserIdJobId(parsedUserId, parsedJobId);
       break;
     case "rejected":
-      await updateJobRejectedForUserIdJobId(parsedUserId, parsedJobId, "sample reason");
+      const rejectionReason = formData.get("rejectionReason")?.toString();
+      if (!rejectionReason) {
+        return Response.json({ errorType: "badData" }, { status: 400 });
+      }
+      await updateJobRejectedForUserIdJobId(parsedUserId, parsedJobId, rejectionReason);
       break;
     default:
       return Response.json({ errorType: "badData" }, { status: 400 });
