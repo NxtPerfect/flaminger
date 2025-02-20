@@ -46,9 +46,7 @@ export async function POST(req: Request) {
       employerCompanyId: 1
     });
 
-    console.log("User data", userData);
     const [user] = await getUserByEmail(userData.email!.toString());
-    console.log("User", user);
     await createSession(user.id.toString(), user.isEmployer);
     return Response.json({ status: 200 });
   } catch (error) {

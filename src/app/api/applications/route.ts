@@ -13,7 +13,6 @@ export async function POST() {
   }
 
   let applications = await getApplicationsByCompanyId(userData.employerCompanyId);
-  // get user id for each application
   const usersIds: number[] = applications
     .map((application) => application.jobs_to_users_table.userId)
     .filter((application, index, arr) => arr.indexOf(application) === index);
@@ -22,9 +21,6 @@ export async function POST() {
     const technologies = await getTechnologiesByUserId(usersIds[i]);
     const humanLanguages = await getHumanLanguagesByUserId(usersIds[i]);
     const [user] = await getUserById(usersIds[i]);
-    // assign user, human lang, tech to each application
-    // where userId matches
-    // TODO
     applications = applications.map((app) => {
       if (app.jobs_to_users_table.userId === usersIds[i]) {
         return { ...app, technologies: technologies, human_languages: humanLanguages, user: user };

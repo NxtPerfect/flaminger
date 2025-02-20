@@ -34,6 +34,8 @@ export default function ActionButton({ variant = null, children, className, isLo
   const combinedStyle = `${buttonStyle} ${className}`.trim();
   const buttonType = variant === "formSubmit" ? "submit" : "button";
 
-  return <button type={buttonType} className={combinedStyle} disabled={isLoading} onClick={onClick}>{isLoading ? <Spinner /> : children}</button>;
+  return <>
+    {isLoading ? <Spinner /> : <button type={buttonType} className={combinedStyle} disabled={isLoading} onClick={onClick}>{isLoading ? <Spinner /> : children}</button>}
+  </>
 }
 

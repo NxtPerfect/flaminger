@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { SelectHumanLanguagesToUsers, SelectJobs, SelectJobsToUsers, SelectTechnologiesToUsers, SelectUser } from '@/db/schema';
 import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckApplications';
 import ErrorMessage from '@/components/atoms/ErrorMessage';
+import ActionButton from '@/components/ActionButton';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -30,13 +31,32 @@ export default function Page() {
   //
   // Don't get all offers at once
   // rather batch them by 20?
+  async function handleReview(userId: number, jobId: number, status: "accepted" | "rejected") {
+    const formData = new FormData();
+    formData.set("status", status);
+    formData.set("jobId", jobId.toString());
+    formData.set("userId", userId.toString());
+    await fetch('/api/applications/review', {
+      method: "POST",
+      body: formData
+    })
+      .then(() => {
+        const filteredApplications = applications
+          .filter(application =>
+            application.job.id !== jobId &&
+            application.candidate.personalInformation.id !== userId)
+        setApplications(filteredApplications);
+      })
+      .catch(err => setError(err));
+  }
+
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const getApplications = useCallback(async () => {
     setIsLoading(true);
-    await fetch('/api/applications/review', { method: "POST" })
+    await fetch('/api/applications', { method: "POST" })
       .then(async (res) => {
         const responseJson = await res.json();
         setApplicationsFromResponse(responseJson.data);
@@ -67,7 +87,6 @@ export default function Page() {
           ]
       );
     }
-    console.log(applications);
     return;
   }
 
@@ -81,7 +100,6 @@ export default function Page() {
           {applications && applications.map((curApplication, index) => {
             const job = curApplication.job;
             const candidate = curApplication.candidate;
-            console.log("Candidate", applications[0].candidate);
             return (
               <div key={index}>
                 <div>
@@ -97,23 +115,37 @@ export default function Page() {
                   {candidate.personalInformation.city}
                 </div>
                 <div>
-                  {candidate.technologies.map((tech: SelectTechnologiesToUsers, index: number) => {
-                    return (
-                      <div key={index}>
-                        {tech.name} {tech.experience}y
-                      </div>);
-                  }
-                  )}
+                  Technologies:
+                  <ul>
+                    {candidate.technologies.map((tech: SelectTechnologiesToUsers, index: number) => {
+                      return (
+                        <li key={index}>
+                          {tech.name} {tech.experience}y
+                        </li>);
+                    }
+                    )}
+                  </ul>
                 </div>
                 <div>
-                  {candidate.humanLanguages.map((lang: SelectHumanLanguagesToUsers, index: number) => {
-                    return (
-                      <div key={index}>
-                        {lang.name} {lang.level}
-                      </div>);
-                  }
-                  )}
+                  Languages:
+                  <ul>
+                    {candidate.humanLanguages.map((lang: SelectHumanLanguagesToUsers, index: number) => {
+                      return (
+                        <li key={index}>
+                          {lang.name} {lang.level}
+                        </li>);
+                    }
+                    )}
+                  </ul>
                 </div>
+                <ActionButton variant="formSubmit"
+                  onClick={() =>
+                    handleReview(candidate.personalInformation.id, curApplication.job.id, "accepted")
+                  }>Accept</ActionButton>
+                <ActionButton variant="formSubmit"
+                  onClick={() =>
+                    handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
+                  }>Reject</ActionButton>
               </div>
             )
           })

@@ -1,6 +1,6 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "..";
-import { humanLanguagesUsersTable, InsertHumanLanguagesToUsers, InsertTechnologiesToUsers, InsertUser, technologiesUsersTable, usersTable } from "../schema";
+import { humanLanguagesUsersTable, InsertHumanLanguagesToUsers, InsertTechnologiesToUsers, InsertUser, jobsToUsersTable, SelectJobs, SelectUser, technologiesUsersTable, usersTable } from "../schema";
 
 export async function updateUser(
   user: Partial<InsertUser>,
@@ -40,4 +40,24 @@ export async function updateUser(
         });
     }
   })
+}
+
+export async function updateJobAcceptedForUserIdJobId(userId: SelectUser['id'], jobId: SelectJobs['id']) {
+  return db.update(jobsToUsersTable)
+    .set({ isAccepted: true, isApplicationInProgress: false })
+    .where(
+      and(
+        eq(jobsToUsersTable.userId, userId),
+        eq(jobsToUsersTable.jobId, jobId))
+    );
+}
+
+export async function updateJobRejectedForUserIdJobId(userId: SelectUser['id'], jobId: SelectJobs['id'], rejectionReason: string) {
+  return db.update(jobsToUsersTable)
+    .set({ isAccepted: false, isApplicationInProgress: false, rejectionReason: rejectionReason })
+    .where(
+      and(
+        eq(jobsToUsersTable.userId, userId),
+        eq(jobsToUsersTable.jobId, jobId))
+    );
 }

@@ -164,7 +164,10 @@ export async function getApplicationsByCompanyId(companyId: SelectCompany['id'])
     .innerJoin(jobsTable,
       and(
         eq(jobsToUsersTable.jobId, jobsTable.id),
-        eq(jobsTable.byCompanyId, companyId)
+        and(
+          eq(jobsTable.byCompanyId, companyId),
+          jobsToUsersTable.isApplicationInProgress
+        )
       )
     )
     .limit(20);
