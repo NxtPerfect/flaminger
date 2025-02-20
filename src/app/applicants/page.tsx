@@ -8,16 +8,16 @@ type ResponseData = {
   jobs_table: SelectJobs
   jobs_to_users_table: SelectJobsToUsers
   user: SelectUser
-  technologies: SelectTechnologiesToUsers
-  human_languages: SelectHumanLanguagesToUsers
+  technologies: SelectTechnologiesToUsers[]
+  human_languages: SelectHumanLanguagesToUsers[]
 }
 
 type Application = {
   job: SelectJobs
   candidate: {
     personalInformation: SelectUser,
-    technologies: SelectTechnologiesToUsers,
-    humanLanguages: SelectHumanLanguagesToUsers,
+    technologies: SelectTechnologiesToUsers[],
+    humanLanguages: SelectHumanLanguagesToUsers[],
   }
 }
 
@@ -43,6 +43,7 @@ export default function Page() {
         setIsLoading(false);
       })
       .catch(err => setError(err))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function Page() {
                   {candidate.personalInformation.city}
                 </div>
                 <div>
-                  {candidate.technologies.map((tech, index) => {
+                  {candidate.technologies.map((tech: SelectTechnologiesToUsers, index: number) => {
                     return (
                       <div key={index}>
                         {tech.name} {tech.experience}y
@@ -105,7 +106,7 @@ export default function Page() {
                   )}
                 </div>
                 <div>
-                  {candidate.humanLanguages.map((lang, index) => {
+                  {candidate.humanLanguages.map((lang: SelectHumanLanguagesToUsers, index: number) => {
                     return (
                       <div key={index}>
                         {lang.name} {lang.level}

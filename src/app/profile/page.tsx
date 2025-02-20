@@ -34,7 +34,7 @@ export default function Profile() {
   }, []);
 
   useEffect(() => {
-    getProfile()
+    getProfile();
   }, [getProfile]);
 
   function setUserDataFromApi(rawUserData: User) {
