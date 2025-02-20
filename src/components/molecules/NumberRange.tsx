@@ -22,8 +22,7 @@ export default function NumberRange({ className = "", children, min, max, placeh
   })
   return (
     <div className={style}>
-      <label htmlFor={name ?? "number"}>{children}</label>
-      <NumberInput onChange={onChange} min={min} max={max} className="w-full" name={name ?? "number"} placeholder={formatter.format(placeholder)} required={required} />
+      <NumberInput onChange={onChange} min={min} max={max} className="w-full" name={name ?? "number"} placeholder={formatter.format(placeholder)} required={required}>{children}</NumberInput>
     </div>
   )
 }

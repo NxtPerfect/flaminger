@@ -42,7 +42,7 @@ export default function Page() {
       onSubmit={handleSubmit}
       className="flex flex-col gap-8 bg-neutral-800 rounded-md px-8 py-4 w-[70ch] min-w-[30ch] max-w-[80ch]"
     >
-      <TextInput name="title" placeholder="Junior React Developer" required={true} pattern="^(?=.{1,50}$)[A-Za-z]+(?:['_.\s][A-Za-z]+)*$">Job name:</TextInput>
+      <TextInput name="title" placeholder="Junior React Developer" required={true} pattern={`^(?=.{1,50}$)[A-Za-z]+(?:['_.\s][A-Za-z]+)*$`}>Job name:</TextInput>
       <TextAreaInput name="description" required={true} placeholder="Our flexible and dynamic team is looking for a passionate developer.">Description:</TextAreaInput>
       <SalaryRange />
       <CityPicker />
