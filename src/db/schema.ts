@@ -14,7 +14,7 @@ export const usersTable = pgTable('users_table', {
 });
 
 export const humanLanguagesUsersTable = pgTable('human_languages_users_table', {
-  userId: integer('user_id').references(() => usersTable.id),
+  userId: serial('user_id').references(() => usersTable.id),
   name: text('name').notNull(),
   level: text('level').notNull().default("A1"),
 }, (t) => [
@@ -22,7 +22,7 @@ export const humanLanguagesUsersTable = pgTable('human_languages_users_table', {
 ]);
 
 export const technologiesUsersTable = pgTable('technologies_users_table', {
-  userId: integer('user_id').references(() => usersTable.id),
+  userId: serial('user_id').references(() => usersTable.id),
   name: text('name').notNull(),
   experience: text('experience').notNull().default("5"),
 }, (t) => [
@@ -53,6 +53,18 @@ export const jobsTable = pgTable('jobs_table', {
   isClosed: boolean('is_closed').default(false),
 });
 
+export const technologiesRequirementsToJobsTable = pgTable('technologies_requirements_to_jobs_table', {
+  jobId: serial('job_id').references(() => jobsTable.id),
+  name: text('name').notNull(),
+  experience: text('experience').notNull().default("5"),
+})
+
+export const humanLanguagesRequirementsToJobsTable = pgTable('human_languages_requirements_to_jobs_table', {
+  jobId: serial('job_id').references(() => jobsTable.id),
+  name: text('name').notNull(),
+  level: text('level').notNull().default("A1"),
+})
+
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
   id: serial('id').primaryKey(),
   userId: serial('user_id').references(() => usersTable.id),
@@ -80,3 +92,9 @@ export type SelectTechnologiesToUsers = typeof technologiesUsersTable.$inferSele
 
 export type InsertHumanLanguagesToUsers = typeof humanLanguagesUsersTable.$inferInsert;
 export type SelectHumanLanguagesToUsers = typeof humanLanguagesUsersTable.$inferSelect;
+
+export type InsertTechnologiesRequirementsToJobs = typeof technologiesRequirementsToJobsTable.$inferInsert;
+export type SelectTechnologiesRequirementsToJobs = typeof technologiesRequirementsToJobsTable.$inferSelect;
+
+export type InsertHumanLanguagesRequirementsToJobs = typeof humanLanguagesRequirementsToJobsTable.$inferInsert;
+export type SelectHumanLanguagesRequirementsToJobs = typeof humanLanguagesRequirementsToJobsTable.$inferSelect;
