@@ -1,4 +1,4 @@
-import { Technology } from "@/app/lib/definitions";
+import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { createJob } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
@@ -23,8 +23,11 @@ export async function PUT(req: Request) {
       title: offerData.title,
       description: offerData.description,
       byCompanyId: companyId,
-      isClosed: false,
-    }).then(() => {
+      isClosed: false
+    },
+      offerData.technologies,
+      offerData.humanLanguages
+    ).then(() => {
       return Response.json({ data: offerData }, { status: 200 });
     })
   } catch (error) {
@@ -34,48 +37,86 @@ export async function PUT(req: Request) {
 }
 
 function parseOfferData(formData: FormData): offerData {
-  const title = formData.get("title");
-  const description = formData.get("description");
-  const minSalary = formData.get("minSalary");
-  const maxSalary = formData.get("maxSalary");
-  const city = formData.get("city");
-  const employmentType = formData.get("employmentType");
-  const contractType = formData.get("contractType");
-  const workhourType = formData.get("workhourType");
-  const namesOfRequiredTechnologies = formData.getAll("name");
-  const experienceInYearsInRequiredTechnologies = formData.getAll("experience");
+  const jobData = getJobFromFormData(formData);
 
-  const parameters = { title, description, minSalary, maxSalary, city, employmentType, contractType, workhourType };
+  if (isAnyNull(jobData))
+    return {} as offerData;
+
+  const parsedTechnologies: Technology[] = getTechnologyFromFormData(formData);
+
+  const parsedHumanLanguages: HumanLanguage[] = getHumanLanguagesFromFormData(formData);
+
+  return {
+    ...jobData,
+    technologies: parsedTechnologies,
+    humanLanguages: parsedHumanLanguages,
+  }
+}
+
+function getJobFromFormData(formData: FormData): jobOfferData {
+  const title = formData.get("title")?.toString();
+  const description = formData.get("description")?.toString();
+  const preParseMinSal = formData.get("minSalary")?.toString();
+  const preParseMaxSal = formData.get("maxSalary")?.toString();
+  if (!preParseMinSal || !preParseMaxSal) {
+    return {} as offerData;
+  }
+  const minSalary = Number.parseInt(preParseMinSal);
+  const maxSalary = Number.parseInt(preParseMaxSal);
+  const city = formData.get("city")?.toString();
+  const employmentType = formData.get("employmentType")?.toString();
+  const contractType = formData.get("contractType")?.toString();
+  const workhourType = formData.get("workhourType")?.toString();
+
+  return { title, description, minSalary, maxSalary, city, employmentType, contractType, workhourType } as jobOfferData
+}
+
+function isAnyNull(jobData: jobOfferData) {
+  const parameters = { jobData };
   for (const param in parameters) {
     if (!param) {
-      return {} as offerData;
+      return true;
     }
   }
+  return false;
+}
 
-  // Get string of all technologies names + minimum year
+function getTechnologyFromFormData(formData: FormData) {
   const parsedTechnologies: Technology[] = [];
+
+  const names = formData.getAll("name");
+  const experience = formData.getAll("experience");
+
   for (
     let i = 0;
-    i < namesOfRequiredTechnologies.length;
+    i < names.length;
     i++) {
     parsedTechnologies.push(
       {
-        name: namesOfRequiredTechnologies[i].toString(),
-        experience: Number.parseInt(experienceInYearsInRequiredTechnologies[i].toString()) ?? 0
+        name: names[i].toString(),
+        experience: Number.parseInt(experience[i].toString()) ?? 0
       });
   }
+  return parsedTechnologies;
+}
 
-  return {
-    title: title!.toString(),
-    description: description!.toString(),
-    minSalary: Number.parseInt(minSalary!.toString()),
-    maxSalary: Number.parseInt(maxSalary!.toString()),
-    city: city!.toString(),
-    employmentType: employmentType!.toString(),
-    contractType: contractType!.toString(),
-    workhourType: workhourType!.toString(),
-    technologies: parsedTechnologies,
+function getHumanLanguagesFromFormData(formData: FormData) {
+  const parsedHumanLanguages: HumanLanguage[] = [];
+
+  const names = formData.getAll("language");
+  const levels = formData.getAll("level");
+
+  for (
+    let i = 0;
+    i < names.length;
+    i++) {
+    parsedHumanLanguages.push(
+      {
+        name: names[i].toString(),
+        level: levels[i].toString() in HUMAN_LANGUAGE_LEVELS ? levels[i].toString() : "A1"
+      });
   }
+  return parsedHumanLanguages;
 }
 
 type offerData = {
@@ -88,4 +129,16 @@ type offerData = {
   contractType: string
   workhourType: string
   technologies: Technology[]
+  humanLanguages: HumanLanguage[]
+}
+
+type jobOfferData = {
+  title: string
+  description: string
+  minSalary: number
+  maxSalary: number
+  city: string
+  employmentType: string
+  contractType: string
+  workhourType: string
 }
