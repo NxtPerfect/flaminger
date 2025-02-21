@@ -1,4 +1,4 @@
-import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Technology } from "@/app/lib/definitions";
+import { HumanLanguage, Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { createJob } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
@@ -44,12 +44,13 @@ function parseOfferData(formData: FormData): offerData {
 
   const parsedTechnologies: Technology[] = getTechnologyFromFormData(formData);
 
-  const parsedHumanLanguages: HumanLanguage[] = getHumanLanguagesFromFormData(formData);
+  // const parsedHumanLanguages: HumanLanguage[] = getHumanLanguagesFromFormData(formData);
 
   return {
     ...jobData,
     technologies: parsedTechnologies,
-    humanLanguages: parsedHumanLanguages,
+    humanLanguages: []
+    // humanLanguages: parsedHumanLanguages,
   }
 }
 
@@ -100,24 +101,24 @@ function getTechnologyFromFormData(formData: FormData) {
   return parsedTechnologies;
 }
 
-function getHumanLanguagesFromFormData(formData: FormData) {
-  const parsedHumanLanguages: HumanLanguage[] = [];
-
-  const names = formData.getAll("language");
-  const levels = formData.getAll("level");
-
-  for (
-    let i = 0;
-    i < names.length;
-    i++) {
-    parsedHumanLanguages.push(
-      {
-        name: names[i].toString(),
-        level: levels[i].toString() in HUMAN_LANGUAGE_LEVELS ? levels[i].toString() : "A1"
-      });
-  }
-  return parsedHumanLanguages;
-}
+// function getHumanLanguagesFromFormData(formData: FormData) {
+//   const parsedHumanLanguages: HumanLanguage[] = [];
+//
+//   const names = formData.getAll("language");
+//   const levels = formData.getAll("level");
+//
+//   for (
+//     let i = 0;
+//     i < names.length;
+//     i++) {
+//     parsedHumanLanguages.push(
+//       {
+//         name: names[i].toString(),
+//         level: levels[i].toString() in HUMAN_LANGUAGE_LEVELS ? levels[i].toString() : "A1"
+//       });
+//   }
+//   return parsedHumanLanguages;
+// }
 
 type offerData = {
   title: string
