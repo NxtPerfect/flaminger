@@ -17,7 +17,7 @@ export default function JobInformationApplication({ job }: Props) {
       <div>
         {job.title}
       </div>
-      <div>
+      <div className="w-[40ch]">
         {job.description}
       </div>
     </>

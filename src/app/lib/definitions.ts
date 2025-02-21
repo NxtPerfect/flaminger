@@ -27,6 +27,8 @@ export type OfferWithCompanyInfo = {
   jobsTable: Offer
   companiesTable: Company
   jobsToUsersTable: UserApplications
+  technologiesRequirementsToJobsTable: { name: string, experience: string, jobId: number }[]
+  humanLanguagesRequirementsToJobsTable: { name: string, level: HumanLanguage["level"], jobId: number }[]
 }
 
 export type Offer = {

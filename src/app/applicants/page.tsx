@@ -4,7 +4,6 @@ import { SelectHumanLanguagesToUsers, SelectJobs, SelectJobsToUsers, SelectTechn
 import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckApplications';
 import ErrorMessage from '@/components/atoms/ErrorMessage';
 import ActionButton from '@/components/ActionButton';
-import TextInput from '@/components/atoms/TextInput';
 import JobInformationApplication from '@/components/molecules/JobInformationApplication';
 import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
 import MultilineTextInput from '@/components/atoms/MultilineTextInput';
