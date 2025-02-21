@@ -7,6 +7,7 @@ import ActionButton from '@/components/ActionButton';
 import TextInput from '@/components/atoms/TextInput';
 import JobInformationApplication from '@/components/molecules/JobInformationApplication';
 import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
+import MultilineTextInput from '@/components/atoms/MultilineTextInput';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -121,11 +122,11 @@ export default function Page() {
                       {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
                       {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
                     </div>
-                    <TextInput name="rejectionReason" defaultValue={rejectionReason}
+                    <MultilineTextInput className="line-clamp-4" name="rejectionReason" defaultValue={rejectionReason}
                       onChange={
                         (e) =>
                           setRejectionReason(e.currentTarget.value)
-                      }>Rejection Reason</TextInput>
+                      }>Rejection Reason</MultilineTextInput>
                   </div>
                 </div>
               </div>
