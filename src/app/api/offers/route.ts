@@ -54,27 +54,30 @@ function getUniqueIdsFromTechAndLang(tech: techReturnData[], lang: langReturnDat
 }
 
 function combineTechnologiesOfSameJobId(tech: techReturnData[], uniqueIds: number[]) {
-  const combinedTech: { jobId: number, tech: { name: string, experience: string }[] }[] = [];
+  const combinedTech = [];
   for (let i = 0; i < uniqueIds.length; i++) {
-    const arr: { name: string, experience: string }[] = tech.map((t) => {
+    const arr = tech.map((t) => {
       if (t.jobId === uniqueIds[i]) {
         return { name: t.name, experience: t.experience };
       }
     })
-    combinedTech.push({ jobId: uniqueIds[i], tech: arr });
+    if (arr.length > 0)
+      combinedTech.push({ jobId: uniqueIds[i], tech: arr });
   }
 
   return combinedTech;
 }
 
 function combineHumanLanguagesOfSameJobId(lang: langReturnData[], uniqueIds: number[]) {
-  const combinedLang: { jobId: number, langs: { name: string, level: string }[] }[] = [];
+  const combinedLang = [];
   for (let i = 0; i < uniqueIds.length; i++) {
-    const arr: { name: string, level: string }[] = lang.map((l) => {
+    const arr = lang.map((l) => {
       if (l.jobId === uniqueIds[i]) {
         return { name: l.name, level: l.level };
       }
     })
+    if (arr.length === 0)
+      continue;
     combinedLang.push({ jobId: uniqueIds[i], langs: arr });
   }
   return combinedLang;
