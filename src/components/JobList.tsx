@@ -8,9 +8,27 @@ type Props = {
   isNotLoggedIn: boolean
 }
 
+type techRequirement = {
+  jobId: number,
+  tech: {
+    name: string,
+    experience: string
+  }[]
+}
+
+type langRequirement = {
+  jobId: number,
+  langs: {
+    name: string,
+    level: string
+  }[]
+}
+
 export default function JobList({ isNotLoggedIn }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [offers, setOffers] = useState<OfferWithCompanyInfo[]>();
+  const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);
+  const [technology, setTechnology] = useState<techRequirement[]>([]);
+  const [humanLanguages, setHumanLanguages] = useState<langRequirement[]>([]);
 
   function getStatus(applicationStatus: Partial<UserApplications>) {
     if (applicationStatus.isAccepted) return "accepted";
@@ -26,6 +44,8 @@ export default function JobList({ isNotLoggedIn }: Props) {
         .then(async (res) => {
           const responseJson = await res.json();
           setOffers(responseJson.offers);
+          setTechnology(responseJson.tech);
+          setHumanLanguages(responseJson.langs);
           setIsLoading(false);
         })
     }
@@ -53,6 +73,14 @@ export default function JobList({ isNotLoggedIn }: Props) {
           applicationStatus = offerFullInfo.jobsToUsersTable;
           status = applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
         }
+        const tech: { jobId: number, tech: { name: string, experience: string }[] }[] = technology.filter(
+          (t) =>
+            t.jobId === offer.id
+        );
+        const langs: { jobId: number, langs: { name: string, level: string }[] }[] = humanLanguages.filter(
+          (l) =>
+            l.jobId === offer.id
+        );
         return (
           <li key={offer.id}>
             <JobOffer
@@ -62,7 +90,12 @@ export default function JobList({ isNotLoggedIn }: Props) {
               logoPath={`/companies/logos/small/${company.name.toLowerCase()}.jpg`}
               company={company.name}
               acceptanceRate={company.acceptanceRate}
-              requirements={[]}
+              requirements={
+                {
+                  tech: tech[0]?.tech ?? [],
+                  langs: langs[0]?.langs ?? []
+                }
+              }
               status={status ?? "new"}
               isNotLoggedIn={isNotLoggedIn}
             />

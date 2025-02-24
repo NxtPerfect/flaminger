@@ -9,7 +9,7 @@ type Props = {
   logoPath: string
   company: string
   acceptanceRate: number
-  requirements?: { language: string, minimumExperienceInYears: number }[]
+  requirements?: { tech: { name: string, experience: string }[], langs: { name: string, level: string }[] }
   status: string
   isNotLoggedIn: boolean
 }
@@ -57,9 +57,14 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
       </span>
       <span className="mt-4 flex flex-row items-center justify-between">
         <span className="flex flex-row gap-2 align-middle items-center">
-          {requirements && requirements.map(({ language, minimumExperienceInYears }, index) => {
+          {requirements?.tech && requirements.tech.map(({ name: name, experience: experience }, index) => {
             return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
-              {`${language.toUpperCase()} > ${minimumExperienceInYears} years`}
+              {`${name.toUpperCase()} > ${experience} years`}
+            </div>
+          })}
+          {requirements?.langs && requirements.langs.map(({ name: name, level: level }, index) => {
+            return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
+              {`${name.toUpperCase()} > ${level}`}
             </div>
           })}
         </span>
