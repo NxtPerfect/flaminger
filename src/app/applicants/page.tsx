@@ -7,6 +7,7 @@ import ActionButton from '@/components/ActionButton';
 import JobInformationApplication from '@/components/molecules/JobInformationApplication';
 import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
 import MultilineTextInput from '@/components/atoms/MultilineTextInput';
+import { HUMAN_LANGUAGE_LEVELS_TO_VALS } from '../lib/definitions';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -25,8 +26,22 @@ type Application = {
   }
 }
 
+type TechnologyRaw = {
+  jobId: number
+  name: string
+  experience: string
+}
+
+type HumanLanguageRaw = {
+  jobId: number
+  name: string
+  level: string
+}
+
 export default function Page() {
   const [rejectionReason, setRejectionReason] = useState<string>("");
+  const [technologyRequirements, setTechnologyRequirements] = useState<TechnologyRaw[]>([]);
+  const [humanLanguagesRequirements, setHumanLanguagesRequirements] = useState<HumanLanguageRaw[]>([]);
   const MIN_LENGTH_REJECTION_REASON = 50;
 
   async function handleReview(userId: number, jobId: number, status: "accepted" | "rejected") {
@@ -64,6 +79,8 @@ export default function Page() {
       .then(async (res) => {
         const responseJson = await res.json();
         setApplicationsFromResponse(responseJson.data);
+        setTechnologyRequirements(responseJson.tech);
+        setHumanLanguagesRequirements(responseJson.langs);
         setIsLoading(false);
       })
       .catch(err => setError(err))
@@ -93,31 +110,80 @@ export default function Page() {
     return;
   }
 
+  function getMatchingForOffer(job: SelectJobs, candidate: {
+    personalInformation: SelectUser
+    technologies: SelectTechnologiesToUsers[]
+    humanLanguages: SelectHumanLanguagesToUsers[]
+  }) {
+    const tech = technologyRequirements.filter((t) => t.jobId === job.id);
+    const langs = humanLanguagesRequirements.filter((l) => l.jobId === job.id);
+    if (tech.length === 0 && langs.length === 0)
+      return (100).toFixed(2);
+
+    let match = 0;
+    for (let i = 0; i < tech.length; i++) {
+      for (let j = 0; j < candidate.technologies.length; j++) {
+        if (candidate.technologies[j].name === tech[i].name &&
+          candidate.technologies[j].experience <= tech[i].experience) {
+          match++;
+        }
+      }
+    }
+
+    for (let i = 0; i < langs.length; i++) {
+      for (let j = 0; j < candidate.humanLanguages.length; j++) {
+        if (HUMAN_LANGUAGE_LEVELS_TO_VALS[candidate.humanLanguages[j].level.toLowerCase()] >= HUMAN_LANGUAGE_LEVELS_TO_VALS[langs[i].level.toLowerCase()] &&
+          candidate.humanLanguages[j].name === langs[i].name) {
+          match++;
+        }
+      }
+    }
+    const res = (match / (tech.length + langs.length) * 100).toFixed(2);
+    return res;
+  }
+
   return (
     <>
       {isLoading && <SkeletonCheckApplications />}
       {applications.length === 0 && <p>It&apos;s empty, add more job offers and wait for candidates to apply!</p>}
       <div>
-        {applications.length > 0 && "Job offer info"}
         <div>
           {applications && applications.map((curApplication, index) => {
             const job = curApplication.job;
             const candidate = curApplication.candidate;
+            const matching = getMatchingForOffer(job, candidate);
             return (
               <div key={index}>
-                <JobInformationApplication job={job} />
+                <JobInformationApplication
+                  job={job}
+                  tech={technologyRequirements
+                    .filter((t) => t.jobId === job.id)
+                    .map((t) => { return { name: t.name, experience: Number.parseInt(t.experience) }; })}
+                  langs={humanLanguagesRequirements
+                    .filter((l) => l.jobId === job.id)
+                    .map((l) => { return { name: l.name, level: l.level }; })} />
                 <CandidateInformationApplication candidate={candidate} />
+                <span>Candidate matches offer in: {matching}%</span>
                 <div className="flex flex-row justify-between w-full">
                   <ActionButton variant="formSubmit"
                     onClick={() =>
-                      handleReview(candidate.personalInformation.id, curApplication.job.id, "accepted")
-                    }>Accept</ActionButton>
+                      handleReview(candidate.personalInformation.id,
+                        curApplication.job.id,
+                        "accepted")
+                    }>
+                    Accept
+                  </ActionButton>
                   <div className="flex flex-row justify-between">
                     <div className="flex flex-col">
                       <ActionButton variant="formSubmit"
                         onClick={() =>
-                          handleReview(candidate.personalInformation.id, curApplication.job.id, "rejected")
-                        } disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>Reject</ActionButton>
+                          handleReview(candidate.personalInformation.id,
+                            curApplication.job.id,
+                            "rejected")
+                        }
+                        disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>
+                        Reject
+                      </ActionButton>
                       {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
                       {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
                     </div>
@@ -125,7 +191,9 @@ export default function Page() {
                       onChange={
                         (e) =>
                           setRejectionReason(e.currentTarget.value)
-                      }>Rejection Reason</MultilineTextInput>
+                      }>
+                      Rejection Reason
+                    </MultilineTextInput>
                   </div>
                 </div>
               </div>

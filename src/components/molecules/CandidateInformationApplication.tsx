@@ -11,7 +11,7 @@ type Props = {
 
 export default function CandidateInformationApplication({ candidate }: Props) {
   return (
-    <>
+    <div className="bg-neutral-800 p-8 mt-8">
       <div>
         {candidate.personalInformation.firstname} {candidate.personalInformation.surname}
       </div>
@@ -42,7 +42,7 @@ export default function CandidateInformationApplication({ candidate }: Props) {
           )}
         </ul>
       </div>
-    </>
+    </div>
   )
 }
 

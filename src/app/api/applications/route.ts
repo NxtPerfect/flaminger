@@ -1,5 +1,5 @@
 import { getUserId } from "@/app/lib/session";
-import { getApplicationsByCompanyId, getHumanLanguagesByUserId, getTechnologiesByUserId, getUserById } from "@/db/queries/select";
+import { getApplicationsByCompanyId, getHumanLanguagesByUserId, getHumanLanguagesForAllJobs, getTechnologiesByUserId, getTechnologiesForAllJobs, getUserById } from "@/db/queries/select";
 
 export async function POST() {
   const id = await getUserId();
@@ -28,5 +28,8 @@ export async function POST() {
       return { ...app };
     })
   }
-  return Response.json({ data: applications }, { status: 200 });
+
+  const tech = await getTechnologiesForAllJobs();
+  const langs = await getHumanLanguagesForAllJobs();
+  return Response.json({ data: applications, tech: tech, langs: langs }, { status: 200 });
 }

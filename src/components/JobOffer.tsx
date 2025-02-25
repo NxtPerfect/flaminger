@@ -59,12 +59,12 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
         <span className="flex flex-row gap-2 align-middle items-center">
           {requirements?.tech && requirements.tech.map(({ name: name, experience: experience }, index) => {
             return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
-              {`${name.toUpperCase()} > ${experience} years`}
+              {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${experience} years`}
             </div>
           })}
           {requirements?.langs && requirements.langs.map(({ name: name, level: level }, index) => {
             return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
-              {`${name.toUpperCase()} > ${level}`}
+              {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${level}`}
             </div>
           })}
         </span>

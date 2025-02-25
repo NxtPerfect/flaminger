@@ -37,7 +37,8 @@ export type Offer = {
   description: string
   byCompanyId: number
   company: string
-  isClosed: boolean
+  isClosed?: boolean
+  createdAt?: Date
   // requirements: Array<Requirement>
   // state: "new" | "applied" | "accepted" | "rejected"
 }
@@ -119,7 +120,7 @@ export type PickerProps = {
 
 export type HumanLanguage = {
   name: string
-  level: "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native" | "H1" | "H2"
+  level: "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | "Native" | "H1" | "H2" | string
 }
 
 export type Technology = {
@@ -138,3 +139,15 @@ export const HUMAN_LANGUAGE_LEVELS = [
   "h2",
   "native"
 ]
+
+export const HUMAN_LANGUAGE_LEVELS_TO_VALS: Record<string, number> = {
+  "h1": 1,
+  "h2": 2,
+  "a1": 1,
+  "a2": 2,
+  "b1": 3,
+  "b2": 4,
+  "c1": 5,
+  "c2": 6,
+  "native": 7,
+}

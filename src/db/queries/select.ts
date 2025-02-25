@@ -1,6 +1,6 @@
 import { and, count, eq, getTableColumns, not } from "drizzle-orm";
 import { db } from "..";
-import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
+import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 
 export async function getUserByEmail(email: SelectUser['email']) {
   return db.select()
@@ -122,9 +122,21 @@ export async function getTechnologiesForAllJobs() {
     .from(technologiesRequirementsToJobsTable);
 }
 
+export async function getTechnologiesForJobId(jobId: SelectJobs['id']) {
+  return db.select()
+    .from(technologiesRequirementsToJobsTable)
+    .where(eq(technologiesRequirementsToJobsTable.jobId, jobId));
+}
+
 export async function getHumanLanguagesForAllJobs() {
   return db.select()
     .from(humanLanguagesRequirementsToJobsTable);
+}
+
+export async function getHumanLanguagesForJobId(jobId: SelectJobs['id']) {
+  return db.select()
+    .from(humanLanguagesRequirementsToJobsTable)
+    .where(eq(humanLanguagesRequirementsToJobsTable.jobId, jobId));
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {
