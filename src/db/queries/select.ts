@@ -37,6 +37,12 @@ export async function getStatisticsOfUserApplicationsByUserId(id: SelectUser['id
   return { accepted, rejected, total };
 }
 
+export async function getJobById(id: SelectJobs['id']) {
+  return db.select()
+    .from(jobsTable)
+    .where(eq(jobsTable.id, id));
+}
+
 export async function getAcceptedJobsForUsersbyUserId(id: SelectUser['id']) {
   return db.select({
     count: count()
