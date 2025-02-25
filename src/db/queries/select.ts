@@ -99,13 +99,15 @@ export async function getPendingUserApplicationsByUserId(id: SelectUser['id']) {
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id));
 }
 
-export async function getAllJobsWithCompanyInfo() {
+export async function getAllJobsWithCompanyInfo(offset: number) {
   return db.select({ jobsTable, companiesTable })
     .from(jobsTable)
-    .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id));
+    .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
+    .limit(20)
+    .offset(20 * offset);
 }
 
-export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser['id']) {
+export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser['id'], offset: number) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, ...rest } = getTableColumns(jobsToUsersTable);
   return db.select({
@@ -120,7 +122,9 @@ export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser[
         eq(jobsToUsersTable.userId, userId),
         eq(jobsToUsersTable.jobId, jobsTable.id)
       )
-    );
+    )
+    .limit(20)
+    .offset(20 * offset);
 }
 
 export async function getTechnologiesForAllJobs() {

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import JobOffer from './JobOffer'
 import { OfferWithCompanyInfo, UserApplications } from '@/app/lib/definitions';
 import SkeletonJobOffer from './placeholders/SkeletonJobOffer';
+import { useParams } from 'next/navigation';
 
 type Props = {
   isNotLoggedIn: boolean
@@ -29,6 +30,7 @@ export default function JobList({ isNotLoggedIn }: Props) {
   const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);
   const [technology, setTechnology] = useState<techRequirement[]>([]);
   const [humanLanguages, setHumanLanguages] = useState<langRequirement[]>([]);
+  const { offset } = useParams<{ offset: string }>();
 
   function getStatus(applicationStatus: Partial<UserApplications>) {
     if (applicationStatus.isAccepted) return "accepted";
@@ -40,7 +42,8 @@ export default function JobList({ isNotLoggedIn }: Props) {
   useEffect(() => {
     setIsLoading(true);
     const fetchOffers = async () => {
-      await fetch('/api/offers')
+      const parsedOffset = Number.parseInt(offset) ?? 1;
+      await fetch(`/api/offers/${parsedOffset}`)
         .then(async (res) => {
           const responseJson = await res.json();
           setOffers(responseJson.offers);
@@ -50,7 +53,7 @@ export default function JobList({ isNotLoggedIn }: Props) {
         })
     }
     fetchOffers();
-  }, [])
+  }, [offset])
 
   return (
     <ul className="flex flex-col gap-4 px-4">

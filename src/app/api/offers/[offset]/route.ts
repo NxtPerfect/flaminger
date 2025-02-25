@@ -13,14 +13,21 @@ type langReturnData = {
   level: string
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const userId: number = await getUserId();
+  const offset = req.url.split('/')[5];
+  if (!offset) {
+    return Response.json({ errorType: "badData" }, { status: 400 });
+  }
+
+  const parsedOffset = Number.parseInt(offset[0]) - 1;
+
   let offers;
   if (userId !== -1) {
-    offers = await getAllJobsForLoggedUserWithCompanyInfo(userId);
+    offers = await getAllJobsForLoggedUserWithCompanyInfo(userId, parsedOffset);
   }
   else {
-    offers = await getAllJobsWithCompanyInfo();
+    offers = await getAllJobsWithCompanyInfo(parsedOffset);
   }
 
   const tech = await getTechnologiesForAllJobs();
