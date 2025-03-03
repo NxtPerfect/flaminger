@@ -1,9 +1,9 @@
 "use client"
 import React from 'react'
-import RegisterForm from './organisms/RegisterForm'
-import LoginForm from './organisms/LoginForm'
-import ApplyToJobForm from './organisms/ApplyToJobForm'
-import SettingsForm from './organisms/SettingsForm'
+import RegisterForm from './RegisterForm'
+import ApplyToJobForm from './ApplyToJobForm'
+import LoginForm from './LoginForm'
+import SettingsForm from './SettingsForm'
 
 type Props = {
   readonly formType: FormType

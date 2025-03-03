@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/organisms/Header";
+import Footer from "@/components/organisms/Footer";
 
 export const metadata: Metadata = {
   title: "Flaminger - supercharged job search",

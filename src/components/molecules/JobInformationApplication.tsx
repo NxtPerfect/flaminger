@@ -16,7 +16,7 @@ type Props = {
 
 export default function JobInformationApplication({ job, tech, langs }: Props) {
   return (
-    <div className="bg-neutral-800 p-8">
+    <div className="text-black dark:text-white bg-neutral-400 dark:bg-neutral-800 p-8">
       <div>
         {job.title}
       </div>

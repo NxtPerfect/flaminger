@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { SelectHumanLanguagesToUsers, SelectJobs, SelectJobsToUsers, SelectTechnologiesToUsers, SelectUser } from '@/db/schema';
 import SkeletonCheckApplications from '@/components/molecules/SkeletonCheckApplications';
 import ErrorMessage from '@/components/atoms/ErrorMessage';
-import ActionButton from '@/components/ActionButton';
 import JobInformationApplication from '@/components/molecules/JobInformationApplication';
 import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
 import MultilineTextInput from '@/components/atoms/MultilineTextInput';
 import { HUMAN_LANGUAGE_LEVELS_TO_VALS } from '../lib/definitions';
+import ActionButton from '@/components/atoms/ActionButton';
 
 type ResponseData = {
   jobs_table: SelectJobs

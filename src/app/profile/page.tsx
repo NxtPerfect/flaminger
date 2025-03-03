@@ -4,10 +4,10 @@ import Image from 'next/image'
 import SkeletonProfile from '@/components/placeholders/SkeletonProfile';
 import { CompletedApplication, DatabaseCompletedApplication, HumanLanguage, Offer, PendingApplication, StatisticsForUserApplications, StatisticsForUserApplicationsFromDatabase, Technology, User } from '@/app/lib/definitions';
 import JobApplicationsForUserProfile from '@/components/organisms/JobApplicationsForUserProfile';
-import LinkButton from '@/components/LinkButton';
 import UserLanguages from '@/components/organisms/UserLanguages';
 import UserTechnologies from '@/components/organisms/UserTechnologies';
 import StatisticsUserPieChart from '@/components/organisms/StatisticsUserPieChart';
+import LinkButton from '@/components/organisms/LinkButton';
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -121,9 +121,9 @@ export default function Profile() {
         (<SkeletonProfile />)
         :
         (<>
-          <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4">
+          <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4 text-white dark:text-black">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[50svw] p-4">
-              <div className="overflow-hidden rounded-full border-4 border-orange-600/60 bg-neutral-600">
+              <div className="overflow-hidden rounded-full border-4 border-orange-600 dark:border-orange-600/60 bg-neutral-600">
                 <Image src="/profile/profile.png" alt="profile picture" width={250} height={250} />
               </div>
               <div className="self-end justify-self-end">
@@ -142,7 +142,7 @@ export default function Profile() {
                 <UserTechnologies technologies={technologies} />
               </div>
               <div className="px-4 col-span-2 h-full bg-neutral-800/60 rounded-md">
-                <h2 className="mt-6 text-xl font-semibold">Statistics</h2>
+                <h2 className="mt-6 text-xl font-semibold text-white dark:text-black">Statistics</h2>
                 <StatisticsUserPieChart statistics={statistics} />
               </div>
             </div>

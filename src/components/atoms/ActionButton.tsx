@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react'
-import Spinner from './atoms/Spinner'
+import Spinner from './Spinner'
 
 interface Props {
   readonly variant?: ButtonVariant | null

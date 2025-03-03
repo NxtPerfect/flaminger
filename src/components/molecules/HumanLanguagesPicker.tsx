@@ -2,9 +2,9 @@
 import React, { Dispatch, MouseEvent, SetStateAction } from 'react'
 import AddItemButton from './AddItemButton'
 import TrashBinSvg from './TrashBinSvg';
-import ActionButton from '../ActionButton';
 import { HumanLanguage } from '@/app/lib/definitions';
 import InputNewHumanLanguage from './InputNewHumanLanguage';
+import ActionButton from '../atoms/ActionButton';
 
 type Props = {
   humanLanguages: HumanLanguage[]
@@ -28,7 +28,7 @@ export default function HumanLanguagesPicker({ humanLanguages, setHumanLanguages
   return (
     <div className="flex flex-col">
       <label htmlFor="humanLanguages">{children ?? "Required Languages:"}</label>
-      <div className="border-2 border-neutral-700 px-4 py-2 rounded-md">
+      <div className="border-2 border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-md">
         {humanLanguages && "Language name | Level (A1, Native)"}
         {humanLanguages.map((humanLanguage, index) => {
           return (

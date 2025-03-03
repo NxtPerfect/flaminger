@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import LinkButton from './LinkButton'
+import LinkButton from '../organisms/LinkButton'
 
 type Props = {
   id: number
@@ -43,7 +43,7 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
   }
 
   return (
-    <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw]">
+    <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw]">
       <span className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
       </span>
@@ -52,18 +52,18 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
         <span>{company}</span>
         <span className={acceptanceRate > 50 ? "text-green-500" : "text-red-500"}>{acceptanceRate || 0}%</span>
       </span>
-      <span className="mt-4 max-w-[50ch] line-clamp-3 text-ellipsis text-neutral-300">
+      <span className="mt-4 max-w-[50ch] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
         {description.substring(0, 180)}
       </span>
       <span className="mt-4 flex flex-row items-center justify-between">
         <span className="flex flex-row gap-2 align-middle items-center">
           {requirements?.tech && requirements.tech.map(({ name: name, experience: experience }, index) => {
-            return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
+            return <div key={index} className="rounded-md bg-neutral-400 dark:bg-neutral-800 px-1 self-center">
               {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${experience} years`}
             </div>
           })}
           {requirements?.langs && requirements.langs.map(({ name: name, level: level }, index) => {
-            return <div key={index} className="rounded-md bg-neutral-800 px-1 self-center">
+            return <div key={index} className="rounded-md bg-neutral-400 dark:bg-neutral-800 px-1 self-center">
               {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${level}`}
             </div>
           })}

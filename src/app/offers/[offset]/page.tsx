@@ -1,5 +1,5 @@
-import JobList from '@/components/JobList'
 import Pagination from '@/components/molecules/Pagination';
+import JobList from '@/components/organisms/JobList';
 import { cookies } from 'next/headers'
 import React from 'react'
 

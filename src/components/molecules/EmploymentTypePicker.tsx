@@ -33,7 +33,7 @@ export default function EmploymentTypePicker({ whichRadioIsActive, setWhichRadio
           text="Remote"
           className="w-1/3"
         >
-          <HomeSvg imageAlt={"Remote work"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <HomeSvg imageAlt={"Remote work"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={1}
@@ -42,7 +42,7 @@ export default function EmploymentTypePicker({ whichRadioIsActive, setWhichRadio
           text="Hybrid"
           className="w-1/3"
         >
-          <HybridSvg imageAlt={"Hybrid work"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <HybridSvg imageAlt={"Hybrid work"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={2}
@@ -51,7 +51,7 @@ export default function EmploymentTypePicker({ whichRadioIsActive, setWhichRadio
           text="Stationary"
           className="w-1/3"
         >
-          <StationarySvg imageAlt={"Remote work"} className={`transition duration-75 ${2 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <StationarySvg imageAlt={"Remote work"} className={`transition duration-75 ${2 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
       </div>
     </div>

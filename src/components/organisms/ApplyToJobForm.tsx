@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import React, { FormEvent } from 'react'
-import ActionButton from '../ActionButton';
+import ActionButton from '../atoms/ActionButton';
 
 type Props = {
   jobId?: number
@@ -8,7 +8,7 @@ type Props = {
 
 export default function ApplyToJobForm({ jobId = 0 }: Props) {
   const router = useRouter();
-  const formStyle = "flex flex-col gap-2 bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
+  const formStyle = "flex flex-col gap-2 bg-neutral-400 dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
 
   async function handleApply(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

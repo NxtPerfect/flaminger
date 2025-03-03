@@ -1,6 +1,5 @@
 "use client";
 import React, { FormEvent, useState } from 'react'
-import ActionButton from '../ActionButton'
 import CityPicker from '../molecules/CityPicker'
 import TextInput from '../atoms/TextInput'
 import TechnologiesPicker from '../molecules/TechnologiesPicker'
@@ -8,6 +7,7 @@ import { HumanLanguage, Technology } from '@/app/lib/definitions';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from '../atoms/ErrorMessage';
 import HumanLanguagesPicker from '../molecules/HumanLanguagesPicker';
+import ActionButton from '../atoms/ActionButton';
 
 type ReturnData = {
   readonly errorType?: string
@@ -79,17 +79,17 @@ export default function SettingsForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-md p-8 bg-neutral-800/80">
+      className="flex flex-col gap-4 rounded-md p-8 bg-neutral-400 dark:bg-neutral-800/80 text-white">
       <h1 className="font-bold text-xl">
         Profile
       </h1>
-      <div className="flex flex-col border-2 bg-neutral-600/20 rounded-md p-4 gap-2">
+      <div className="flex flex-col border-2 bg-neutral-500 dark:bg-neutral-600/20 rounded-md p-4 gap-2">
         <h2 className="text-lg font-semibold">Personal Information</h2>
         <TextInput name="firstname" placeholder="Steve" >First Name:</TextInput>
         <TextInput name="surname" placeholder="Jobs" >Surname:</TextInput>
         <CityPicker>City of residence:</CityPicker>
       </div>
-      <div className="flex flex-col border-2 bg-neutral-600/20 rounded-md p-4 gap-2">
+      <div className="flex flex-col border-2 bg-neutral-500 dark:bg-neutral-600/20 rounded-md p-4 gap-2">
         <h2 className="text-lg font-semibold">Professional Information</h2>
         <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} >Known Technologies:</TechnologiesPicker>
         <HumanLanguagesPicker humanLanguages={humanLanguages} setHumanLanguagesAction={setHumanLanguages}>Known Languages:</HumanLanguagesPicker>

@@ -1,7 +1,7 @@
 import React from 'react'
-import LinkButton from '../LinkButton'
 import SkillRectangle from '../atoms/SkillRectangle'
 import { HumanLanguage, Technology } from '@/app/lib/definitions'
+import LinkButton from '../organisms/LinkButton'
 
 type Props = {
   label: string

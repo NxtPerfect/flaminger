@@ -1,4 +1,4 @@
-import ActionButton from "@/components/ActionButton";
+import ActionButton from "@/components/atoms/ActionButton";
 
 export default function Home() {
   return (

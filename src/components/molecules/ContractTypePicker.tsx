@@ -30,7 +30,7 @@ export default function ContractTypePicker({ whichRadioIsActive, setWhichRadioIs
           text="B2B"
           className="w-1/2"
         >
-          <BusinessSvg imageAlt={"Business To Business contract"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <BusinessSvg imageAlt={"Business To Business contract"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={1}
@@ -39,7 +39,7 @@ export default function ContractTypePicker({ whichRadioIsActive, setWhichRadioIs
           text="Employment Contract"
           className="w-1/2"
         >
-          <EmploymentContractSvg imageAlt={"Employment contract"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <EmploymentContractSvg imageAlt={"Employment contract"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
       </div>
     </div>

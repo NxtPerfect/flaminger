@@ -1,6 +1,6 @@
 "use client";
 import { HumanLanguage, Technology } from '@/app/lib/definitions';
-import ActionButton from '@/components/ActionButton';
+import ActionButton from '@/components/atoms/ActionButton';
 import TextAreaInput from '@/components/atoms/TextAreaInput'
 import TextInput from '@/components/atoms/TextInput'
 import CityPicker from '@/components/molecules/CityPicker'
@@ -42,7 +42,7 @@ export default function Page() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-8 bg-neutral-800 rounded-md px-8 py-4 w-[70ch] min-w-[30ch] max-w-[80ch]"
+      className="flex flex-col gap-8 bg-neutral-400 dark:bg-neutral-800 rounded-md px-8 py-4 w-[70ch] min-w-[30ch] max-w-[80ch] text-white"
     >
       <TextInput name="title" placeholder="Junior React Developer" required={true} pattern={`^(?=.{1,50}$)[A-Za-z]+(?:[\\s'_.][A-Za-z]+)*$`}>Job name:</TextInput>
       <TextAreaInput name="description" required={true} placeholder="Our flexible and dynamic team is looking for a passionate developer.">Description:</TextAreaInput>

@@ -11,7 +11,7 @@ type Props = {
 
 export default function CandidateInformationApplication({ candidate }: Props) {
   return (
-    <div className="bg-neutral-800 p-8 mt-8">
+    <div className="dark:text-white bg-neutral-400 dark:bg-neutral-800 p-8 mt-8">
       <div>
         {candidate.personalInformation.firstname} {candidate.personalInformation.surname}
       </div>

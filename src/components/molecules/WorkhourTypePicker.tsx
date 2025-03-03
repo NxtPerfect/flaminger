@@ -33,7 +33,7 @@ export default function WorkhourTypePicker({ whichRadioIsActive, setWhichRadioIs
           text="Full-Time"
           className="w-1/3"
         >
-          <FullTimeSvg imageAlt={"Full-Time"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <FullTimeSvg imageAlt={"Full-Time"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={1}
@@ -42,7 +42,7 @@ export default function WorkhourTypePicker({ whichRadioIsActive, setWhichRadioIs
           text="Part-Time"
           className="w-1/3"
         >
-          <PartTimeSvg imageAlt={"Part-Time"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <PartTimeSvg imageAlt={"Part-Time"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={2}
@@ -51,7 +51,7 @@ export default function WorkhourTypePicker({ whichRadioIsActive, setWhichRadioIs
           text="Internship"
           className="w-1/3"
         >
-          <InternshipSvg imageAlt={"Internship"} className={`transition duration-75 ${2 === whichRadioIsActive ? "text-orange-600" : "text-white"}`} />
+          <InternshipSvg imageAlt={"Internship"} className={`transition duration-75 ${2 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
       </div>
     </div>

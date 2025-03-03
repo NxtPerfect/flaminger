@@ -1,5 +1,5 @@
 "use client";
-import Form from '@/components/Form';
+import Form from '@/components/organisms/Form';
 import { useParams } from 'next/navigation';
 import React from 'react'
 

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react'
-import LinkButton from '../LinkButton'
 import { useParams } from 'next/navigation';
+import LinkButton from '../organisms/LinkButton';
 
 export default function Pagination() {
   const { offset } = useParams<{ offset: string }>();

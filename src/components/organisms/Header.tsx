@@ -1,8 +1,8 @@
 "use server"
 import React from 'react'
-import LinkButton from './LinkButton'
 import { cookies } from 'next/headers';
 import { getIsUserEmployer } from '@/app/lib/session';
+import LinkButton from './LinkButton';
 
 export default async function Header() {
   const cookieStore = await cookies();
