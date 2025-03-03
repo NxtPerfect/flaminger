@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, not } from "drizzle-orm";
+import { and, count, eq, getTableColumns, inArray, not } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 
@@ -138,6 +138,14 @@ export async function getTechnologiesForJobId(jobId: SelectJobs['id']) {
     .where(eq(technologiesRequirementsToJobsTable.jobId, jobId));
 }
 
+export async function getTechnologiesForMax20jobs(offset: number) {
+  const uniqueIds = await getUniqueIdsFor20jobs(offset);
+  const parsedIds = uniqueIds.map(id => id.id);
+  return db.select()
+    .from(technologiesRequirementsToJobsTable)
+    .where(inArray(technologiesRequirementsToJobsTable.jobId, parsedIds));
+}
+
 export async function getHumanLanguagesForAllJobs() {
   return db.select()
     .from(humanLanguagesRequirementsToJobsTable);
@@ -147,6 +155,21 @@ export async function getHumanLanguagesForJobId(jobId: SelectJobs['id']) {
   return db.select()
     .from(humanLanguagesRequirementsToJobsTable)
     .where(eq(humanLanguagesRequirementsToJobsTable.jobId, jobId));
+}
+
+export async function getHumanLanguagesForMax20jobs(offset: number) {
+  const uniqueIds = await getUniqueIdsFor20jobs(offset);
+  const parsedIds = uniqueIds.map(id => id.id);
+  return db.select()
+    .from(humanLanguagesRequirementsToJobsTable)
+    .where(inArray(humanLanguagesRequirementsToJobsTable.jobId, parsedIds));
+}
+
+export async function getUniqueIdsFor20jobs(offset: number) {
+  return db.select({ id: jobsTable.id })
+    .from(jobsTable)
+    .limit(20)
+    .offset(20 * offset);
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {

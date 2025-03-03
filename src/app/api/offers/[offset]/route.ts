@@ -1,5 +1,5 @@
 import { getUserId } from "@/app/lib/session";
-import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getHumanLanguagesForAllJobs, getTechnologiesForAllJobs } from "@/db/queries/select"
+import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getHumanLanguagesForMax20jobs, getTechnologiesForMax20jobs } from "@/db/queries/select"
 
 type techReturnData = {
   jobId: number,
@@ -30,8 +30,8 @@ export async function GET(req: Request) {
     offers = await getAllJobsWithCompanyInfo(parsedOffset);
   }
 
-  const tech = await getTechnologiesForAllJobs();
-  const lang = await getHumanLanguagesForAllJobs();
+  const tech = await getTechnologiesForMax20jobs(parsedOffset);
+  const lang = await getHumanLanguagesForMax20jobs(parsedOffset);
   const uniqueIds = getUniqueIdsFromTechAndLang(tech, lang)
 
   const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueIds);
