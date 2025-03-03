@@ -139,8 +139,8 @@ export async function getTechnologiesForJobId(jobId: SelectJobs['id']) {
     .where(eq(technologiesRequirementsToJobsTable.jobId, jobId));
 }
 
-export async function getTechnologiesForMaxMAX_JOBS_PER_PAGEjobs(offset: number) {
-  const uniqueIds = await getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset);
+export async function getTechnologiesForMax20jobs(offset: number) {
+  const uniqueIds = await getUniqueIdsFor20jobs(offset);
   const parsedIds = uniqueIds.map(id => id.id);
   return db.select()
     .from(technologiesRequirementsToJobsTable)
@@ -158,15 +158,15 @@ export async function getHumanLanguagesForJobId(jobId: SelectJobs['id']) {
     .where(eq(humanLanguagesRequirementsToJobsTable.jobId, jobId));
 }
 
-export async function getHumanLanguagesForMaxMAX_JOBS_PER_PAGEjobs(offset: number) {
-  const uniqueIds = await getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset);
+export async function getHumanLanguagesForMax20jobs(offset: number) {
+  const uniqueIds = await getUniqueIdsFor20jobs(offset);
   const parsedIds = uniqueIds.map(id => id.id);
   return db.select()
     .from(humanLanguagesRequirementsToJobsTable)
     .where(inArray(humanLanguagesRequirementsToJobsTable.jobId, parsedIds));
 }
 
-export async function getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset: number) {
+export async function getUniqueIdsFor20jobs(offset: number) {
   return db.select({ id: jobsTable.id })
     .from(jobsTable)
     .limit(MAX_JOBS_PER_PAGE)
