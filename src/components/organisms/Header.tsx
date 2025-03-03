@@ -8,7 +8,7 @@ export default async function Header() {
   const cookieStore = await cookies();
   const session = cookieStore.get("session")
   const isEmployer = await getIsUserEmployer();
-  const headerStyle = "sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50";
+  const headerStyle = "sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50 dark:bg-neutral-600/50";
 
   if (session?.value) {
     return (

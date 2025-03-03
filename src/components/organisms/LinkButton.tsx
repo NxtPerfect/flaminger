@@ -25,7 +25,7 @@ const BUTTON_STYLES = {
   [BUTTON_VARIANTS.ALT]:
     "underline hover:text-neutral-400 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.HEADER]:
-    "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
+    "text-white hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.LOGOUT]:
     "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.PROFILE]:
@@ -56,5 +56,5 @@ export default function LinkButton({ variant, href, className, children }: Props
   if (!isLogout)
     return <Link href={href} className={`${combinedStyle}`}>{children}</Link>
 
-  return <button onClick={handleLogout} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1">{children}</button>
+  return <button onClick={handleLogout} className="hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1 text-white">{children}</button>
 }
