@@ -23,8 +23,8 @@ export default function Home() {
           <p className="text-justify text-pretty">
             We know about the confusion of getting rejected
             without any reason, maybe it was injustice
-            or maybe we didn't fit the job as well as we thought.
-            We're here to help you overcome that problem,
+            or maybe we didn&apos;t fit the job as well as we thought.
+            We&apos;re here to help you overcome that problem,
             on our platform every job rejected job application
             must have a rejection reason that user can check
             on their profile.</p>
@@ -33,12 +33,12 @@ export default function Home() {
           <h2 className="text-4xl font-bold tracking-wide leading-relaxed">Do you want to know if the company accepts only a few people, or you just suck?</h2>
           <p className="text-justify text-pretty">
             Some companies only accept the absolute best on the market,
-            while others aren't as strict about their hiring process.
+            while others aren&apos;t as strict about their hiring process.
             How do you know without spending hours of research on other
             non-reputable websites? Flaminger knows, as we possess
             the acceptance rate per each company that is shared with any
             user. You can find the percentage next to company name
-            in each job offer posted. Isn't that amazing?
+            in each job offer posted. Isn&apos;t that amazing?
           </p>
         </HeroSection>
       </div>
