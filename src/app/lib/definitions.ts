@@ -1,5 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 
+export const MAX_JOBS_PER_PAGE = 20;
+
 export type JobOffer = {
   id: string
   title: string

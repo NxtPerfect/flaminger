@@ -1,6 +1,7 @@
 import { and, count, eq, getTableColumns, inArray, not } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
+import { MAX_JOBS_PER_PAGE } from "@/app/lib/definitions";
 
 export async function getUserByEmail(email: SelectUser['email']) {
   return db.select()
@@ -103,8 +104,8 @@ export async function getAllJobsWithCompanyInfo(offset: number) {
   return db.select({ jobsTable, companiesTable })
     .from(jobsTable)
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
-    .limit(20)
-    .offset(20 * offset);
+    .limit(MAX_JOBS_PER_PAGE)
+    .offset(MAX_JOBS_PER_PAGE * offset);
 }
 
 export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser['id'], offset: number) {
@@ -123,8 +124,8 @@ export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser[
         eq(jobsToUsersTable.jobId, jobsTable.id)
       )
     )
-    .limit(20)
-    .offset(20 * offset);
+    .limit(MAX_JOBS_PER_PAGE)
+    .offset(MAX_JOBS_PER_PAGE * offset);
 }
 
 export async function getTechnologiesForAllJobs() {
@@ -138,8 +139,8 @@ export async function getTechnologiesForJobId(jobId: SelectJobs['id']) {
     .where(eq(technologiesRequirementsToJobsTable.jobId, jobId));
 }
 
-export async function getTechnologiesForMax20jobs(offset: number) {
-  const uniqueIds = await getUniqueIdsFor20jobs(offset);
+export async function getTechnologiesForMaxMAX_JOBS_PER_PAGEjobs(offset: number) {
+  const uniqueIds = await getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset);
   const parsedIds = uniqueIds.map(id => id.id);
   return db.select()
     .from(technologiesRequirementsToJobsTable)
@@ -157,19 +158,19 @@ export async function getHumanLanguagesForJobId(jobId: SelectJobs['id']) {
     .where(eq(humanLanguagesRequirementsToJobsTable.jobId, jobId));
 }
 
-export async function getHumanLanguagesForMax20jobs(offset: number) {
-  const uniqueIds = await getUniqueIdsFor20jobs(offset);
+export async function getHumanLanguagesForMaxMAX_JOBS_PER_PAGEjobs(offset: number) {
+  const uniqueIds = await getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset);
   const parsedIds = uniqueIds.map(id => id.id);
   return db.select()
     .from(humanLanguagesRequirementsToJobsTable)
     .where(inArray(humanLanguagesRequirementsToJobsTable.jobId, parsedIds));
 }
 
-export async function getUniqueIdsFor20jobs(offset: number) {
+export async function getUniqueIdsForMAX_JOBS_PER_PAGEjobs(offset: number) {
   return db.select({ id: jobsTable.id })
     .from(jobsTable)
-    .limit(20)
-    .offset(20 * offset);
+    .limit(MAX_JOBS_PER_PAGE)
+    .offset(MAX_JOBS_PER_PAGE * offset);
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {
@@ -225,5 +226,13 @@ export async function getApplicationsByCompanyId(companyId: SelectCompany['id'])
         )
       )
     )
-    .limit(20);
+    .limit(MAX_JOBS_PER_PAGE);
+}
+
+export async function getJobsMaxPages() {
+  return db.select({
+    count: count()
+  }
+  )
+    .from(jobsTable);
 }
