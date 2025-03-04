@@ -1,5 +1,5 @@
-import ActionButton from "@/components/atoms/ActionButton";
 import HeroSection from "@/components/molecules/HeroSection";
+import LinkButton from "@/components/organisms/LinkButton";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
             Your one stop shop for finding jobs!
           </p>
         </div>
-        <ActionButton variant="big" isLoading={false}>Start Searching!</ActionButton>
+        <LinkButton variant="big" href="/offers/1">Start Searching!</LinkButton>
       </div>
       <div className="flex flex-col gap-32 w-full justify-around items-center">
         <HeroSection imagePath="/hero/rejection.jpg">

@@ -38,7 +38,7 @@ export default function TechnologiesPicker({ technologies, setTechnologiesAction
                 variant="formSubmit"
                 className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75"
                 onClick={(e) => removeTechnology(e, index)}>
-                <TrashBinSvg className="size-4 h-5" />
+                <TrashBinSvg className="size-4 h-5" imageAlt="Remove item" />
               </ActionButton>
             </div>
           )

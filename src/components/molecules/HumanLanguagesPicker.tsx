@@ -34,7 +34,7 @@ export default function HumanLanguagesPicker({ humanLanguages, setHumanLanguages
           return (
             <div key={index} className="flex flex-row items-center">
               <InputNewHumanLanguage name={humanLanguage.name} level={humanLanguage.level} />
-              <ActionButton variant="formSubmit" className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75" onClick={(e) => removeHumanLanguage(e, index)}><TrashBinSvg className="size-4 h-5" /></ActionButton>
+              <ActionButton variant="formSubmit" className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75" onClick={(e) => removeHumanLanguage(e, index)}><TrashBinSvg className="size-4 h-5" imageAlt="Remove icon" /></ActionButton>
             </div>
           )
         })}
