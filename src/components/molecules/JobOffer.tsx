@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import LinkButton from '../organisms/LinkButton'
+import { FEATURE_FLAG_READ_MORE } from '@/app/lib/definitions'
 
 type Props = {
   id: number
@@ -76,7 +77,7 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
         {
           !isNotLoggedIn && linkText &&
           <span className="flex flex-row gap-8">
-            {false === true &&
+            {FEATURE_FLAG_READ_MORE &&
               <LinkButton variant="alt" href={`/offer/${id}`}>Read More</LinkButton>
             }
             <LinkButton variant="offerLink" href={`/offer/${id}/apply`}>{linkText}</LinkButton>
