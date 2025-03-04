@@ -21,7 +21,7 @@ export default {
       },
       animation: {
         'left-right': 'left-right 2s ease-in-out infinite',
-      }
+      },
     },
   },
   plugins: [],

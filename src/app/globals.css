@@ -19,3 +19,18 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+body::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  content: "";
+  inset: 0;
+  z-index: -10;
+  background-image: url("../../public/background/circleGrid.svg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  filter: blur(0.5rem);
+  overflow: hidden;
+}

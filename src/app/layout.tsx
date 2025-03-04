@@ -19,7 +19,8 @@ export default function RootLayout({
         className={`antialiased`}
       >
         <Header />
-        <main className="flex flex-col items-center px-24 py-12">
+        <main className="flex flex-col items-center px-24 py-12 z-10
+          min-h-[84svh] overflow-clip">
           {children}
         </main>
         <Footer />
