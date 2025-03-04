@@ -27,7 +27,7 @@ export default function LoginForm() {
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
-  const formStyle = "flex flex-col gap-2 bg-neutral-400 dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
+  const formStyle = "flex flex-col gap-2 bg-neutral-200 dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
 
   async function loginOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

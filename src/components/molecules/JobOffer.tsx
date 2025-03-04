@@ -73,15 +73,19 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
             </div>
           })}
         </span>
-        {!isNotLoggedIn && linkText &&
+        {
+          !isNotLoggedIn && linkText &&
           <span className="flex flex-row gap-8">
-            <LinkButton variant="alt" href={`/offer/${id}`}>Read More</LinkButton>
+            {false === true &&
+              <LinkButton variant="alt" href={`/offer/${id}`}>Read More</LinkButton>
+            }
             <LinkButton variant="offerLink" href={`/offer/${id}/apply`}>{linkText}</LinkButton>
-          </span>}
+          </span>
+        }
         {!isNotLoggedIn && isReject &&
           <span className="flex flex-row gap-8">
             <span className="text-neutral-600 select-none">{statusText}</span>
-            <LinkButton variant="alt" href={`/profile/offer/${id}/apply`}>Check Reason</LinkButton>
+            <LinkButton variant="alt" href={`/profile`}>Check Reason</LinkButton>
           </span>}
         {!isNotLoggedIn && isAccepted &&
           <span className="flex flex-row gap-8">

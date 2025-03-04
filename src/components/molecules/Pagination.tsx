@@ -27,7 +27,7 @@ export default function Pagination() {
         <LinkButton variant="navigation"
           href={`/offers/1`}
           className="hover:text-black/20 hover:dark:text-white/20
-          p-2 text-xl"
+          p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
         >
           1
         </LinkButton>}
@@ -40,7 +40,7 @@ export default function Pagination() {
             <LinkButton variant="navigation"
               href={`/offers/${prevPage}`}
               className="hover:text-black/20 hover:dark:text-white/20
-              p-2 text-xl"
+              p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
               key={id}
             >
               {prevPage}
@@ -63,7 +63,7 @@ export default function Pagination() {
             <LinkButton variant="navigation"
               href={`/offers/${nextPage}`}
               className="hover:text-black/20 hover:dark:text-white/20
-              p-2 text-xl"
+              p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
               key={id}
             >
               {nextPage}
@@ -77,7 +77,7 @@ export default function Pagination() {
         <LinkButton variant="navigation"
           href={`/offers/${maxPages}`}
           className="hover:text-black/20 hover:dark:text-white/20
-          p-2 text-xl"
+          p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
         >
           {maxPages}
         </LinkButton>}

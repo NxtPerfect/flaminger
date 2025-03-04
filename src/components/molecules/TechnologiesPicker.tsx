@@ -28,7 +28,7 @@ export default function TechnologiesPicker({ technologies, setTechnologiesAction
   return (
     <div className="flex flex-col">
       <label htmlFor="technologies">{children ?? "Required Technologies:"}</label>
-      <div className="border-2 border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-md">
+      <div className="border-2 border-neutral-400 dark:border-neutral-700 px-4 py-2 rounded-md">
         {technologies && "Technology name | Years of Experience"}
         {technologies.map((technology, index) => {
           return (
