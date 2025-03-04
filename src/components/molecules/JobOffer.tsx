@@ -43,7 +43,8 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
   }
 
   return (
-    <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw]">
+    <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900
+      rounded-md p-4 px-8 min-w-[35svw]">
       <span className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
       </span>
@@ -58,12 +59,16 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
       <span className="mt-4 flex flex-row items-center justify-between">
         <span className="flex flex-row gap-2 align-middle items-center">
           {requirements?.tech && requirements.tech.map(({ name: name, experience: experience }, index) => {
-            return <div key={index} className="rounded-md bg-neutral-400 dark:bg-neutral-800 px-1 self-center">
+            return <div key={index} className="rounded-md bg-neutral-600
+              text-white dark:bg-neutral-200 dark:text-black px-2 py-1
+              self-center">
               {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${experience} years`}
             </div>
           })}
           {requirements?.langs && requirements.langs.map(({ name: name, level: level }, index) => {
-            return <div key={index} className="rounded-md bg-neutral-400 dark:bg-neutral-800 px-1 self-center">
+            return <div key={index} className="rounded-md bg-neutral-600
+              text-white dark:bg-neutral-200 dark:text-black px-2 py-1
+              self-center">
               {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${level}`}
             </div>
           })}
