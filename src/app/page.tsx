@@ -29,7 +29,7 @@ export default function Home() {
             must have a rejection reason that user can check
             on their profile.</p>
         </HeroSection>
-        <HeroSection imagePath="/hero/company.jpg">
+        <HeroSection imagePath="/hero/company.jpg" reversed={true}>
           <h2 className="text-4xl font-bold tracking-wide leading-relaxed">Do you want to know if the company accepts only a few people, or you just suck?</h2>
           <p className="text-justify text-pretty">
             Some companies only accept the absolute best on the market,

@@ -3,7 +3,7 @@ import { Technology } from '@/app/lib/definitions'
 import SkillList from '../molecules/SkillList'
 
 type Props = {
-  technologies: Technology[]
+  technologies: Technology[] | { name: string, userId: number, experience: string }[]
   addMore?: boolean
 }
 

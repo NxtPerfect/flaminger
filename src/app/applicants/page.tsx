@@ -8,6 +8,7 @@ import CandidateInformationApplication from '@/components/molecules/CandidateInf
 import MultilineTextInput from '@/components/atoms/MultilineTextInput';
 import { HUMAN_LANGUAGE_LEVELS_TO_VALS } from '../lib/definitions';
 import ActionButton from '@/components/atoms/ActionButton';
+import MatchingOfferPercentageByCandidate from '@/components/atoms/MatchingOfferPercentageByCandidate';
 
 type ResponseData = {
   jobs_table: SelectJobs
@@ -144,16 +145,25 @@ export default function Page() {
 
   return (
     <>
-      {isLoading && <SkeletonCheckApplications />}
+      {isLoading &&
+        <>
+          <SkeletonCheckApplications />
+          <SkeletonCheckApplications />
+          <SkeletonCheckApplications />
+        </>
+      }
       {applications.length === 0 && <p>It&apos;s empty, add more job offers and wait for candidates to apply!</p>}
-      <div>
-        <div>
+      <div className="w-full">
+        <div className="flex flex-col gap-24 w-full justify-center items-center">
           {applications && applications.map((curApplication, index) => {
             const job = curApplication.job;
             const candidate = curApplication.candidate;
             const matching = getMatchingForOffer(job, candidate);
             return (
-              <div key={index}>
+              <div key={index} className="flex flex-col flex-grow-0 rounded-md
+                bg-neutral-200 p-8 w-full items-center gap-4">
+                <CandidateInformationApplication candidate={candidate} />
+                <MatchingOfferPercentageByCandidate matching={matching} />
                 <JobInformationApplication
                   job={job}
                   tech={technologyRequirements
@@ -162,31 +172,31 @@ export default function Page() {
                   langs={humanLanguagesRequirements
                     .filter((l) => l.jobId === job.id)
                     .map((l) => { return { name: l.name, level: l.level }; })} />
-                <CandidateInformationApplication candidate={candidate} />
-                <span>Candidate matches offer in: {matching}%</span>
-                <div className="flex flex-row justify-between w-full">
-                  <ActionButton variant="formSubmit"
-                    onClick={() =>
-                      handleReview(candidate.personalInformation.id,
-                        curApplication.job.id,
-                        "accepted")
-                    }>
-                    Accept
-                  </ActionButton>
-                  <div className="flex flex-row justify-between">
-                    <div className="flex flex-col">
-                      <ActionButton variant="formSubmit"
-                        onClick={() =>
-                          handleReview(candidate.personalInformation.id,
-                            curApplication.job.id,
-                            "rejected")
-                        }
-                        disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>
-                        Reject
-                      </ActionButton>
-                      {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
-                      {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
-                    </div>
+                <div className="flex flex-row gap-8">
+                  <div>
+                    <ActionButton variant="formSubmit"
+                      onClick={() =>
+                        handleReview(candidate.personalInformation.id,
+                          curApplication.job.id,
+                          "accepted")
+                      }>
+                      Accept
+                    </ActionButton>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <ActionButton variant="formSubmit"
+                      onClick={() =>
+                        handleReview(candidate.personalInformation.id,
+                          curApplication.job.id,
+                          "rejected")
+                      }
+                      disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>
+                      Reject
+                    </ActionButton>
+                    {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
+                    {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                  </div>
+                  <div className="w-full min-w-[40ch] min-h-[8lh]">
                     <MultilineTextInput className="line-clamp-4" name="rejectionReason" defaultValue={rejectionReason}
                       onChange={
                         (e) =>

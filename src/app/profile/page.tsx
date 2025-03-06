@@ -8,6 +8,7 @@ import UserLanguages from '@/components/organisms/UserLanguages';
 import UserTechnologies from '@/components/organisms/UserTechnologies';
 import StatisticsUserPieChart from '@/components/organisms/StatisticsUserPieChart';
 import LinkButton from '@/components/organisms/LinkButton';
+import ProfilePicture from '@/components/atoms/ProfilePicture';
 
 export default function Profile() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -123,9 +124,7 @@ export default function Profile() {
         (<>
           <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4 text-white dark:text-black">
             <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[50svw] p-4">
-              <div className="overflow-hidden rounded-full border-4 border-orange-600 dark:border-orange-600/60 bg-neutral-600">
-                <Image src="/profile/profile.png" alt="profile picture" width={250} height={250} />
-              </div>
+              <ProfilePicture />
               <div className="self-end justify-self-end">
                 <LinkButton variant="profile" className="p-4" href="/profile/edit">
                   Edit Profile

@@ -22,7 +22,7 @@ const BUTTON_VARIANTS = {
 
 const BUTTON_STYLES = {
   [BUTTON_VARIANTS.BIG]:
-    "flex mt-8 bg-orange-600 hover:bg-red-600 hover:animate-none text-white rounded-md p-8 py-2 text-[2rem] leading-tight animate-pulse duration-75 focus:border-2 border-blue-500",
+    "flex mt-8 bg-orange-600 hover:bg-red-600 hover:animate-none text-white rounded-md p-8 py-2 text-[2rem] leading-tight duration-75 focus:border-2 border-blue-500",
   [BUTTON_VARIANTS.OFFER_LINK]:
     "bg-orange-700 hover:bg-orange-600 text-white ease-in-out duration-100 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.ALT]:
