@@ -17,7 +17,12 @@ export default function SkillList({ label, skills, addMore = true }: Props) {
         {skills && skills.map((skill, index) => {
           return (
             <SkillRectangle key={index}>
-              <span className="font-semibold text-black dark:text-white">{skill.name}</span>: {'level' in skill ? `${skill.level}` : `${skill.experience} years`}
+              <span className="font-semibold text-black dark:text-white">
+                {skill.name}
+              </span>:
+              <span className="text-black dark:text-white">
+                {'level' in skill ? `${skill.level}` : `${skill.experience} years`}
+              </span>
             </SkillRectangle>
           )
         })}
