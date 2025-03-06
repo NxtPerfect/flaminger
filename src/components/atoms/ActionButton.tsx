@@ -20,7 +20,7 @@ const BUTTON_STYLES = {
   [BUTTON_VARIANTS.BIG]:
     "flex mt-8 bg-orange-600 hover:bg-red-600 hover:animate-none text-white rounded-md p-8 py-2 text-[2rem] leading-tight animate-pulse duration-75 focus:border-2 border-blue-500",
   [BUTTON_VARIANTS.ALT]:
-    "flex mt-8 text-orange-600 bg-neutral-900 rounded-md p-8 py-2 text-[2rem] leading-tight animate-pulse hover:bg-neutral-800 hover:animate-none hover:ease-in-out duration-75 focus:border-2 border-blue-500",
+    "underline hover:text-neutral-400 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.FORM_SUBMIT]:
     "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-[1rem] leading-tight hover:bg-red-600 hover:ease-in-out duration-75 focus:border-2 border-blue-500",
   default:
@@ -32,7 +32,8 @@ type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
 export default function ActionButton({ variant = null, children, className, isLoading = false, onClick, disabled }: Props) {
 
   const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
-  const disabledStyle = "mt-2 cursor-not-allowed text-[1rem] leading-tight bg-neutral-800/40 px-4 py-2 rounded-md text-white";
+  const disabledStyle = `mt-2 cursor-not-allowed text-[1rem]
+leading-tight bg-neutral-800/40 px-4 py-2 rounded-md text-white`;
   const combinedStyle = `${disabled ? disabledStyle : buttonStyle} ${className}`.trim();
   const buttonType = variant === "formSubmit" ? "submit" : "button";
 
