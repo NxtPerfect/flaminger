@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useState } from 'react'
-import Image from 'next/image'
 import SkeletonProfile from '@/components/placeholders/SkeletonProfile';
 import { CompletedApplication, DatabaseCompletedApplication, HumanLanguage, Offer, PendingApplication, StatisticsForUserApplications, StatisticsForUserApplicationsFromDatabase, Technology, User } from '@/app/lib/definitions';
 import JobApplicationsForUserProfile from '@/components/organisms/JobApplicationsForUserProfile';
