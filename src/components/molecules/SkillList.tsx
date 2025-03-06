@@ -6,9 +6,10 @@ import LinkButton from '../organisms/LinkButton'
 type Props = {
   label: string
   skills: HumanLanguage[] | Technology[]
+  addMore?: boolean
 }
 
-export default function SkillList({ label, skills }: Props) {
+export default function SkillList({ label, skills, addMore = true }: Props) {
   return (
     <div className="flex flex-col gap-2">
       {`${label.at(0)?.toUpperCase()}${label.slice(1)}`}:
@@ -16,11 +17,12 @@ export default function SkillList({ label, skills }: Props) {
         {skills && skills.map((skill: HumanLanguage | Technology, index: number) => {
           return (
             <SkillRectangle key={index}>
-              <span className="font-semibold">{skill.name}</span>: {'level' in skill ? `${skill.level}` : `${skill.experience} years`}
+              <span className="font-semibold text-black dark:text-white">{skill.name}</span>: {'level' in skill ? `${skill.level}` : `${skill.experience} years`}
             </SkillRectangle>
           )
         })}
-        <LinkButton variant="alt" href="/profile/edit">+Add More</LinkButton>
+        {addMore &&
+          <LinkButton variant="alt" href="/profile/edit">+Add More</LinkButton>}
       </div>
     </div>
   )

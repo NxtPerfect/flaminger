@@ -4,11 +4,12 @@ import SkillList from '../molecules/SkillList'
 
 type Props = {
   technologies: Technology[]
+  addMore?: boolean
 }
 
-export default function UserTechnologies({ technologies }: Props) {
+export default function UserTechnologies({ technologies, addMore }: Props) {
   return (
-    <SkillList label="technologies" skills={technologies} />
+    <SkillList label="technologies" skills={technologies} addMore={addMore} />
   )
 }
 
