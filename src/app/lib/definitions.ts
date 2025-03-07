@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 
 export const MAX_JOBS_PER_PAGE = 20;
-export const FEATURE_FLAG_READ_MORE = false;
+export const FEATURE_FLAG_READ_MORE = true;
 
 export type JobOffer = {
   id: string
@@ -128,7 +128,7 @@ export type HumanLanguage = {
 
 export type Technology = {
   name: string
-  experience: number
+  experience: number | string
 }
 
 export const HUMAN_LANGUAGE_LEVELS = [

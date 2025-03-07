@@ -4,7 +4,7 @@ import NumberInput from '../atoms/NumberInput'
 
 type Props = {
   name: string
-  experience: number
+  experience: string | number
 }
 
 export default function InputNewTechnology({ name, experience }: Props) {
@@ -24,10 +24,15 @@ export default function InputNewTechnology({ name, experience }: Props) {
   return (
     <div className="flex flex-row gap-3 w-full px-2">
       <div className="w-2/3">
-        <TextInput name="name" placeholder="Javascript" pattern="^\D{2,64}$" onChange={handleTextInput} defaultValue={name} />
+        <TextInput name="name" placeholder="Javascript"
+          pattern="^\D{2,64}$" onChange={handleTextInput}
+          defaultValue={name} />
       </div>
       <div className="w-1/4">
-        <NumberInput name="experience" min={0} max={99} placeholder="2" pattern="^\d{1,2}$" onChange={handleNumberInput} defaultValue={experience} />
+        <NumberInput name="experience" min={0} max={99}
+          placeholder="2" pattern="^\d{1,2}$"
+          onChange={handleNumberInput}
+          defaultValue={Number.parseInt(experience.toString())} />
       </div>
     </div>
   )

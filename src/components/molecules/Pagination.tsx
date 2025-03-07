@@ -21,8 +21,8 @@ export default function Pagination() {
 
 
   return (
-    <div className="mt-8 flex flex-row gap-2
-      px-4 py-1 justify-center items-center">
+    <div className={`mt-8 flex flex-row gap-2
+      px-4 py-1 justify-center items-center`}>
       {currentPage > 1 &&
         <LinkButton variant="navigation"
           href={`/offers/1`}
@@ -50,10 +50,10 @@ export default function Pagination() {
       }
       <LinkButton variant="navigation"
         href={`/offers/${currentPage}`}
-        className="text-xl bg-black dark:bg-white p-2
+        className={`text-xl bg-black dark:bg-white p-2
         aspect-square rounded-2xl text-white dark:text-black
         hover:bg-black/40 focus:bg-black/40 hover:dark:bg-white/40
-        focus:dark:bg-white/40 h-fit">
+        focus:dark:bg-white/40 h-fit`}>
         {currentPage}
       </LinkButton>
       {currentPage + 1 < maxPages &&

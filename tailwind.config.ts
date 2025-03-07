@@ -17,6 +17,14 @@ export default {
           '0%': { transform: 'scale(100%) translateX(-100%)' },
           '50%': { transform: 'scale(400%) translateX(165%)' },
           '100%': { transform: 'scale(100%) translateX(1500%)' },
+        },
+        'fade-in': {
+          '0%': { transform: 'opacity(0)' },
+          '100%': { transform: 'opacity(1)' },
+        },
+        'fade-out': {
+          '0%': { transform: 'opacity(1)' },
+          '100%': { transform: 'opacity(0)' },
         }
       },
       animation: {
