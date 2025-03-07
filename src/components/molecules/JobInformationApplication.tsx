@@ -19,7 +19,8 @@ type Props = {
 export default function JobInformationApplication({ job, tech, langs }: Props) {
   return (
     <div className="text-black dark:text-white bg-neutral-400
-      dark:bg-neutral-800 p-8 w-full grid grid-cols-2 gap-4">
+      dark:bg-neutral-800 p-8 w-full grid grid-cols-2 gap-4
+      justify-items-center items-stretch">
       <div>
         <div className="text-xl font-bold">
           {job.title}

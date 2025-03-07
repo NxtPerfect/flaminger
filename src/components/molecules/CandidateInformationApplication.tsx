@@ -15,10 +15,11 @@ type Props = {
 export default function CandidateInformationApplication({ candidate }: Props) {
   return (
     <div className="grid grid-cols-2 dark:text-white bg-neutral-400
-      dark:bg-neutral-800 p-8 mt-8 justify-items-center items-stretch">
+      dark:bg-neutral-800 p-8 mt-8 w-full justify-items-center
+      items-stretch">
       <div>
         <div className="w-fit">
-          <ProfilePicture />
+          <ProfilePicture width={200} height={200} />
         </div>
         <div className="mt-8 flex flex-col w-full items-start justify-self-center gap-2">
           <span className="text-2xl font-semibold w-full gap-2">

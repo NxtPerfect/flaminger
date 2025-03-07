@@ -161,7 +161,7 @@ export default function Page() {
             const matching = getMatchingForOffer(job, candidate);
             return (
               <div key={index} className="flex flex-col flex-grow-0 rounded-md
-                bg-neutral-200 p-8 w-full items-center gap-4">
+                bg-neutral-200 dark:bg-neutral-800/50 p-8 w-full items-center gap-4">
                 <CandidateInformationApplication candidate={candidate} />
                 <MatchingOfferPercentageByCandidate matching={matching} />
                 <JobInformationApplication
@@ -183,7 +183,7 @@ export default function Page() {
                       Accept
                     </ActionButton>
                   </div>
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full text-black dark:text-white">
                     <ActionButton variant="formSubmit"
                       onClick={() =>
                         handleReview(candidate.personalInformation.id,
@@ -193,10 +193,19 @@ export default function Page() {
                       disabled={rejectionReason.length < MIN_LENGTH_REJECTION_REASON}>
                       Reject
                     </ActionButton>
-                    {rejectionReason.length < MIN_LENGTH_REJECTION_REASON && <span>Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars</span>}
-                    {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON && <span>Unlocked!</span>}
+                    {rejectionReason.length < MIN_LENGTH_REJECTION_REASON &&
+                      <span>
+                        Unlocks in {MIN_LENGTH_REJECTION_REASON - rejectionReason.length} chars
+                      </span>
+                    }
+                    {rejectionReason.length >= MIN_LENGTH_REJECTION_REASON &&
+                      <span>
+                        Unlocked!
+                      </span>
+                    }
                   </div>
-                  <div className="w-full min-w-[40ch] min-h-[8lh]">
+                  <div className="w-full min-w-[40ch] min-h-[8lh]
+                    text-black dark:text-white">
                     <MultilineTextInput className="line-clamp-4" name="rejectionReason" defaultValue={rejectionReason}
                       onChange={
                         (e) =>
