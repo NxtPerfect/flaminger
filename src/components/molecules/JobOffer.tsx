@@ -49,19 +49,19 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
   return (
     <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900
       rounded-md p-4 px-8 min-w-[35svw]">
-      <span className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
-      </span>
-      <span className="mt-2 flex flex-row gap-2">
+      </div>
+      <div className="mt-2 flex flex-row gap-2">
         <Image src={logoPath} alt="Picture of a company" width={25} height={25} quality={50} />
         <span>{company}</span>
         <AcceptanceRatePercentage acceptanceRate={acceptanceRate} />
-      </span>
+      </div>
       <span className="mt-4 max-w-[50ch] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
         {description.substring(0, 180)}
       </span>
-      <span className="mt-4 flex flex-row items-center justify-between">
-        <span className="flex flex-row gap-2 align-middle items-center">
+      <div className="mt-4 flex flex-row gap-2 items-center justify-between">
+        <div className="flex flex-row gap-2 align-middle items-center">
           {requirements?.tech &&
             requirements.tech.map(({ name: name, experience: experience }, index) => {
               return <div key={index} className="rounded-md bg-neutral-600
@@ -78,47 +78,47 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
                 {`${name.charAt(0).toUpperCase() + name.slice(1)} > ${level}`}
               </div>
             })}
-        </span>
+        </div>
         {
           !isNotLoggedIn && linkText &&
-          <span className="flex flex-row gap-8">
+          <div className="flex flex-row gap-8 items-center">
             {FEATURE_FLAG_READ_MORE &&
               <ActionButton variant="alt" onClick={() => openModalReadMore(id)}>
                 Read More
               </ActionButton>
             }
-            <LinkButton variant="offerLink" href={`/offer/${id}/apply`}>
+            <LinkButton className="h-fit" variant="offerLink" href={`/offer/${id}/apply`}>
               {linkText}
             </LinkButton>
-          </span>
+          </div>
         }
         {!isNotLoggedIn && isReject &&
-          <span className="flex flex-row gap-8">
+          <div className="flex flex-row gap-8 items-center">
             <span className="text-neutral-600 select-none">
               {statusText}
             </span>
             <LinkButton variant="alt" href={`/profile`}>
               Check Reason
             </LinkButton>
-          </span>}
+          </div>}
         {!isNotLoggedIn && isAccepted &&
-          <span className="flex flex-row gap-8">
+          <div className="flex flex-row gap-8 items-center">
             <span className="text-green-600 select-none">
               {statusText}
             </span>
-          </span>}
+          </div>}
         {!isNotLoggedIn && isApplied &&
-          <span className="flex flex-row gap-8">
+          <div className="flex flex-row gap-8 items-center">
             <span className="text-neutral-600 select-none">
               {statusText}
             </span>
-          </span>}
+          </div>}
         {isNotLoggedIn &&
           <LinkButton variant="offerLink" href={`/login`}>
             Signin
           </LinkButton>
         }
-      </span>
+      </div>
     </div>
   )
 }

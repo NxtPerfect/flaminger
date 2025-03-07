@@ -6,10 +6,10 @@ export default function Home() {
     <>
       <div className="min-h-[80svh] min-w-[100svw] flex flex-col items-center py-16 justify-start">
         <div className="flex flex-col items-center px-4 rounded-2xl">
-          <h1 className="text-[9rem] font-bold tracking-tighter w-fit text-rose-600">
+          <h1 className="text-[4rem] md:text-[9rem] font-bold tracking-tighter w-fit text-rose-600">
             Flaminger
           </h1>
-          <p className="text-black dark:text-white mt-[-2rem] w-fit text-[4rem] font-thin font-sans">
+          <p className="text-black dark:text-white mt-2 md:mt-[-2rem] w-fit text-[1.75rem] md:text-[4rem] font-thin font-sans">
             Your one stop shop for finding jobs!
           </p>
         </div>

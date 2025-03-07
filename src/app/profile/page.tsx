@@ -121,9 +121,10 @@ export default function Profile() {
         (<SkeletonProfile />)
         :
         (<>
-          <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4 text-white">
-            <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[50svw] p-4">
-              <ProfilePicture />
+          <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4
+            text-white items-center">
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[80svw] md:w-[50svw] p-4">
+              <ProfilePicture className="" />
               <div className="self-end justify-self-end">
                 <LinkButton variant="profile" className="p-4" href="/profile/edit">
                   Edit Profile
