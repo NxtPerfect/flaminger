@@ -8,13 +8,7 @@ import ConfirmPasswordInput from '../molecules/ConfirmPasswordInput';
 import DataConsentCheckbox from '../molecules/DataConsentCheckbox';
 import MailingConsentCheckbox from '../molecules/MailingConsentCheckbox';
 import ActionButton from '../atoms/ActionButton';
-import { ERROR_MESSAGES, ERROR_VARIANTS, ErrorVariant } from '@/app/lib/definitions';
 import { useAuth } from '@/hooks/useAuth';
-
-type ReturnData = {
-  readonly errorType?: ErrorVariant
-  readonly status: number
-}
 
 export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
