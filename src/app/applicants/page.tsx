@@ -172,14 +172,14 @@ export default function Page() {
                   langs={humanLanguagesRequirements
                     .filter((l) => l.jobId === job.id)
                     .map((l) => { return { name: l.name, level: l.level }; })} />
-                <div className="flex flex-row gap-8">
-                  <div>
+                <div className="flex flex-col md:flex-row gap-8">
+                  <div className="flex w-full">
                     <ActionButton variant="formSubmit"
                       onClick={() =>
                         handleReview(candidate.personalInformation.id,
                           curApplication.job.id,
                           "accepted")
-                      }>
+                      } className="w-full md:w-fit">
                       Accept
                     </ActionButton>
                   </div>

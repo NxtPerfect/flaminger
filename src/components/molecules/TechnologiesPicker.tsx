@@ -28,15 +28,19 @@ export default function TechnologiesPicker({ technologies, setTechnologiesAction
   return (
     <div className="flex flex-col">
       <label htmlFor="technologies">{children ?? "Required Technologies:"}</label>
-      <div className="border-2 border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-md">
+      <div className={`border-2 border-neutral-200
+        dark:border-neutral-700 px-4 py-2 rounded-md`}>
         {technologies && "Technology name | Years of Experience"}
         {technologies.map((technology, index) => {
           return (
             <div key={index} className="flex flex-row items-center">
-              <InputNewTechnology name={technology.name} experience={technology.experience} />
+              <InputNewTechnology
+                name={technology.name}
+                experience={technology.experience} />
               <ActionButton
                 variant="formSubmit"
-                className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75"
+                className={`mt-0 h-fit py-1 px-6 bg-red-600
+                hover:bg-red-600/80 duration-75`}
                 onClick={(e) => removeTechnology(e, index)}>
                 <TrashBinSvg className="size-4 h-5" imageAlt="Remove item" />
               </ActionButton>

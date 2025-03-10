@@ -9,7 +9,8 @@ type Props = {
 }
 
 export default function MinMaxSalaryInput({ className, min, max }: Props) {
-  const style = `flex flex-col border-2 border-neutral-200 dark:border-neutral-700 rounded-md p-4 ${className}`.trim();
+  const style = `flex flex-col border-2 border-neutral-200
+dark:border-neutral-700 rounded-md md:p-4 ${className}`.trim();
   const [minVal, setMin] = useState<number>(min);
   const [maxVal, setMax] = useState<number>(max);
 
@@ -41,7 +42,7 @@ export default function MinMaxSalaryInput({ className, min, max }: Props) {
 
   return (
     <div className={style}>
-      <div className="flex flex-row w-full gap-2 justify-between">
+      <div className="flex flex-row w-full md:gap-2 justify-between">
         <NumberRange onChange={handleMin} name="minSalary" className="w-1/3" min={min} max={Math.max(max, maxVal)} placeholder={1000} required={true}>
           Min. Salary
         </NumberRange>

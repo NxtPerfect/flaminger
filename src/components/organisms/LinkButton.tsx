@@ -32,7 +32,7 @@ const BUTTON_STYLES = {
   [BUTTON_VARIANTS.LOGOUT]:
     "hover:underline ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.PROFILE]:
-    "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-[1rem] leading-tight hover:bg-red-600 hover:ease-in-out duration-75",
+    "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-2xl md:text-[1rem] leading-tight hover:bg-red-600 hover:ease-in-out duration-75",
   [BUTTON_VARIANTS.FOOTER]:
     "mt-2 text-blue-400 underline px-4 py-2 text-[1rem] leading-tight hover:text-blue-600/80 hover:ease-in-out duration-75",
   default:

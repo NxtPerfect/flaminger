@@ -25,33 +25,42 @@ export default function EmploymentTypePicker({ whichRadioIsActive, setWhichRadio
     <div className="flex flex-col">
       <label htmlFor="employmentType">*Employment Type:</label>
       <input type="hidden" name="employmentType" value={getEmploymentTypeFromRadioId(whichRadioIsActive)} />
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         <RadioWithTextSquare
           radioId={0}
           whichRadioIsActive={whichRadioIsActive}
           setWhichRadioIsActiveAction={setWhichRadioIsActiveAction}
           text="Remote"
-          className="w-1/3"
+          className="w-full md:w-1/3"
         >
-          <HomeSvg imageAlt={"Remote work"} className={`transition duration-75 ${0 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
+          <HomeSvg
+            imageAlt={"Remote work"}
+            className={`transition duration-75 ${0 === whichRadioIsActive ?
+              "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={1}
           whichRadioIsActive={whichRadioIsActive}
           setWhichRadioIsActiveAction={setWhichRadioIsActiveAction}
           text="Hybrid"
-          className="w-1/3"
+          className="w-full md:w-1/3"
         >
-          <HybridSvg imageAlt={"Hybrid work"} className={`transition duration-75 ${1 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
+          <HybridSvg
+            imageAlt={"Hybrid work"}
+            className={`transition duration-75 ${1 === whichRadioIsActive ?
+              "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
         <RadioWithTextSquare
           radioId={2}
           whichRadioIsActive={whichRadioIsActive}
           setWhichRadioIsActiveAction={setWhichRadioIsActiveAction}
           text="Stationary"
-          className="w-1/3"
+          className="w-full md:w-1/3"
         >
-          <StationarySvg imageAlt={"Remote work"} className={`transition duration-75 ${2 === whichRadioIsActive ? "text-orange-600" : "text-black dark:text-white"}`} />
+          <StationarySvg
+            imageAlt={"Remote work"}
+            className={`transition duration-75 ${2 === whichRadioIsActive ?
+              "text-orange-600" : "text-black dark:text-white"}`} />
         </RadioWithTextSquare>
       </div>
     </div>

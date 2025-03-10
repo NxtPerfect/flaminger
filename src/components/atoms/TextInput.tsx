@@ -14,7 +14,8 @@ type Props = {
 }
 
 export default function TextInput({ className, name, placeholder, required, pattern, children, onChange, defaultValue, list }: Props) {
-  const style = `w-[100%] rounded-md px-2 py-1 text-black invalid:[&:not(:placeholder-shown):not(:focus)]:bg-red-300/80 ${className}`.trim();
+  const style = `w-[100%] rounded-md px-2 py-1 text-black
+invalid:[&:not(:placeholder-shown):not(:focus)]:bg-red-300/80 ${className}`.trim();
   return (
     <div className="flex flex-col">
       <label htmlFor={name}>{required && "*"}{children}</label>

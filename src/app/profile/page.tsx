@@ -126,7 +126,7 @@ export default function Profile() {
             <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[80svw] md:w-[50svw] p-4">
               <ProfilePicture className="" />
               <div className="self-end justify-self-end">
-                <LinkButton variant="profile" className="p-4" href="/profile/edit">
+                <LinkButton variant="profile" className="text-nowrap p-4 md:p-4" href="/profile/edit">
                   Edit Profile
                 </LinkButton>
               </div>
@@ -141,7 +141,7 @@ export default function Profile() {
                 <UserTechnologies technologies={technologies} />
               </div>
               <div className="px-4 col-span-2 h-full bg-neutral-800/60 rounded-md">
-                <h2 className="mt-6 text-xl font-semibold text-white">Statistics</h2>
+                <h2 className="text-center md:text-left mt-6 text-xl font-semibold text-white">Statistics</h2>
                 <StatisticsUserPieChart statistics={statistics} />
               </div>
             </div>

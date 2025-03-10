@@ -42,17 +42,40 @@ export default function Page() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-8 bg-neutral-400 dark:bg-neutral-800 rounded-md px-8 py-4 w-[70ch] min-w-[30ch] max-w-[80ch] text-white"
+      className={`flex flex-col gap-8 bg-neutral-400
+      dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch]
+      max-w-[80ch] text-white`}
     >
-      <TextInput name="title" placeholder="Junior React Developer" required={true} pattern={`^(?=.{1,50}$)[A-Za-z]+(?:[\\s'_.][A-Za-z]+)*$`}>Job name:</TextInput>
-      <TextAreaInput name="description" required={true} placeholder="Our flexible and dynamic team is looking for a passionate developer.">Description:</TextAreaInput>
+      <TextInput
+        name="title"
+        placeholder="Junior React Developer"
+        required={true}
+        pattern={`^(?=.{1,50}$)[A-Za-z]+(?:[\\s'_.][A-Za-z]+)*$`}>
+        Job name:
+      </TextInput>
+      <TextAreaInput
+        name="description"
+        required={true}
+        placeholder="Our flexible and dynamic team is looking for a passionate developer.">
+        Description:
+      </TextAreaInput>
       <SalaryRange />
       <CityPicker />
-      <EmploymentTypePicker whichRadioIsActive={employmentActiveRadio} setWhichRadioIsActiveAction={setEmploymentActiveRadio} />
-      <ContractTypePicker whichRadioIsActive={contractActiveRadio} setWhichRadioIsActiveAction={setContractActiveRadio} />
-      <WorkhourTypePicker whichRadioIsActive={workhourActiveRadio} setWhichRadioIsActiveAction={setWorkhourActiveRadio} />
-      <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} />
-      <HumanLanguagesPicker humanLanguages={humanLanguages} setHumanLanguagesAction={setHumanLanguages} />
+      <EmploymentTypePicker
+        whichRadioIsActive={employmentActiveRadio}
+        setWhichRadioIsActiveAction={setEmploymentActiveRadio} />
+      <ContractTypePicker
+        whichRadioIsActive={contractActiveRadio}
+        setWhichRadioIsActiveAction={setContractActiveRadio} />
+      <WorkhourTypePicker
+        whichRadioIsActive={workhourActiveRadio}
+        setWhichRadioIsActiveAction={setWorkhourActiveRadio} />
+      <TechnologiesPicker
+        technologies={technologies}
+        setTechnologiesAction={setTechnologies} />
+      <HumanLanguagesPicker
+        humanLanguages={humanLanguages}
+        setHumanLanguagesAction={setHumanLanguages} />
       <ActionButton variant="formSubmit">Create offer</ActionButton>
     </form>
   )

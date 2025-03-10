@@ -28,13 +28,20 @@ export default function HumanLanguagesPicker({ humanLanguages, setHumanLanguages
   return (
     <div className="flex flex-col">
       <label htmlFor="humanLanguages">{children ?? "Required Languages:"}</label>
-      <div className="border-2 border-neutral-200 dark:border-neutral-700 px-4 py-2 rounded-md">
+      <div className={`border-2 border-neutral-200
+        dark:border-neutral-700 px-4 py-2 rounded-md`}>
         {humanLanguages && "Language name | Level (A1, Native)"}
         {humanLanguages.map((humanLanguage, index) => {
           return (
             <div key={index} className="flex flex-row items-center">
               <InputNewHumanLanguage name={humanLanguage.name} level={humanLanguage.level} />
-              <ActionButton variant="formSubmit" className="mt-0 h-fit py-1 px-6 bg-red-600 hover:bg-red-600/80 duration-75" onClick={(e) => removeHumanLanguage(e, index)}><TrashBinSvg className="size-4 h-5" imageAlt="Remove icon" /></ActionButton>
+              <ActionButton
+                variant="formSubmit"
+                className={`mt-0 h-fit py-1 px-6 bg-red-600
+                hover:bg-red-600/80 duration-75`}
+                onClick={(e) => removeHumanLanguage(e, index)}>
+                <TrashBinSvg className="size-4 h-5" imageAlt="Remove icon" />
+              </ActionButton>
             </div>
           )
         })}

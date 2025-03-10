@@ -11,54 +11,41 @@ type Props = {
 }
 
 export default function JobApplicationsForUserProfile({ pendingApplications, completedApplications }: Props) {
+  const tableStyle = "w-full";
+  const rowStyle = "w-full";
+  const columnStyle = "border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/4";
   return (
-    <Table className="w-full">
+    <Table className={tableStyle}>
       <TableHead>
-        <TableRow className="w-full">
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+        <TableRow className={rowStyle}>
+          <th className={columnStyle}>
             Company
           </th>
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6" >
+          <th className={columnStyle} >
             Job Title
           </th>
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-            Location
-          </th>
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-            Salary Range
-          </th>
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+          <th className={columnStyle}>
             Status
           </th>
-          <th className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-            Reasoning
+          <th className={columnStyle}>
+            Reason
           </th>
         </TableRow>
       </TableHead>
-      <TableBody className="w-full">
+      <TableBody className={rowStyle}>
         {pendingApplications && pendingApplications.map((application: Partial<Offer>) => {
           return (
-            <TableRow className="w-full" key={application.id}>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+            <TableRow className={rowStyle} key={application.id}>
+              <td className={columnStyle}>
                 {application.company ?? "None"}
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+              <td className={columnStyle}>
                 {application.title ?? "Error"}
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-                {
-                  "NaN" //application.city ?? "NaN"
-                }
-              </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-                {
-                  "NaN" //application.salary ?? "NaN"
-                }
-              </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+              <td className={columnStyle}>
                 Pending
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+              <td className={columnStyle}>
                 -
               </td>
             </TableRow>
@@ -66,27 +53,17 @@ export default function JobApplicationsForUserProfile({ pendingApplications, com
         })}
         {completedApplications && completedApplications.map((application: CompletedApplication) => {
           return (
-            <TableRow className="w-full" key={application.id}>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+            <TableRow className={rowStyle} key={application.id}>
+              <td className={columnStyle}>
                 {application.company}
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+              <td className={columnStyle}>
                 {application.title}
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-                {
-                  "NaN" // application.city ?? "NaN"}
-                }
-              </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
-                {
-                  "NaN" // application.salary ?? "NaN"}
-                }
-              </td>
-              <td className={`border-2 border-neutral-300 dark:border-neutral-800 p-2 ${application.isAccepted ? "text-green-500" : "text-red-500"} w-1/6`}>
+              <td className={`${columnStyle} ${application.isAccepted ? "text-green-500" : "text-red-500"}`}>
                 {application.isAccepted ? "Accepted" : "Rejected"}
               </td>
-              <td className="border-2 border-neutral-300 dark:border-neutral-800 p-2 w-1/6">
+              <td className={columnStyle}>
                 {application.rejectionReason ?? "Not specified"}
               </td>
             </TableRow>

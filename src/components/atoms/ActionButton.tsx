@@ -33,7 +33,7 @@ export default function ActionButton({ variant = null, children, className, isLo
 
   const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
   const disabledStyle = `mt-2 cursor-not-allowed text-[1rem]
-leading-tight bg-neutral-800/40 px-4 py-2 rounded-md text-white`;
+leading-tight bg-neutral-800/40 px-4 py-2 rounded-md text-white`.trim();
   const combinedStyle = `${disabled ? disabledStyle : buttonStyle} ${className}`.trim();
   const buttonType = variant === "formSubmit" ? "submit" : "button";
 
