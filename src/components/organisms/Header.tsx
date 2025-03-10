@@ -17,8 +17,10 @@ export default async function Header() {
           <LinkButton variant="header" href="/">Home</LinkButton>
           <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
           <LinkButton variant="header" href="/profile">My Profile</LinkButton>
-          {isEmployer && <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
-          {isEmployer && <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>}
+          {isEmployer &&
+            <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
+          {isEmployer &&
+            <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>}
           <LinkButton variant="logout" href="/">Logout</LinkButton>
         </header>
       </>

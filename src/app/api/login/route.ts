@@ -1,4 +1,4 @@
-import { createSession } from "@/app/lib/session";
+import { createSession, getIsUserEmployer } from "@/app/lib/session";
 import { isValidEmail, isValidPassword } from "@/app/lib/validation";
 import { getUserByEmail } from "@/db/queries/select";
 import { compare } from "bcryptjs";
@@ -26,5 +26,7 @@ export async function POST(req: Request) {
   }
 
   await createSession(userData.id.toString(), userData.isEmployer);
-  return Response.json({ status: 200 });
+  const isEmployer = await getIsUserEmployer();
+  return Response.json({ role: isEmployer ? "employer" : "user" },
+    { status: 200 });
 }

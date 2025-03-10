@@ -1,24 +1,14 @@
+import { RegisterFormData } from "@/app/lib/definitions";
 import { createSession } from "@/app/lib/session";
 import { isValidEmail, isValidFirstName, isValidPassword, isValidSurName } from "@/app/lib/validation";
 import { createUser } from "@/db/queries/insert";
 import { getUserByEmail } from "@/db/queries/select";
 import { hash } from "bcryptjs";
 
-type UserFormData = {
-  id?: number
-  firstname?: string
-  surname?: string
-  email?: string
-  password?: string
-  confirmPassword?: string
-  dataConsent?: string
-  mailingConsent?: string
-}
-
 export async function POST(req: Request) {
   const formData = await req.formData();
 
-  const userData: UserFormData = getUserDataFromForm(formData);
+  const userData: RegisterFormData = getUserDataFromForm(formData);
 
   if (!isValidUser(userData))
     return Response.json({ errorType: "emptyFields" }, { status: 400 });
@@ -48,14 +38,14 @@ export async function POST(req: Request) {
 
     const [user] = await getUserByEmail(userData.email!.toString());
     await createSession(user.id.toString(), user.isEmployer);
-    return Response.json({ status: 200 });
+    return Response.json({ role: "user" }, { status: 200 });
   } catch (error) {
     console.error(error);
     return Response.json({ errorType: "userExists" }, { status: 400 });
   }
 }
 
-function isValidUserData(userData: UserFormData) {
+function isValidUserData(userData: RegisterFormData) {
   return (
     isValidEmail(userData.email!.toString()) ||
     isValidFirstName(userData.firstname!.toString()) ||
@@ -74,10 +64,10 @@ function getUserDataFromForm(formData: FormData) {
   return { email, firstname, surname, password, confirmPassword, dataConsent, mailingConsent }
 }
 
-function isValidUser(userData: UserFormData) {
+function isValidUser(userData: RegisterFormData) {
   return userData.email && userData.firstname && userData.surname && userData.password && userData.confirmPassword && userData.dataConsent;
 }
 
-function confirmPasswordMatches(userData: UserFormData) {
+function confirmPasswordMatches(userData: RegisterFormData) {
   return userData.password === userData.confirmPassword;
 }

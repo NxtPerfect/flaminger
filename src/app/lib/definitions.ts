@@ -3,6 +3,48 @@ import { Dispatch, SetStateAction } from "react"
 export const MAX_JOBS_PER_PAGE = 20;
 export const FEATURE_FLAG_READ_MORE = true;
 
+export type ErrorVariant = typeof ERROR_VARIANTS[keyof typeof ERROR_VARIANTS];
+
+export const ERROR_VARIANTS = {
+  BAD_DATA: "badData",
+  PASSWORDS_NOT_MATCHING: "passwordAndConfirmPasswordNotSame",
+  EMPTY_FIELDS: "someFieldsAreEmpty",
+  NO_DATA_CONSENT: "dataNotConsent",
+  USER_EXISTS: "userExists",
+  OTHER: "unknownError"
+}
+
+export const ERROR_MESSAGES = {
+  [ERROR_VARIANTS.BAD_DATA]:
+    "Ensure all fields are valid.",
+  [ERROR_VARIANTS.PASSWORDS_NOT_MATCHING]:
+    "Confirm password doesn't match password.",
+  [ERROR_VARIANTS.EMPTY_FIELDS]:
+    "Some fields are empty. Populate all fields.",
+  [ERROR_VARIANTS.NO_DATA_CONSENT]:
+    "You must consent to data sending.",
+  [ERROR_VARIANTS.USER_EXISTS]:
+    "This user already exists.",
+  [ERROR_VARIANTS.OTHER]:
+    "Unknown error. Please report the circumstances of the situation."
+}
+
+export const ROLE_VARIANTS = {
+  user: "user",
+  employer: "employer",
+  admin: "admin",
+  guest: "none"
+}
+
+export type RoleVariant = typeof ROLE_VARIANTS[keyof typeof ROLE_VARIANTS];
+
+export const ROLES = {
+  [ROLE_VARIANTS.admin]: "admin",
+  [ROLE_VARIANTS.employer]: "employer",
+  [ROLE_VARIANTS.user]: "user",
+  [ROLE_VARIANTS.guest]: "none"
+}
+
 export type JobOffer = {
   id: string
   title: string
@@ -154,3 +196,15 @@ export const HUMAN_LANGUAGE_LEVELS_TO_VALS: Record<string, number> = {
   "c2": 6,
   "native": 7,
 }
+
+export type RegisterFormData = {
+  id?: number
+  firstname?: string
+  surname?: string
+  email?: string
+  password?: string
+  confirmPassword?: string
+  dataConsent?: string
+  mailingConsent?: string
+}
+

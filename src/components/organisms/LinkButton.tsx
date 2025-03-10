@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -43,9 +44,10 @@ type ButtonVariant = typeof BUTTON_VARIANTS[keyof typeof BUTTON_VARIANTS]
 
 export default function LinkButton({ variant, href, className, children }: Props) {
   const router = useRouter();
+  const { logout } = useAuth();
 
   async function handleLogout() {
-    await fetch('/api/logout', { method: "DELETE" })
+    await logout()
       .then(() => {
         router.push('/');
         router.refresh();
