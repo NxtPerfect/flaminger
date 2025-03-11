@@ -7,24 +7,24 @@ export async function GET() {
   const session = cookieStore.get("session");
 
   if (!session)
-    return {
+    return Response.json({
       isLoggedIn: false,
       role: ROLES[ROLE_VARIANTS.guest]
-    };
+    }, { status: 200 });
 
   if (!session.value)
-    return {
+    return Response.json({
       isLoggedIn: false,
       role: ROLES[ROLE_VARIANTS.guest]
-    };
+    }, { status: 200 });
 
   const isVerified = await verifySession();
   const isEmployer = await getIsUserEmployer();
 
-  return {
+  return Response.json({
     isLoggedIn: isVerified ? true : false,
     role: isEmployer ?
       ROLES[ROLE_VARIANTS.employer] :
       ROLES[ROLE_VARIANTS.user]
-  };
+  }, { status: 200 });
 }

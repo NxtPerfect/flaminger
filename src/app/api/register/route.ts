@@ -1,4 +1,4 @@
-import { RegisterFormData } from "@/app/lib/definitions";
+import { ERROR_VARIANTS, RegisterFormData } from "@/app/lib/definitions";
 import { createSession } from "@/app/lib/session";
 import { isValidEmail, isValidFirstName, isValidPassword, isValidSurName } from "@/app/lib/validation";
 import { createUser } from "@/db/queries/insert";
@@ -11,17 +11,17 @@ export async function POST(req: Request) {
   const userData: RegisterFormData = getUserDataFromForm(formData);
 
   if (!isValidUser(userData))
-    return Response.json({ errorType: "emptyFields" }, { status: 400 });
+    return Response.json({ errorType: ERROR_VARIANTS.EMPTY_FIELDS }, { status: 400 });
 
   if (!confirmPasswordMatches(userData))
-    return Response.json({ errorType: "passwords" }, { status: 400 });
+    return Response.json({ errorType: ERROR_VARIANTS.PASSWORDS_NOT_MATCHING }, { status: 400 });
 
   if (!isValidUserData(userData) || !isValidPassword(userData.password!.toString())) {
-    return Response.json({ errorType: "badData" }, { status: 400 });
+    return Response.json({ errorType: ERROR_VARIANTS.BAD_DATA }, { status: 400 });
   }
 
   if (!userData.dataConsent) {
-    return Response.json({ errorType: "dataConsent" }, { status: 400 });
+    return Response.json({ errorType: ERROR_VARIANTS.NO_DATA_CONSENT }, { status: 400 });
   }
 
   const hashedUserPassword = await hash(userData.password!.toString(), 12);
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     return Response.json({ role: "user" }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return Response.json({ errorType: "userExists" }, { status: 400 });
+    return Response.json({ errorType: ERROR_VARIANTS.USER_EXISTS }, { status: 400 });
   }
 }
 
