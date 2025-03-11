@@ -14,9 +14,8 @@ export default {
       },
       keyframes: {
         'left-right': {
-          '0%': { transform: 'scale(100%) translateX(-100%)' },
-          '50%': { transform: 'scale(400%) translateX(165%)' },
-          '100%': { transform: 'scale(100%) translateX(1500%)' },
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(500%)' },
         },
         'fade-in': {
           '0%': { transform: 'opacity(0)' },
@@ -28,7 +27,7 @@ export default {
         }
       },
       animation: {
-        'left-right': 'left-right 2s ease-in-out infinite',
+        'left-right': 'left-right 2s linear infinite',
       },
     },
   },
