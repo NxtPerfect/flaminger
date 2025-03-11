@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import EmailInput from '../molecules/EmailInput';
 import FirstnameInput from '../molecules/FirstnameInput';
 import SurnameInput from '../molecules/SurnameInput';
@@ -11,31 +11,31 @@ import ActionButton from '../atoms/ActionButton';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterForm() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const { error, register } = useAuth();
+  const { isLoggedIn, isLoading, error, register } = useAuth();
   const router = useRouter();
 
   const registerFormStyle = "flex flex-col gap-2 bg-neutral-200 dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
 
   async function registerOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
     setErrorMessage("");
 
-    try {
-      const formData = new FormData(event.currentTarget);
-      await register(formData);
-      if (error) {
-        setErrorMessage(errorMessage);
-        return;
-      }
-      router.push('/profile');
-      router.refresh();
-    } finally {
-      setIsLoading(false);
-    }
+    const formData = new FormData(event.currentTarget);
+    await register(formData);
   }
+
+  useEffect(() => {
+    if (error && !isLoading) {
+      setErrorMessage(error);
+      return;
+    }
+    if (!error && isLoggedIn && !isLoading) {
+      router.push('/');
+      router.refresh();
+      return;
+    }
+  }, [isLoading, isLoggedIn, error, router])
 
   return (
     <form className={registerFormStyle}
