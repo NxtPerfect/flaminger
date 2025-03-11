@@ -1,14 +1,15 @@
+"use client";
 import Pagination from '@/components/molecules/Pagination';
 import JobList from '@/components/organisms/JobList';
-import { cookies } from 'next/headers'
-import React from 'react'
+import { AuthContext } from '@/providers/AuthProvider';
+import React, { useContext } from 'react'
 
-export default async function Offers() {
-  const cookieStore = await cookies();
-  const isNotLoggedIn = cookieStore.get("session")?.value ? false : true;
+export default function Offers() {
+  const auth = useContext(AuthContext);
+  const isLoggedIn = auth?.isLoggedIn ?? false;
   return (
     <div>
-      <JobList isNotLoggedIn={isNotLoggedIn} />
+      <JobList isNotLoggedIn={!isLoggedIn} />
       <Pagination />
     </div>
   )

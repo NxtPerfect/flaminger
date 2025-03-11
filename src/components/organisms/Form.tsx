@@ -1,4 +1,3 @@
-"use client"
 import React from 'react'
 import RegisterForm from './RegisterForm'
 import ApplyToJobForm from './ApplyToJobForm'

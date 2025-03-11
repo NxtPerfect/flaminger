@@ -1,37 +1,31 @@
+"use client";
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect } from 'react'
 import EmailInput from '../molecules/EmailInput';
 import PasswordInput from '../atoms/PasswordInput';
 import ErrorMessage from '../atoms/ErrorMessage';
 import ActionButton from '../atoms/ActionButton';
-import { useAuth } from '@/hooks/useAuth';
+import { AuthContext } from '@/providers/AuthProvider';
 
 export default function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const { isLoggedIn, isLoading, error, login } = useAuth();
+  const auth = useContext(AuthContext);
   const router = useRouter();
 
   const formStyle = "flex flex-col gap-2 bg-neutral-200 dark:bg-neutral-800 rounded-md px-8 py-4 min-w-[30ch] max-w-[40ch]";
 
   async function loginOnSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setErrorMessage("");
-
     const formData = new FormData(event.currentTarget)
-    await login(formData);
+    await auth?.login(formData);
   }
 
   useEffect(() => {
-    if (error && !isLoading) {
-      setErrorMessage(error);
-      return;
-    }
-    if (!error && isLoggedIn && !isLoading) {
+    if (!auth?.error && auth?.isLoggedIn && !auth?.isLoading) {
       router.push('/');
       router.refresh();
       return;
     }
-  }, [isLoading, isLoggedIn, error, router])
+  }, [auth?.isLoading, auth?.isLoggedIn, auth?.error, router])
 
   return (
     <form
@@ -40,8 +34,8 @@ export default function LoginForm() {
     >
       <EmailInput />
       <PasswordInput name="password" pattern="^(?=.{8,64}$)[a-z0-9]+$">Password</PasswordInput>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      <ActionButton variant="formSubmit" isLoading={isLoading}>Login</ActionButton>
+      {auth?.error && <ErrorMessage>{auth?.error}</ErrorMessage>}
+      <ActionButton variant="formSubmit" isLoading={auth?.isLoading}>Login</ActionButton>
     </form>
   )
 }

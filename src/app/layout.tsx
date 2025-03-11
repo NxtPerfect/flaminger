@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/organisms/Header";
 import Footer from "@/components/organisms/Footer";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Flaminger - supercharged job search",
@@ -15,16 +16,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        <Header />
-        <main className="flex flex-col items-center px-4 md:px-24 py-2 md:py-12 z-10
+      <AuthProvider>
+        <body
+          className={`antialiased`}
+        >
+          <Header />
+          <main className="flex flex-col items-center px-4 md:px-24 py-2 md:py-12 z-10
           min-h-[84svh] overflow-clip">
-          {children}
-        </main>
-        <Footer />
-      </body>
+            {children}
+          </main>
+          <Footer />
+        </body>
+      </AuthProvider>
     </html>
   );
 }

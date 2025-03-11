@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from 'next/navigation';
 import React, { FormEvent } from 'react'
 import ActionButton from '../atoms/ActionButton';

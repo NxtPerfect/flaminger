@@ -1,25 +1,23 @@
-"use server"
-import React from 'react'
-import { cookies } from 'next/headers';
-import { getIsUserEmployer } from '@/app/lib/session';
+"use client";
+import React, { useContext } from 'react'
 import LinkButton from './LinkButton';
+import { ROLE_VARIANTS, ROLES } from '@/app/lib/definitions';
+import { AuthContext } from '@/providers/AuthProvider';
 
-export default async function Header() {
-  const cookieStore = await cookies();
-  const session = cookieStore.get("session")
-  const isEmployer = await getIsUserEmployer();
+export default function Header() {
   const headerStyle = "sticky top-0 flex flex-row gap-2 min-h-[6svh] w-full text-xl items-center justify-center backdrop-blur-md bg-neutral-800/50 dark:bg-neutral-600/50";
+  const auth = useContext(AuthContext);
 
-  if (session?.value) {
+  if (auth?.isLoggedIn && !auth?.isLoading) {
     return (
       <>
         <header className={headerStyle}>
           <LinkButton variant="header" href="/">Home</LinkButton>
           <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
           <LinkButton variant="header" href="/profile">My Profile</LinkButton>
-          {isEmployer &&
+          {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
             <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
-          {isEmployer &&
+          {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
             <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>}
           <LinkButton variant="logout" href="/">Logout</LinkButton>
         </header>
