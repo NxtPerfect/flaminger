@@ -179,7 +179,7 @@ export default function Page() {
                         handleReview(candidate.personalInformation.id,
                           curApplication.job.id,
                           "accepted")
-                      } className="w-full md:w-fit">
+                      } className="h-fit w-full md:w-fit">
                       Accept
                     </ActionButton>
                   </div>
