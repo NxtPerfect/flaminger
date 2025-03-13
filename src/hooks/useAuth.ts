@@ -50,10 +50,6 @@ export function useAuth() {
     }
   }, []);
 
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
   const login = useCallback(async (formData: FormData) => {
     setAuthState((prev) => ({
       ...prev,
