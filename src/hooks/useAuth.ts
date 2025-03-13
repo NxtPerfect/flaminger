@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, ERROR_VARIANTS, ErrorVariant, ROLE_VARIANTS, ROLES, RoleVariant } from "@/app/lib/definitions";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 type AuthState = {
   isLoggedIn: boolean
