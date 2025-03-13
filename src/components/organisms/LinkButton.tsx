@@ -55,7 +55,7 @@ export default function LinkButton({ variant, href, className, children }: Props
   }
 
   const buttonStyle = variant ? BUTTON_STYLES[variant] : BUTTON_STYLES.default;
-  const combinedStyle = (`${buttonStyle} ${className}`).trim();
+  const combinedStyle = (`${buttonStyle} ${className ?? ""}`).trim();
   const isLogout = variant === "logout" ? true : false;
 
   if (!isLogout)
