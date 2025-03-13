@@ -4,6 +4,7 @@ import LinkButton from '../organisms/LinkButton'
 import { FEATURE_FLAG_READ_MORE } from '@/app/lib/definitions'
 import ActionButton from '../atoms/ActionButton'
 import AcceptanceRatePercentage from '../atoms/AcceptanceRatePercentage'
+import LlmPrompt from './LlmPrompt'
 
 type Props = {
   id: number
@@ -60,6 +61,7 @@ export default function JobOffer({ id, title, description, logoPath, company, ac
       <span className="mt-4 max-w-[50ch] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
         {description.substring(0, 180)}
       </span>
+      <LlmPrompt title={title} company={company} description={description} requirements={requirements} />
       <div className="mt-4 flex flex-row gap-2 items-center justify-between">
         <div className="flex flex-row gap-2 align-middle items-center">
           {requirements?.tech &&

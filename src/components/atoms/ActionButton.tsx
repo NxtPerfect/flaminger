@@ -14,6 +14,7 @@ const BUTTON_VARIANTS = {
   BIG: "big",
   ALT: "alt",
   FORM_SUBMIT: "formSubmit",
+  LLM: "llmCopy",
 }
 
 const BUTTON_STYLES = {
@@ -23,6 +24,8 @@ const BUTTON_STYLES = {
     "underline hover:text-neutral-400 hover:decoration-orange-800 ease-in-out duration-100 decoration-orange-500 underline-offset-8 rounded-md px-2 py-1",
   [BUTTON_VARIANTS.FORM_SUBMIT]:
     "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-[1rem] leading-tight hover:bg-red-600 hover:ease-in-out duration-75 focus:border-2 border-blue-500",
+  [BUTTON_VARIANTS.LLM]:
+    "px-2 py-1 bg-neutral-800 hover:bg-neutral-800/60 focus:bg-neutral-800/60 rounded-md text-white",
   default:
     "mt-2 bg-orange-600 text-white rounded-md px-4 py-2 text-[1rem] leading-tight animate-pulse hover:bg-red-600 hover:ease-in-out duration-75 focus:border-2 border-blue-500"
 }
