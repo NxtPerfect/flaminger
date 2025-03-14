@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, ERROR_VARIANTS, ErrorVariant, ROLE_VARIANTS, ROLES, RoleVariant } from "@/app/lib/definitions";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type AuthState = {
   isLoggedIn: boolean
@@ -31,7 +31,7 @@ export function useAuth() {
       const data = await response.json();
       setAuthState((prev) => ({
         ...prev,
-        isLoggedIn: response.ok ? true : prev.isLoggedIn,
+        isLoggedIn: response.ok ? data.isLoggedIn : prev.isLoggedIn,
         isLoading: false,
         role: response.ok ? data.role : prev.role,
         error: response.ok ? undefined : ERROR_MESSAGES[data.errorType]
@@ -49,6 +49,10 @@ export function useAuth() {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   const login = useCallback(async (formData: FormData) => {
     setAuthState((prev) => ({
