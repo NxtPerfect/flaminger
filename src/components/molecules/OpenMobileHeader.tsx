@@ -7,8 +7,9 @@ export default function OpenMobileHeader() {
   const auth = useContext(AuthContext);
 
   return (
-    <div className={`flex flex-col top-0 left-0 bg-blue-500
-      w-fit px-12 gap-4`}>
+    <div className={`absolute flex flex-col left-0 mt-4 backdrop-blur-md
+bg-neutral-800/50 dark:bg-neutral-500/50 w-fit px-12 gap-4 items-start
+py-4 rounded-2xl rounded-tl-none`}>
       {auth?.isLoggedIn &&
         <>
           <LinkButton variant="header" href="/">Home</LinkButton>

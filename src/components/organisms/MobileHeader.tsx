@@ -7,13 +7,13 @@ export default function MobileHeader() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   function showMenu() {
-    // show menu
     setIsOpen((cur) => !cur);
   }
 
   return (
-    <header className={`visible md:hidden bg-red-500 sticky top-0 left-0
-          min-h-[6svh] w-full text-xl p-4`}>
+    <header className={`visible md:hidden fixed top-0 left-0
+          min-h-[6svh] max-h-[10svh] w-fit text-xl p-4 z-50
+          backdrop-blur-md bg-neutral-800/50 dark:bg-neutral-500/50 rounded-br-[50%] text-white`}>
       <BurgerMenuSvg onClickAction={showMenu} />
       {isOpen &&
         <OpenMobileHeader />

@@ -62,7 +62,7 @@ export default function JobOffer({
 
   return (
     <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900
-      rounded-md p-4 px-8 min-w-[35svw] max-w-[45svw]">
+      rounded-md p-4 px-8 min-w-[75svw] md:min-w-[35svw] max-w-[45svw]">
       <div className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
       </div>
@@ -101,7 +101,7 @@ overflow-hidden max-h-[3.5lh] hover:max-h-fit transition-all duration-1000 ease-
             })}
         </div>
       </div>
-      <div className="mt-4 flex flex-row gap-4 items-center justify-end">
+      <div className="mt-4 flex flex-col-reverse md:flex-row gap-4 items-center justify-end">
         {!isNotLoggedIn && linkText &&
           <div className="flex flex-row gap-8 items-center">
             {FEATURE_FLAG_READ_MORE &&

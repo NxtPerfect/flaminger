@@ -51,7 +51,7 @@ Please respond with one of the following: "likely", "unlikely", or "moderate".`.
   return (
     <div className="flex flex-row rounded-md px-2 py-1 bg-neutral-400 dark:bg-neutral-800 w-full">
       <div className={`font-mono overflow-y-scroll max-h-[3lh]
-min-w-[35svw] max-w-[45svw] mb-[1.5lh] text-pretty text-justify`}>
+min-w-fit max-w-[45svw] mb-[1.5lh] text-pretty text-justify`}>
         {prompt}
       </div>
       <div className="flex gap-2 justify-self-end self-end absolute">
