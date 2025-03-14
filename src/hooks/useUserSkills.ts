@@ -31,7 +31,8 @@ export function useUserSkills() {
         setSkills((prev) => ({
           ...prev,
           technologies: [],
-          humanLanguages: []
+          humanLanguages: [],
+          error: error
         }));
         setError('Failed to load skills.');
       } finally {

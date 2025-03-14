@@ -20,15 +20,11 @@ export default function OpenInExternalLlm({ prompt }: Props) {
     },
     {
       name: "Claude",
-      url: `https://claude.ai/chats?prompt=${encodedPrompt}`,
+      url: `https://claude.ai/new?q=${encodedPrompt}`,
     },
     {
-      name: "Deepseek",
-      url: `https://chat.deepseek.com/?q=${encodedPrompt}`,
-    },
-    {
-      name: "POE",
-      url: `https://poe.com/chat/1kq7d1xqgq9q?q=${encodedPrompt}`,
+      name: "Bing",
+      url: `https://www.bing.com/search?showconv=1&sendquery=1&q=${encodedPrompt}`,
     }
   ]
 
@@ -39,13 +35,13 @@ bg-neutral-900 justify-center rounded-md px-2 py-1`}>
       Open in
       <ChevronDownSvg />
       {isOpen &&
-        <div className={`flex flex-col gap-2 absolute mt-6 bg-neutral-800
+        <div className={`flex flex-col gap-2 absolute mt-6 bg-neutral-900
 p-2 rounded-md text-white`}>
           {providers.map((provider, index) => {
             return (
               <button onClick={() => openUrlInNewTab(provider.url)}
                 key={index}
-                className="hover:bg-neutral-600 focus:bg-neutral-600 w-full px-4 py-1 rounded-md">
+                className="hover:bg-neutral-800 focus:bg-neutral-800 w-full px-4 py-1 rounded-md">
                 {provider.name}
               </button>
             )
