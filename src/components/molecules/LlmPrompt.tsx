@@ -26,10 +26,10 @@ export default function LlmPrompt({ title, company, description, requirements, s
     (l) => `${l.name} ${l.level}`)
     .join(", ");
 
-  const parsedSkillsTech = skills?.technologies.map(
+  const parsedSkillsTech = skills?.technologies && skills?.technologies.map(
     (t) => `${t.name} ${t.experience} years`)
     .join(", ");
-  const parsedSkillsLangs = skills?.humanLanguages.map(
+  const parsedSkillsLangs = skills?.humanLanguages && skills?.humanLanguages.map(
     (l) => `${l.name} ${l.level}`)
     .join(", ");
 

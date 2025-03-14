@@ -62,7 +62,7 @@ export default function JobOffer({
 
   return (
     <div className="flex flex-col bg-neutral-200 dark:bg-neutral-900
-      rounded-md p-4 px-8 min-w-[75svw] md:min-w-[35svw] max-w-[45svw]">
+      rounded-md p-4 px-8 min-w-[75svw] md:min-w-[35svw] max-w-[85svw] md:max-w-[55svw]">
       <div className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
       </div>
@@ -71,7 +71,7 @@ export default function JobOffer({
         <span>{company}</span>
         <AcceptanceRatePercentage acceptanceRate={acceptanceRate} />
       </div>
-      <span className="mt-4 min-w-[35svw] max-w-[45svw] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
+      <span className="mt-4 min-w-[75svw] md:min-w-[35svw] max-w-[85svw] md:max-w-[55svw] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
         {description.substring(0, 180)}
       </span>
       <LlmPrompt
