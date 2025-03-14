@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import SkeletonJobOffer from '../placeholders/SkeletonJobOffer';
 import JobOffer from '../molecules/JobOffer';
 import ModalReadMore from '../molecules/ModalReadMore';
+import { useUserSkills } from '@/hooks/useUserSkills';
 
 type Props = {
   isNotLoggedIn: boolean
@@ -61,6 +62,7 @@ export default function JobList({ isNotLoggedIn }: Props) {
   const [isOpenModalReadMore, setIsOpenModalReadMore] = useState<boolean>(false);
   const [modalData, setModalData] = useState<ModalData>();
   const { offset } = useParams<{ offset: string }>();
+  const { skills } = useUserSkills();
 
   function getStatus(applicationStatus: Partial<UserApplications>) {
     if (applicationStatus.isAccepted) return "accepted";
@@ -178,6 +180,7 @@ export default function JobList({ isNotLoggedIn }: Props) {
                   langs: langs?.langs ?? []
                 }
               }
+              skills={skills}
               status={status ?? "new"}
               isNotLoggedIn={isNotLoggedIn}
               openModalReadMore={openModalReadMore}

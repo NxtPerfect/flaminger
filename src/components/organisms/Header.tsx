@@ -8,7 +8,7 @@ import MobileHeader from './MobileHeader';
 export default function Header() {
   const headerStyle = `sticky top-0 flex flex-row gap-2 min-h-[6svh]
 w-full text-xl items-center justify-center backdrop-blur-md
-bg-neutral-800/50 dark:bg-neutral-600/50`;
+bg-neutral-800/50 dark:bg-neutral-600/50 z-50`;
   const auth = useContext(AuthContext);
 
   if (auth?.isLoggedIn && !auth?.isLoading) {

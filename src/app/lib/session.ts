@@ -40,7 +40,7 @@ export async function createSession(userId: string, isEmployer: boolean) {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: 'lax',
+    sameSite: 'strict',
     path: '/',
   })
 }
