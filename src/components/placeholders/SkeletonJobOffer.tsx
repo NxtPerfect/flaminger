@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function SkeletonJobOffer() {
   return (
-    <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8 min-w-[35svw] max-w-[45svw] min-h-36 animate-pulse">
+    <div className="flex flex-col bg-neutral-900 rounded-md p-4 px-8 w-[75svw] md:w-[55svw] min-h-36 animate-pulse">
       <div className="flex flex-row gap-2">
         <div className="min-w-full min-h-6 bg-neutral-700"></div>
       </div>
