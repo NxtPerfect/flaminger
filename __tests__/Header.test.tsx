@@ -2,7 +2,8 @@ import { ROLE_VARIANTS, ROLES } from "@/app/lib/definitions";
 import Header from "@/components/organisms/Header";
 import { useAuth } from "@/hooks/useAuth";
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import React from "react";
 
 jest.mock("next/navigation", () => ({
   useRouter() {
@@ -17,7 +18,8 @@ jest.mock("next/navigation", () => ({
 
 jest.mock('@/hooks/useAuth');
 
-const mockUseAuth = jest.mocked(useAuth);
+// const mockUseAuth = jest.mocked(useAuth);
+const mockUseAuth = useAuth as jest.Mock;
 
 describe('Header', () => {
   beforeEach(() => {
@@ -54,8 +56,8 @@ describe('Header', () => {
     expect(jobOffers).toBeInTheDocument();
   });
 
-  it('renders for user', () => {
-    mockUseAuth.mockReturnValue({
+  it('renders for user', async () => {
+    mockUseAuth.mockImplementation(() => ({
       checkAuth: jest.fn(),
       login: jest.fn(),
       register: jest.fn(),
@@ -63,18 +65,44 @@ describe('Header', () => {
       isLoggedIn: true,
       isLoading: false,
       role: ROLES[ROLE_VARIANTS.user]
-    });
+    }));
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({
+          userAuth,
+          status: 200
+        }),
+      }),
+    ) as jest.Mock;
+
+    const userAuth = {
+      isLoggedIn: true,
+      role: ROLES[ROLE_VARIANTS.user]
+    }
+    //
+    // jest.spyOn(global, 'fetch').mockImplementation(
+    //   jest.fn(
+    //     () => Promise.resolve({
+    //       json: () => Promise.resolve({
+    //         userAuth,
+    //         status: 200
+    //       })
+    //     })
+    //   ) as jest.Mock)
 
     render(<Header />);
 
-    const profile = screen.getByText('My Profile');
-    const logout = screen.getByText('Logout');
+    await waitFor(() => {
+      const profile = screen.getByText('My Profile');
+      const logout = screen.getByText('Logout');
 
-    expect(profile).toBeInTheDocument();
-    expect(logout).toBeInTheDocument();
+      expect(profile).toBeInTheDocument();
+      expect(logout).toBeInTheDocument();
+    })
   });
 
-  it('renders for employer', () => {
+  it('renders for employer', async () => {
     mockUseAuth.mockImplementation(() => ({
       checkAuth: jest.fn(),
       login: jest.fn(),
@@ -87,16 +115,18 @@ describe('Header', () => {
 
     render(<Header />);
 
-    const signin = screen.getByText('Signin');
-    const signup = screen.getByText('Signup');
+    await waitFor(() => {
+      const signin = screen.queryByText('Signin');
+      const signup = screen.queryByText('Signup');
 
-    expect(signin).not.toBeInTheDocument();
-    expect(signup).not.toBeInTheDocument();
+      expect(signin).not.toBeInTheDocument();
+      expect(signup).not.toBeInTheDocument();
 
-    const addOffer = screen.getByText('Add Offer');
-    const checkApplications = screen.getByText('Check Applications');
+      const addOffer = screen.getByText('Add Offer');
+      const checkApplications = screen.getByText('Check Applications');
 
-    expect(addOffer).toBeInTheDocument();
-    expect(checkApplications).toBeInTheDocument();
+      expect(addOffer).toBeInTheDocument();
+      expect(checkApplications).toBeInTheDocument();
+    })
   });
 })
