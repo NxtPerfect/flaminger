@@ -155,6 +155,7 @@ export default function Page() {
       {applications.length === 0 && <p>It&apos;s empty, add more job offers and wait for candidates to apply!</p>}
       <div className="w-full">
         <div className="flex flex-col gap-24 w-full justify-center items-center">
+          <h2 className="text-lg">Applications left: <span className="font-mono text-2xl px-2 bg-black/80">{applications.length}</span></h2>
           {applications && applications.map((curApplication, index) => {
             const job = curApplication.job;
             const candidate = curApplication.candidate;
