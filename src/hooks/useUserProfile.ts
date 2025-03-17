@@ -11,6 +11,15 @@ type UserProfile = {
   technologies: Technology[]
 }
 
+type ApiResponse = {
+  userData: User
+  statistics: StatisticsForUserApplicationsFromDatabase
+  pendingApplications: PendingApplication[]
+  completedApplications: DatabaseCompletedApplication[]
+  humanLanguages: HumanLanguage[]
+  technologies: Technology[]
+}
+
 export function useUserProfile(): UserProfile {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
@@ -25,12 +34,8 @@ export function useUserProfile(): UserProfile {
     await fetch('/api/profile', { method: "POST" })
       .then(async (res) => {
         const responseJson = await res.json();
-        setUserDataFromApi(responseJson.userData);
-        setStatisticsFromApi(responseJson.statistics);
-        setPendingApplicationsFromApi(responseJson.pendingApplications);
-        setCompletedApplicationsFromApi(responseJson.completedApplications);
-        setLanguagesFromApi(responseJson.humanLanguages);
-        setTechnologiesFromApi(responseJson.technologies);
+        setDataFromApi(responseJson);
+      }).finally(() => {
         setIsLoading(false);
       })
   }, []);
@@ -38,6 +43,15 @@ export function useUserProfile(): UserProfile {
   useEffect(() => {
     getProfile();
   }, [getProfile]);
+
+  function setDataFromApi(responseJson: ApiResponse) {
+    setUserDataFromApi(responseJson.userData);
+    setStatisticsFromApi(responseJson.statistics);
+    setPendingApplicationsFromApi(responseJson.pendingApplications);
+    setCompletedApplicationsFromApi(responseJson.completedApplications);
+    setLanguagesFromApi(responseJson.humanLanguages);
+    setTechnologiesFromApi(responseJson.technologies);
+  }
 
   function setUserDataFromApi(rawUserData: User) {
     const userData: User = {

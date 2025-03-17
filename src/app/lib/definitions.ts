@@ -1,3 +1,4 @@
+import { SelectHumanLanguagesToUsers, SelectJobs, SelectTechnologiesToUsers, SelectUser } from "@/db/schema";
 import { Dispatch, SetStateAction } from "react"
 
 export const MAX_JOBS_PER_PAGE = 20;
@@ -45,27 +46,10 @@ export const ROLES = {
   [ROLE_VARIANTS.guest]: "none"
 }
 
-export type JobOffer = {
-  id: string
-  title: string
-  imagePath: string
-  company: string
-  acceptanceRate: number
-  requirements: { language: string, minimumExperienceInYears: number }[]
-  offerState: "unapplied" | "inProgress" | "accepted" | "rejected"
-  description: string
-  alternativeApplicationLink?: string
-}
-
 export type SessionPayload = {
   userId: string
   isEmployer: boolean
   expiresAt: Date
-}
-
-export type RequiredTechnology = {
-  name: string
-  minimumYearsOfExperience: number
 }
 
 export type OfferWithCompanyInfo = {
@@ -84,8 +68,6 @@ export type Offer = {
   company: string
   isClosed?: boolean
   createdAt?: Date
-  // requirements: Array<Requirement>
-  // state: "new" | "applied" | "accepted" | "rejected"
 }
 
 export type StatisticsForUserApplicationsFromDatabase = {
@@ -206,5 +188,14 @@ export type RegisterFormData = {
   confirmPassword?: string
   dataConsent?: string
   mailingConsent?: string
+}
+
+export type Application = {
+  job: SelectJobs
+  candidate: {
+    personalInformation: SelectUser,
+    technologies: SelectTechnologiesToUsers[],
+    humanLanguages: SelectHumanLanguagesToUsers[],
+  }
 }
 

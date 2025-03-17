@@ -44,6 +44,12 @@ export async function getJobById(id: SelectJobs['id']) {
     .where(eq(jobsTable.id, id));
 }
 
+export async function getJobsByCompanyId(id: SelectJobs['byCompanyId']) {
+  return db.select()
+    .from(jobsTable)
+    .where(eq(jobsTable.byCompanyId, id));
+}
+
 export async function getAcceptedJobsForUsersbyUserId(id: SelectUser['id']) {
   return db.select({
     count: count()

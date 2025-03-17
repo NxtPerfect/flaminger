@@ -6,7 +6,7 @@ import ErrorMessage from '@/components/atoms/ErrorMessage';
 import JobInformationApplication from '@/components/molecules/JobInformationApplication';
 import CandidateInformationApplication from '@/components/molecules/CandidateInformationApplication';
 import MultilineTextInput from '@/components/atoms/MultilineTextInput';
-import { HUMAN_LANGUAGE_LEVELS_TO_VALS } from '../lib/definitions';
+import { Application, HUMAN_LANGUAGE_LEVELS_TO_VALS } from '../lib/definitions';
 import ActionButton from '@/components/atoms/ActionButton';
 import MatchingOfferPercentageByCandidate from '@/components/atoms/MatchingOfferPercentageByCandidate';
 
@@ -16,15 +16,6 @@ type ResponseData = {
   user: SelectUser
   technologies: SelectTechnologiesToUsers[]
   human_languages: SelectHumanLanguagesToUsers[]
-}
-
-type Application = {
-  job: SelectJobs
-  candidate: {
-    personalInformation: SelectUser,
-    technologies: SelectTechnologiesToUsers[],
-    humanLanguages: SelectHumanLanguagesToUsers[],
-  }
 }
 
 type TechnologyRaw = {

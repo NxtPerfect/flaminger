@@ -10,10 +10,11 @@ import LinkButton from '@/components/organisms/LinkButton';
 import ProfilePicture from '@/components/atoms/ProfilePicture';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useEmployerProfile } from '@/hooks/useEmployerProfile';
 
 export default function Profile() {
   const {
-    isLoading,
+    isLoading: isUserLoading,
     user,
     statistics,
     pendingApplications,
@@ -21,15 +22,22 @@ export default function Profile() {
     languages,
     technologies
   } = useUserProfile();
+  const {
+    isLoading: isEmployerLoading,
+    name,
+    activeJobOffersPosted,
+    applicationsReceivedAmount,
+    acceptanceRate
+  } = useEmployerProfile();
   const { role } = useAuth();
 
   return (
     <div>
-      {isLoading &&
+      {(isUserLoading || isEmployerLoading) &&
         <SkeletonProfile />}
-      <div className="flex flex-col rounded-2xl bg-neutral-800/60 p-4
-            text-white items-center">
-        {role === ROLES[ROLE_VARIANTS.user] &&
+      <div className={`flex flex-col rounded-2xl bg-neutral-800/60 p-4
+            text-white items-center`}>
+        {!isUserLoading && role === ROLES[ROLE_VARIANTS.user] &&
           <>
             <div className="grid grid-cols-2 grid-rows-2 gap-4 justify-items-center items-center w-[80svw] md:w-[50svw] p-4">
               <ProfilePicture className="" />
@@ -56,9 +64,27 @@ export default function Profile() {
             <JobApplicationsForUserProfile pendingApplications={pendingApplications} completedApplications={completedApplications} />
           </>
         }
-      </div>
-      <div>
-        Not a user
+        {!isEmployerLoading && role === ROLES[ROLE_VARIANTS.employer] &&
+          <>
+            <div>
+              {name}
+            </div>
+            <div>
+              {acceptanceRate}%
+            </div>
+            <div>
+              new: {applicationsReceivedAmount.new}, total: {applicationsReceivedAmount.total}
+            </div>
+            <div>
+              {activeJobOffersPosted && activeJobOffersPosted.map((job, index) => {
+                return (
+                  <div key={index}>
+                    {job.title}
+                  </div>
+                )
+              })}
+            </div>
+          </>}
       </div>
     </div>
   )
