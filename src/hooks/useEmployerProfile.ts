@@ -22,8 +22,8 @@ type ApplicationsAmount = {
 }
 
 type DatabaseApplications = {
-  jobsTable: Offer
-  jobsToUsersTable: UserApplications
+  jobs_table: Offer
+  jobs_to_users_table: UserApplications
 }
 
 export function useEmployerProfile(): EmployerProfile {
@@ -74,7 +74,7 @@ export function useEmployerProfile(): EmployerProfile {
       return;
     }
     console.log("Apps", applicationsAmount);
-    const newApplicationsCount = applicationsAmount.filter((a) => a.jobsTable.isClosed).length;
+    const newApplicationsCount = applicationsAmount.filter((a) => a.jobs_table.isClosed).length;
     const totalApplicationsCount = applicationsAmount.length;
     setApplicationsReceivedAmount({
       new: newApplicationsCount,
