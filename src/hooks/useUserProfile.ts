@@ -22,8 +22,8 @@ type ApiResponse = {
 
 export function useUserProfile(): UserProfile {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<User>();
-  const [statistics, setStatistics] = useState<StatisticsForUserApplications>();
+  const [user, setUser] = useState<User>({} as User);
+  const [statistics, setStatistics] = useState<StatisticsForUserApplications>({} as StatisticsForUserApplications);
   const [pendingApplications, setPendingApplications] = useState<Partial<Offer>[]>([]);
   const [completedApplications, setCompletedApplications] = useState<CompletedApplication[]>([]);
   const [languages, setLanguages] = useState<HumanLanguage[]>([]);

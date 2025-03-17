@@ -1,4 +1,4 @@
-import { Application, Offer } from "@/app/lib/definitions";
+import { Offer, UserApplications } from "@/app/lib/definitions";
 import { useCallback, useEffect, useState } from "react";
 
 type EmployerProfile = {
@@ -12,13 +12,18 @@ type EmployerProfile = {
 type Data = {
   name: string
   jobOffersPosted: Offer[]
-  applicationsAmount: Application[]
+  applicationsAmount: DatabaseApplications[]
   acceptanceRate: string
 }
 
 type ApplicationsAmount = {
   new: number
   total: number
+}
+
+type DatabaseApplications = {
+  jobsTable: Offer
+  jobsToUsersTable: UserApplications
 }
 
 export function useEmployerProfile(): EmployerProfile {
@@ -63,13 +68,13 @@ export function useEmployerProfile(): EmployerProfile {
     setActiveJobOffersPosted((cur) => [...cur, ...activeJobOffers]);
   }
 
-  function setApplicationsReceivedAmountFromApi(applicationsAmount: Application[]) {
+  function setApplicationsReceivedAmountFromApi(applicationsAmount: DatabaseApplications[]) {
     if (applicationsAmount.length == 0) {
       setApplicationsReceivedAmount({ new: 0, total: 0 });
       return;
     }
     console.log("Apps", applicationsAmount);
-    const newApplicationsCount = applicationsAmount.filter((a) => a.jobs_table.isClosed).length;
+    const newApplicationsCount = applicationsAmount.filter((a) => a.jobsTable.isClosed).length;
     const totalApplicationsCount = applicationsAmount.length;
     setApplicationsReceivedAmount({
       new: newApplicationsCount,

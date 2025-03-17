@@ -1,10 +1,15 @@
 import { getUserId } from "@/app/lib/session"
 import { createJobToUser } from "@/db/queries/insert"
-import { getJobById } from "@/db/queries/select";
+import { getJobById, getUserById } from "@/db/queries/select";
 
 export async function PUT(req: Request) {
   const formData = await req.formData();
   const userId = await getUserId();
+
+  const [userData] = await getUserById(userId);
+  if (userData.isEmployer) {
+    return Response.json({ status: 403 });
+  }
 
   const jobId = formData.get("jobId")?.toString();
 

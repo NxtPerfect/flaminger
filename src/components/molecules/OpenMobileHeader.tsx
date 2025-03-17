@@ -13,12 +13,16 @@ py-4 rounded-2xl rounded-tl-none`}>
       {auth?.isLoggedIn &&
         <>
           <LinkButton variant="header" href="/">Home</LinkButton>
-          <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
+          {auth?.role === ROLES[ROLE_VARIANTS.user] &&
+            <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
+          }
           <LinkButton variant="header" href="/profile">My Profile</LinkButton>
           {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
-            <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>}
+            <LinkButton variant="header" href="/offer/add">Add Offer</LinkButton>
+          }
           {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
-            <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>}
+            <LinkButton variant="header" href="/applicants">Check Applications</LinkButton>
+          }
           <LinkButton variant="logout" href="/">Logout</LinkButton>
         </>
       }
