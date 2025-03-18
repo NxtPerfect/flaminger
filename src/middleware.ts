@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
   const isOffer = request.nextUrl.pathname.startsWith('/offer');
   const isProfile = request.nextUrl.pathname.startsWith('/profile');
   const isApplicants = request.nextUrl.pathname.startsWith('/applicants');
+  const isUserProfileEdit = request.nextUrl.pathname.startsWith('/profile/edit');
 
   if (hasSession && (isLogin || isRegister)) {
     return NextResponse.redirect(new URL('/', request.url));
@@ -18,7 +19,7 @@ export async function middleware(request: NextRequest) {
   if (!hasSession && (isOffer || isProfile || isApplicants)) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
-  if (hasSession && isEmployer && isOffer) {
+  if (hasSession && isEmployer && (isOffer || isUserProfileEdit)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 }
