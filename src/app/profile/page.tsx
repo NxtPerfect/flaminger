@@ -11,6 +11,13 @@ import ProfilePicture from '@/components/atoms/ProfilePicture';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useEmployerProfile } from '@/hooks/useEmployerProfile';
+import AcceptanceRatePercentage from '@/components/atoms/AcceptanceRatePercentage';
+import Table from '@/components/atoms/Table';
+import TableHead from '@/components/atoms/TableHead';
+import TableRow from '@/components/atoms/TableRow';
+import TableHeading from '@/components/atoms/TableHeading';
+import TableBody from '@/components/atoms/TableBody';
+import TableColumn from '@/components/atoms/TableColumn';
 
 export default function Profile() {
   const {
@@ -66,24 +73,57 @@ export default function Profile() {
         }
         {!isEmployerLoading && role === ROLES[ROLE_VARIANTS.employer] &&
           <>
-            <div>
+            <h2 className="text-2xl font-bold tracking-wide">
               {name}
-            </div>
+            </h2>
             <div>
-              {acceptanceRate}%
+              <AcceptanceRatePercentage
+                acceptanceRate={Number.parseFloat(acceptanceRate)} />
             </div>
-            <div>
-              new: {applicationsReceivedAmount.new}, total: {applicationsReceivedAmount.total}
+            <div className="mt-4 flex flex-col">
+              <span className="text-lg">
+                Amount of applications received
+              </span>
+              <div className="flex flex-row gap-2 justify-center">
+                <span>
+                  new: {applicationsReceivedAmount.new}
+                </span>
+                <span>
+                  total: {applicationsReceivedAmount.total}
+                </span>
+              </div>
             </div>
-            <div>
-              {activeJobOffersPosted && activeJobOffersPosted.map((job, index) => {
-                return (
-                  <div key={index}>
-                    {job.title}
-                  </div>
-                )
-              })}
-            </div>
+            <h3 className="mt-8 text-xl">
+              Job offers posted:
+            </h3>
+            <Table className="mt-2">
+              <TableHead className="w-full">
+                <TableRow className="w-full">
+                  <TableHeading className="w-1/2 font-lg">
+                    Job title
+                  </TableHeading>
+                  <TableHeading className="w-1/2 font-lg">
+                    Description
+                  </TableHeading>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {activeJobOffersPosted && activeJobOffersPosted.map((job, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableColumn className="w-1/2">
+                        {job.title}
+                      </TableColumn>
+                      <TableColumn className="w-1/2">
+                        <span className="max-w-[80ch] line-clamp-3 overflow-hidden text-ellipsis text-pretty">
+                          {job.description.slice(0, 180)}
+                        </span>
+                      </TableColumn>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
           </>}
       </div>
     </div>
