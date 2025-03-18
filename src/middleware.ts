@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
   const isLogin = request.nextUrl.pathname.startsWith('/login');
   const isRegister = request.nextUrl.pathname.startsWith('/register');
   const isOffer = request.nextUrl.pathname.startsWith('/offer');
+  const isAddOffer = request.nextUrl.pathname.startsWith('/offer/add');
   const isProfile = request.nextUrl.pathname.startsWith('/profile');
   const isApplicants = request.nextUrl.pathname.startsWith('/applicants');
   const isUserProfileEdit = request.nextUrl.pathname.startsWith('/profile/edit');
@@ -19,7 +20,7 @@ export async function middleware(request: NextRequest) {
   if (!hasSession && (isOffer || isProfile || isApplicants)) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
-  if (hasSession && isEmployer && (isOffer || isUserProfileEdit)) {
+  if (hasSession && isEmployer && (isOffer && !isAddOffer || isUserProfileEdit)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 }
