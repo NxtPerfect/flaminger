@@ -67,8 +67,8 @@ export const humanLanguagesRequirementsToJobsTable = pgTable('human_languages_re
 
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
   id: serial('id').primaryKey(),
-  userId: serial('user_id').references(() => usersTable.id),
-  jobId: serial('job_id').references(() => jobsTable.id),
+  userId: serial('user_id').references(() => usersTable.id, { onDelete: "cascade" }),
+  jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
   isApplied: boolean('is_applied').notNull(),
   isApplicationInProgress: boolean('is_application_in_progress').notNull(),
   isAccepted: boolean('is_accepted').notNull(),

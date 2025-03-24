@@ -110,13 +110,12 @@ export async function getAllJobsWithCompanyInfo(offset: number) {
   return db.select({ jobsTable, companiesTable })
     .from(jobsTable)
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
-    .limit(MAX_JOBS_PER_PAGE)
-    .offset(MAX_JOBS_PER_PAGE * offset);
+    .offset(MAX_JOBS_PER_PAGE * offset)
+    .limit(MAX_JOBS_PER_PAGE);
 }
 
 export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser['id'], offset: number) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id, ...rest } = getTableColumns(jobsToUsersTable);
+  const { id: _id, ...rest } = getTableColumns(jobsToUsersTable);
   return db.select({
     jobsTable,
     companiesTable,
@@ -130,8 +129,8 @@ export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser[
         eq(jobsToUsersTable.jobId, jobsTable.id)
       )
     )
-    .limit(MAX_JOBS_PER_PAGE)
-    .offset(MAX_JOBS_PER_PAGE * offset);
+    .offset(MAX_JOBS_PER_PAGE * offset)
+    .limit(MAX_JOBS_PER_PAGE);
 }
 
 export async function getTechnologiesForAllJobs() {
@@ -175,8 +174,8 @@ export async function getHumanLanguagesForMax20jobs(offset: number) {
 export async function getUniqueIdsFor20jobs(offset: number) {
   return db.select({ id: jobsTable.id })
     .from(jobsTable)
-    .limit(MAX_JOBS_PER_PAGE)
-    .offset(MAX_JOBS_PER_PAGE * offset);
+    .offset(MAX_JOBS_PER_PAGE * offset)
+    .limit(MAX_JOBS_PER_PAGE);
 }
 
 export async function getAppliedJobs(id: SelectUser['id']) {
