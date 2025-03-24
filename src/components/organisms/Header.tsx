@@ -18,7 +18,7 @@ bg-neutral-800/50 dark:bg-neutral-600/50 z-50`;
           <header className={headerStyle}>
             <LinkButton variant="header" href="/">Home</LinkButton>
             {auth?.role === ROLES[ROLE_VARIANTS.user] &&
-              <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
+              <LinkButton variant="header" href="/offers">Job Offers</LinkButton>
             }
             <LinkButton variant="header" href="/profile">My Profile</LinkButton>
             {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
@@ -41,7 +41,7 @@ bg-neutral-800/50 dark:bg-neutral-600/50 z-50`;
       <div className="hidden md:flex md:sticky md:top-0">
         <header className={headerStyle}>
           <LinkButton variant="header" href="/">Home</LinkButton>
-          <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
+          <LinkButton variant="header" href="/offers">Job Offers</LinkButton>
           <LinkButton variant="header" href="/login">Signin</LinkButton>
           <LinkButton variant="header" href="/register">Signup</LinkButton>
         </header>

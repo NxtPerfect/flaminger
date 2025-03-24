@@ -35,12 +35,15 @@ export function useEmployerProfile(): EmployerProfile {
 
   const getProfile = useCallback(async () => {
     setIsLoading(true);
-    await fetch('/api/profile/employer', { method: "POST" })
+    const controller = new AbortController();
+    const signal = controller.signal;
+    await fetch('/api/profile/employer', { method: "POST", signal })
       .then(async (res) => {
         const responseJson = await res.json();
         setCompanyDataFromApi(responseJson);
       }).finally(() => {
         setIsLoading(false);
+        controller.abort();
       })
   }, []);
 
@@ -87,7 +90,6 @@ export function useEmployerProfile(): EmployerProfile {
       return;
     }
     try {
-      const _parsedNum = Number.parseFloat(acceptanceRate);
       setAcceptanceRate(acceptanceRate);
     } catch {
       setAcceptanceRate("0");

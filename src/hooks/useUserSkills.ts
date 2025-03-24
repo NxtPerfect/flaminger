@@ -14,10 +14,13 @@ export function useUserSkills() {
   useEffect(() => {
     const getSkills = async () => {
       setIsLoading(true);
+      const controller = new AbortController();
+      const signal = controller.signal;
       try {
         const response = await fetch('/api/user/skills', {
           method: "GET",
-          credentials: "include"
+          credentials: "include",
+          signal
         });
 
         const data = await response.json();
@@ -27,6 +30,7 @@ export function useUserSkills() {
           technologies: response.ok ? data.technologies : prev?.technologies,
           humanLanguages: response.ok ? data.humanLanguages : prev?.humanLanguages
         }));
+        controller.abort();
       } catch (error) {
         setSkills((prev) => ({
           ...prev,
@@ -35,6 +39,7 @@ export function useUserSkills() {
           error: error
         }));
         setError('Failed to load skills.');
+        controller.abort();
       } finally {
         setIsLoading(false);
       }

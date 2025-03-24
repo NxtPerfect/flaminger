@@ -31,12 +31,15 @@ export function useUserProfile(): UserProfile {
 
   const getProfile = useCallback(async () => {
     setIsLoading(true);
-    await fetch('/api/profile', { method: "POST" })
+    const controller = new AbortController();
+    const signal = controller.signal;
+    await fetch('/api/profile', { method: "POST", signal })
       .then(async (res) => {
         const responseJson = await res.json();
         setDataFromApi(responseJson);
       }).finally(() => {
         setIsLoading(false);
+        controller.abort();
       })
   }, []);
 

@@ -22,10 +22,13 @@ export function useAuth() {
       error: undefined
     }));
 
+    const controller = new AbortController();
+    const signal = controller.signal;
     try {
       const response = await fetch('/api/auth/check', {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
+        signal
       });
 
       const data = await response.json();
@@ -36,7 +39,6 @@ export function useAuth() {
         role: response.ok ? data.role : prev.role,
         error: response.ok ? undefined : ERROR_MESSAGES[data.errorType]
       }));
-
     }
     catch {
       setAuthState((prev) => ({
@@ -46,7 +48,9 @@ export function useAuth() {
         role: ROLES[ROLE_VARIANTS.guest],
         error: ERROR_MESSAGES[ERROR_VARIANTS.OTHER]
       }));
-      return;
+    }
+    finally {
+      controller.abort();
     }
   }, []);
 
@@ -61,10 +65,13 @@ export function useAuth() {
       error: undefined
     }));
 
+    const controller = new AbortController();
+    const signal = controller.signal;
     const response = await fetch('/api/login', {
       method: "POST",
       body: formData,
       credentials: "include",
+      signal
     })
 
     const data = await response.json();
@@ -75,6 +82,7 @@ export function useAuth() {
       role: response.ok ? data.role : prev.role,
       error: response.ok ? undefined : ERROR_MESSAGES[data.errorType]
     }));
+    controller.abort();
   }, []);
 
   const register = useCallback(async (formData: FormData) => {
@@ -84,11 +92,14 @@ export function useAuth() {
       error: undefined
     }));
 
+    const controller = new AbortController();
+    const signal = controller.signal;
     try {
       const response = await fetch('/api/register', {
         method: "POST",
         body: formData,
         credentials: "include",
+        signal
       })
 
       const data = await response.json();
@@ -109,6 +120,9 @@ export function useAuth() {
         error: ERROR_MESSAGES[ERROR_VARIANTS.OTHER]
       }));
     }
+    finally {
+      controller.abort();
+    }
   }, []);
 
   const logout = useCallback(async () => {
@@ -118,10 +132,13 @@ export function useAuth() {
       error: undefined
     }));
 
+    const controller = new AbortController();
+    const signal = controller.signal;
     try {
       const response = await fetch('/api/logout', {
         method: "DELETE",
         credentials: "include",
+        signal
       });
 
       setAuthState((prev) => ({
@@ -140,6 +157,9 @@ export function useAuth() {
         role: ROLES[ROLE_VARIANTS.guest],
         error: ERROR_MESSAGES[ERROR_VARIANTS.OTHER]
       }));
+    }
+    finally {
+      controller.abort();
     }
   }, []);
 

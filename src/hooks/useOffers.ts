@@ -26,8 +26,10 @@ export function useOffers() {
   const [humanLanguages, setHumanLanguages] = useState<LangRequirement[]>([]);
 
   const fetchOffers = useCallback(async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     setIsLoading(true);
-    await fetch(`/api/offers/${offset}`)
+    await fetch(`/api/offers/${offset}`, { signal })
       .then(async (res) => {
         const responseJson = await res.json();
         setOffers(responseJson.offers);
@@ -35,6 +37,7 @@ export function useOffers() {
         setHumanLanguages(responseJson.langs);
       })
     setIsLoading(false);
+    return () => controller.abort();
   }, [offset])
 
   useEffect(() => {

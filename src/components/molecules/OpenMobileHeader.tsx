@@ -14,7 +14,7 @@ py-4 rounded-2xl rounded-tl-none`}>
         <>
           <LinkButton variant="header" href="/">Home</LinkButton>
           {auth?.role === ROLES[ROLE_VARIANTS.user] &&
-            <LinkButton variant="header" href="/offers/1">Job Offers</LinkButton>
+            <LinkButton variant="header" href="/offers">Job Offers</LinkButton>
           }
           <LinkButton variant="header" href="/profile">My Profile</LinkButton>
           {auth?.role === ROLES[ROLE_VARIANTS.employer] &&
