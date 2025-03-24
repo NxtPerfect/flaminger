@@ -6,25 +6,10 @@ import SkeletonJobOffer from '../placeholders/SkeletonJobOffer';
 import JobOffer from '../molecules/JobOffer';
 import ModalReadMore from '../molecules/ModalReadMore';
 import { useUserSkills } from '@/hooks/useUserSkills';
+import { useOffers } from '@/hooks/useOffers';
 
 type Props = {
   isNotLoggedIn: boolean
-}
-
-type techRequirement = {
-  jobId: number,
-  tech: {
-    name: string,
-    experience: string
-  }[]
-}
-
-type langRequirement = {
-  jobId: number,
-  langs: {
-    name: string,
-    level: string
-  }[]
 }
 
 type JobsToUsersTable = {
@@ -36,6 +21,7 @@ type JobsToUsersTable = {
   isAccepted: boolean
   rejectionReason: string
 }
+
 
 export type ModalData = {
   id: number
@@ -55,40 +41,17 @@ type Requirements = {
 }
 
 export default function JobList({ isNotLoggedIn }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);
-  const [technology, setTechnology] = useState<techRequirement[]>([]);
-  const [humanLanguages, setHumanLanguages] = useState<langRequirement[]>([]);
   const [isOpenModalReadMore, setIsOpenModalReadMore] = useState<boolean>(false);
   const [modalData, setModalData] = useState<ModalData>();
-  const { offset } = useParams<{ offset: string }>();
+  const params = useParams<{ offset: string }>();
   const { skills } = useUserSkills();
-
-  function getStatus(applicationStatus: Partial<UserApplications>) {
-    if (applicationStatus.isAccepted) return "accepted";
-    if (!applicationStatus.isApplicationInProgress && !applicationStatus.isAccepted) return "rejected";
-    if (applicationStatus.isApplied && applicationStatus.isApplicationInProgress) return "in progress";
-    return "new";
-  }
+  const { isLoading, setOffset, offers, technologies, humanLanguages } = useOffers();
 
   useEffect(() => {
-    setIsLoading(true);
-    const fetchOffers = async () => {
-      const parsedOffset = Number.parseInt(offset) ?? 1;
-      await fetch(`/api/offers/${parsedOffset}`)
-        .then(async (res) => {
-          const responseJson = await res.json();
-          setOffers(responseJson.offers);
-          setTechnology(responseJson.tech);
-          setHumanLanguages(responseJson.langs);
-          setIsLoading(false);
-        })
-    }
-    fetchOffers();
-  }, [offset])
+    setOffset(() => Number.parseInt(params.offset));
+  })
 
   function openModalReadMore(offerId: number) {
-    console.log("Opened modal with id", offerId);
     if (isOpenModalReadMore) {
       setIsOpenModalReadMore(false);
     }
@@ -101,9 +64,8 @@ export default function JobList({ isNotLoggedIn }: Props) {
 
   function getModalDataFromOfferId(offerId: number) {
     const offerFullInfo = offers.filter((o) => o.jobsTable.id === offerId)[0];
-    console.log("Offer filtered", offerFullInfo);
 
-    const tech = technology.filter(
+    const tech = technologies.filter(
       (t) =>
         t.jobId === offerFullInfo.jobsTable.id
     )[0] ?? [];
@@ -138,6 +100,13 @@ export default function JobList({ isNotLoggedIn }: Props) {
     return applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
   }
 
+  function getStatus(applicationStatus: Partial<UserApplications>) {
+    if (applicationStatus.isAccepted) return "accepted";
+    if (!applicationStatus.isApplicationInProgress && !applicationStatus.isAccepted) return "rejected";
+    if (applicationStatus.isApplied && applicationStatus.isApplicationInProgress) return "in progress";
+    return "new";
+  }
+
   return (
     <ul className="flex flex-col gap-4 px-4">
       {isLoading &&
@@ -157,14 +126,16 @@ export default function JobList({ isNotLoggedIn }: Props) {
         const company = offerFullInfo.companiesTable;
         const applicationStatus = offerFullInfo.jobsToUsersTable ?? -1;
         const status = getOfferStatus(applicationStatus, offer);
-        const tech = technology.filter(
+        console.log("Pre filter", technologies, humanLanguages);
+        const tech = technologies.filter(
           (t) =>
             t.jobId === offer.id
-        )[0];
+        )[0].tech;
         const langs = humanLanguages.filter(
           (l) =>
             l.jobId === offer.id
-        )[0];
+        )[0].langs;
+        console.log("Post filter", tech, langs);
         return (
           <li key={offer.id}>
             <JobOffer
@@ -176,8 +147,8 @@ export default function JobList({ isNotLoggedIn }: Props) {
               acceptanceRate={company.acceptanceRate}
               requirements={
                 {
-                  tech: tech?.tech ?? [],
-                  langs: langs?.langs ?? []
+                  tech: tech ?? [],
+                  langs: langs ?? []
                 }
               }
               skills={skills}
