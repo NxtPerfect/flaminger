@@ -14,7 +14,7 @@ export default function Checkbox({ className, checkboxClassName, children, name,
 
   return (
     <div className={style}>
-      <label htmlFor={name}>{children}{required && "*"}</label>
+      <label htmlFor={name}>{required && "*"}{children}</label>
       <input type="checkbox" name="dataConsent" required={required} className={checkboxStyle} />
     </div>
   )
