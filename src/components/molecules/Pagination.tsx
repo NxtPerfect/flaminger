@@ -26,8 +26,8 @@ export default function Pagination() {
       {currentPage > 1 &&
         <LinkButton variant="navigation"
           href={`/offers/1`}
-          className="hover:text-black/20 hover:dark:text-white/20
-          p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
+          className={`hover:text-black/20 hover:dark:text-white/20
+          p-2 text-xl focus:text-black/20 focus:dark:text-white/20`}
         >
           1
         </LinkButton>}
@@ -39,8 +39,8 @@ export default function Pagination() {
           return (
             <LinkButton variant="navigation"
               href={`/offers/${prevPage}`}
-              className="hover:text-black/20 hover:dark:text-white/20
-              p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
+              className={`hover:text-black/20 hover:dark:text-white/20
+              p-2 text-xl focus:text-black/20 focus:dark:text-white/20`}
               key={id}
             >
               {prevPage}
