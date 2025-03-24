@@ -73,7 +73,6 @@ export function useEmployerProfile(): EmployerProfile {
       setApplicationsReceivedAmount({ new: 0, total: 0 });
       return;
     }
-    console.log("Apps", applicationsAmount);
     const newApplicationsCount = applicationsAmount.filter((a) => !a.jobs_table.isClosed).length;
     const totalApplicationsCount = applicationsAmount.length;
     setApplicationsReceivedAmount({

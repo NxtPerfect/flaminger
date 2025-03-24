@@ -126,16 +126,17 @@ export default function JobList({ isNotLoggedIn }: Props) {
         const company = offerFullInfo.companiesTable;
         const applicationStatus = offerFullInfo.jobsToUsersTable ?? -1;
         const status = getOfferStatus(applicationStatus, offer);
-        console.log("Pre filter", technologies, humanLanguages);
+
         const tech = technologies.filter(
           (t) =>
-            t.jobId === offer.id
+            t.jobId === offer.id && t.tech
         )[0].tech;
+
         const langs = humanLanguages.filter(
           (l) =>
-            l.jobId === offer.id
+            l.jobId === offer.id && l.langs
         )[0].langs;
-        console.log("Post filter", tech, langs);
+
         return (
           <li key={offer.id}>
             <JobOffer

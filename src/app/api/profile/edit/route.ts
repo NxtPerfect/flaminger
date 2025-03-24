@@ -22,7 +22,7 @@ export async function PUT(req: Request) {
       humanLanguages
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return Response.json({ errorType: "emptyFields" }, { status: 400 })
   }
 

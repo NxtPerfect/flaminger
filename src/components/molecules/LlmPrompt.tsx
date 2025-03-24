@@ -17,8 +17,6 @@ export default function LlmPrompt({ title, company, description, requirements, s
     navigator.clipboard.writeText(prompt);
   }
 
-  console.log("Skills", skills);
-
   const parsedTechRequirements = requirements?.tech.map(
     (t) => `${t.name} ${t.experience} years`)
     .join(", ");
