@@ -41,7 +41,12 @@ export async function GET(req: Request) {
     return Response.json({ errorType: "serverError" }, { status: 500 })
   }
 
-  return Response.json({ offers: offers, tech: combinedTech ?? [], langs: combinedLang ?? [] }, { status: 200 })
+  return Response.json({
+    offers: offers,
+    tech: combinedTech ?? [],
+    langs: combinedLang ?? []
+  },
+    { status: 200 })
 }
 
 function getUniqueIdsFromTechAndLang(tech: techReturnData[], lang: langReturnData[]) {

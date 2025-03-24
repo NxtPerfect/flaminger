@@ -54,13 +54,13 @@ export const jobsTable = pgTable('jobs_table', {
 });
 
 export const technologiesRequirementsToJobsTable = pgTable('technologies_requirements_to_jobs_table', {
-  jobId: serial('job_id').references(() => jobsTable.id),
+  jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
   name: text('name').notNull(),
   experience: text('experience').notNull().default("5"),
 })
 
 export const humanLanguagesRequirementsToJobsTable = pgTable('human_languages_requirements_to_jobs_table', {
-  jobId: serial('job_id').references(() => jobsTable.id),
+  jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
   name: text('name').notNull(),
   level: text('level').notNull().default("A1"),
 })
