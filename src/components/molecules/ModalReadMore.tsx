@@ -1,9 +1,9 @@
 import React from 'react'
-import { ModalData } from '../organisms/JobList'
 import CloseButton from '../atoms/CloseButton'
 import AcceptanceRatePercentage from '../atoms/AcceptanceRatePercentage'
 import Image from 'next/image'
 import LinkButton from '../organisms/LinkButton'
+import { ModalData } from '@/hooks/useOffers'
 
 type Props = {
   data: ModalData | undefined

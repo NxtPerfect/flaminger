@@ -1,7 +1,7 @@
 import { SelectHumanLanguagesToUsers, SelectJobs, SelectTechnologiesToUsers, SelectUser } from "@/db/schema";
 import { Dispatch, SetStateAction } from "react"
 
-export const MAX_JOBS_PER_PAGE = 20;
+export const MAX_JOBS_PER_PAGE = 2;
 export const FEATURE_FLAG_READ_MORE = true;
 
 export type ErrorVariant = typeof ERROR_VARIANTS[keyof typeof ERROR_VARIANTS];
@@ -152,7 +152,7 @@ export type HumanLanguage = {
 
 export type Technology = {
   name: string
-  experience: number | string
+  experience: string | number
 }
 
 export const HUMAN_LANGUAGE_LEVELS = [
@@ -199,3 +199,35 @@ export type Application = {
   }
 }
 
+export type ModalData = {
+  id: number
+  title: string
+  description: string
+  logoPath: string
+  acceptanceRate: string
+  requirements: Requirements
+  status: string
+  isNotLoggedIn: boolean
+  companyName: string
+}
+
+export type Requirements = {
+  tech: Technology
+  langs: HumanLanguage
+}
+
+export type TechRequirement = {
+  jobId: number,
+  tech: {
+    name: string,
+    experience: string
+  }[]
+}
+
+export type LangRequirement = {
+  jobId: number,
+  langs: {
+    name: string,
+    level: string
+  }[]
+}

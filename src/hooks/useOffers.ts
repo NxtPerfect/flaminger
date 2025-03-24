@@ -1,21 +1,5 @@
-import { HumanLanguage, OfferWithCompanyInfo, Technology } from "@/app/lib/definitions";
+import { HumanLanguage, LangRequirement, OfferWithCompanyInfo, Technology, TechRequirement } from "@/app/lib/definitions";
 import { useCallback, useEffect, useState } from "react";
-
-type techRequirement = {
-  jobId: number,
-  tech: {
-    name: string,
-    experience: string
-  }[]
-}
-
-type langRequirement = {
-  jobId: number,
-  langs: {
-    name: string,
-    level: string
-  }[]
-}
 
 export type ModalData = {
   id: number
@@ -38,13 +22,12 @@ export function useOffers() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);
   const [offset, setOffset] = useState<number>(1);
-  const [technologies, setTechnology] = useState<techRequirement[]>([]);
-  const [humanLanguages, setHumanLanguages] = useState<langRequirement[]>([]);
+  const [technologies, setTechnology] = useState<TechRequirement[]>([]);
+  const [humanLanguages, setHumanLanguages] = useState<LangRequirement[]>([]);
 
   const fetchOffers = useCallback(async () => {
     setIsLoading(true);
-    const parsedOffset = offset;
-    await fetch(`/api/offers/${parsedOffset}`)
+    await fetch(`/api/offers/${offset}`)
       .then(async (res) => {
         const responseJson = await res.json();
         setOffers(responseJson.offers);

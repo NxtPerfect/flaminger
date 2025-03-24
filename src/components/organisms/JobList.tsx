@@ -1,15 +1,18 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import { HumanLanguage, Offer, OfferWithCompanyInfo, Technology, UserApplications } from '@/app/lib/definitions';
-import { useParams } from 'next/navigation';
+import React, { useState } from 'react'
+import { LangRequirement, Offer, OfferWithCompanyInfo, TechRequirement, UserApplications } from '@/app/lib/definitions';
 import SkeletonJobOffer from '../placeholders/SkeletonJobOffer';
 import JobOffer from '../molecules/JobOffer';
 import ModalReadMore from '../molecules/ModalReadMore';
 import { useUserSkills } from '@/hooks/useUserSkills';
-import { useOffers } from '@/hooks/useOffers';
+import { ModalData } from '@/hooks/useOffers';
 
 type Props = {
+  isLoading: boolean
   isNotLoggedIn: boolean
+  offers: OfferWithCompanyInfo[]
+  technologies: TechRequirement[]
+  humanLanguages: LangRequirement[]
 }
 
 type JobsToUsersTable = {
@@ -22,34 +25,10 @@ type JobsToUsersTable = {
   rejectionReason: string
 }
 
-
-export type ModalData = {
-  id: number
-  title: string
-  description: string
-  logoPath: string
-  acceptanceRate: string
-  requirements: Requirements
-  status: string
-  isNotLoggedIn: boolean
-  companyName: string
-}
-
-type Requirements = {
-  tech: Technology[]
-  langs: HumanLanguage[]
-}
-
-export default function JobList({ isNotLoggedIn }: Props) {
+export default function JobListTest({ isLoading, isNotLoggedIn, offers, technologies, humanLanguages }: Props) {
   const [isOpenModalReadMore, setIsOpenModalReadMore] = useState<boolean>(false);
   const [modalData, setModalData] = useState<ModalData>();
-  const params = useParams<{ offset: string }>();
   const { skills } = useUserSkills();
-  const { isLoading, setOffset, offers, technologies, humanLanguages } = useOffers();
-
-  useEffect(() => {
-    setOffset(() => Number.parseInt(params.offset));
-  })
 
   function openModalReadMore(offerId: number) {
     if (isOpenModalReadMore) {
