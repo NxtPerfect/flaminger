@@ -1,5 +1,6 @@
 "use client";
 import Pagination from '@/components/molecules/Pagination';
+import Filter from '@/components/organisms/Filter';
 import JobList from '@/components/organisms/JobList';
 import { useOffers } from '@/hooks/useOffers';
 import { AuthContext } from '@/providers/AuthProvider';
@@ -11,6 +12,7 @@ export default function Offers() {
   const { isLoading, offset, setOffset, offers, technologies, humanLanguages } = useOffers();
   return (
     <div>
+      <Filter />
       <JobList
         isLoading={isLoading}
         isNotLoggedIn={!isLoggedIn}
