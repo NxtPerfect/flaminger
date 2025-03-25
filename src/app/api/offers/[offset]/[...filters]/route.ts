@@ -1,5 +1,5 @@
 import { getUserId } from "@/app/lib/session";
-import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getHumanLanguagesForMax20jobs, getTechnologiesForMax20jobs } from "@/db/queries/select"
+import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getFilteredJobsByTitleForLoggedInUser, getHumanLanguagesForMax20jobs, getTechnologiesForMax20jobs } from "@/db/queries/select"
 
 type techReturnData = {
   jobId: number,
@@ -20,24 +20,25 @@ export async function GET(req: Request, { params }: { params: Promise<{ offset: 
   // and chain them together
   // then get offset * 20
   //
-  // const userId: number = await getUserId();
+  const userId: number = await getUserId();
   const { offset, ...filters } = await params;
   console.log(filters);
-  //
-  // if (!offset) {
-  //   return Response.json({ errorType: "badData" }, { status: 400 });
-  // }
-  //
-  // const parsedOffset = Number.parseInt(offset[0]) - 1;
-  //
-  // let offers;
-  // if (userId !== -1) {
-  //   offers = await getAllJobsForLoggedUserWithCompanyInfo(userId, parsedOffset);
-  // }
-  // else {
-  //   offers = await getAllJobsWithCompanyInfo(parsedOffset);
-  // }
-  //
+
+  if (!offset) {
+    return Response.json({ errorType: "badData" }, { status: 400 });
+  }
+
+  const parsedOffset = Number.parseInt(offset[0]) - 1;
+
+  let offers;
+  if (userId !== -1) {
+    offers = await getFilteredJobsByTitleForLoggedInUser(filters[0], userId, parsedOffset);
+  }
+  else {
+    offers = await getAllJobsWithCompanyInfo(parsedOffset);
+  }
+  console.log(offers);
+
   // const tech = await getTechnologiesForMax20jobs(parsedOffset);
   // const lang = await getHumanLanguagesForMax20jobs(parsedOffset);
   // const uniqueIds = getUniqueIdsFromTechAndLang(tech, lang)
