@@ -217,17 +217,28 @@ export type Requirements = {
 }
 
 export type TechRequirement = {
-  jobId: number,
+  jobId: number
   tech: {
-    name: string,
+    name: string
     experience: string
   }[]
 }
 
 export type LangRequirement = {
-  jobId: number,
+  jobId: number
   langs: {
-    name: string,
+    name: string
     level: string
   }[]
+}
+
+export type Filter = {
+  title: string
+  companyName: string
+  minSalary: number
+  maxSalary: number
+  jobType: "remote" | "hybrid" | "stationary"
+  contractType: "b2b" | "contract"
+  workhourType: "fullTime" | "partTime" | "internship"
+  city: string
 }
