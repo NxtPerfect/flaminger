@@ -10,15 +10,18 @@ export default function Offers() {
   const auth = useContext(AuthContext);
   const isLoggedIn = auth?.isLoggedIn ?? false;
   const { isLoading, offset, setOffset, offers, technologies, humanLanguages } = useOffers();
+  // useFilter?
   return (
     <div>
-      <Filter />
-      <JobList
-        isLoading={isLoading}
-        isNotLoggedIn={!isLoggedIn}
-        offers={offers}
-        technologies={technologies}
-        humanLanguages={humanLanguages} />
+      <div className="flex flex-row">
+        <Filter />
+        <JobList
+          isLoading={isLoading}
+          isNotLoggedIn={!isLoggedIn}
+          offers={offers}
+          technologies={technologies}
+          humanLanguages={humanLanguages} />
+      </div>
       <Pagination offset={offset} setOffsetAction={setOffset} />
     </div>
   )

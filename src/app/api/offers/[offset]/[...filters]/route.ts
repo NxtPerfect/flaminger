@@ -13,44 +13,54 @@ type langReturnData = {
   level: string
 }
 
-export async function GET(req: Request) {
-  const userId: number = await getUserId();
-  const offset = getOffset(req.url);
-  if (!offset) {
-    return Response.json({ errorType: "badData" }, { status: 400 });
-  }
-
-  const parsedOffset = Number.parseInt(offset[0]) - 1;
-
-  let offers;
-  if (userId !== -1) {
-    offers = await getAllJobsForLoggedUserWithCompanyInfo(userId, parsedOffset);
-  }
-  else {
-    offers = await getAllJobsWithCompanyInfo(parsedOffset);
-  }
-
-  const tech = await getTechnologiesForMax20jobs(parsedOffset);
-  const lang = await getHumanLanguagesForMax20jobs(parsedOffset);
-  const uniqueIds = getUniqueIdsFromTechAndLang(tech, lang)
-
-  const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueIds);
-  const combinedLang = combineHumanLanguagesOfSameJobId(lang, uniqueIds);
-
-  if (offers.length > 0 && (combinedTech.length === 0 || combinedLang.length === 0)) {
-    return Response.json({ errorType: "serverError" }, { status: 500 })
-  }
-
-  return Response.json({
-    offers: offers,
-    tech: combinedTech ?? [],
-    langs: combinedLang ?? []
-  },
-    { status: 200 })
+export async function GET(req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
+  // get name, city etc from params
+  // send sql query with all the filters
+  // i can make multiple queries, all filtering on specific thing
+  // and chain them together
+  // then get offset * 20
+  //
+  // const userId: number = await getUserId();
+  const { offset, ...filters } = await params;
+  console.log(filters);
+  //
+  // if (!offset) {
+  //   return Response.json({ errorType: "badData" }, { status: 400 });
+  // }
+  //
+  // const parsedOffset = Number.parseInt(offset[0]) - 1;
+  //
+  // let offers;
+  // if (userId !== -1) {
+  //   offers = await getAllJobsForLoggedUserWithCompanyInfo(userId, parsedOffset);
+  // }
+  // else {
+  //   offers = await getAllJobsWithCompanyInfo(parsedOffset);
+  // }
+  //
+  // const tech = await getTechnologiesForMax20jobs(parsedOffset);
+  // const lang = await getHumanLanguagesForMax20jobs(parsedOffset);
+  // const uniqueIds = getUniqueIdsFromTechAndLang(tech, lang)
+  //
+  // const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueIds);
+  // const combinedLang = combineHumanLanguagesOfSameJobId(lang, uniqueIds);
+  //
+  // if (offers.length > 0 && (combinedTech.length === 0 || combinedLang.length === 0)) {
+  //   return Response.json({ errorType: "serverError" }, { status: 500 })
+  // }
+  //
+  // return Response.json({
+  //   offers,
+  //   tech: combinedTech ?? [],
+  //   langs: combinedLang ?? []
+  // },
+  //   { status: 200 }
+  // );
+  return Response.json({ status: 200 });
 }
 
 function getOffset(url: string) {
-  return url.split('/')[5];
+  return url.split('/')[5].split('/')[0];
 }
 
 function getUniqueIdsFromTechAndLang(tech: techReturnData[], lang: langReturnData[]) {

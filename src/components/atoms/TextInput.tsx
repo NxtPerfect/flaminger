@@ -27,7 +27,7 @@ invalid:[&:not(:placeholder-shown):not(:focus)]:bg-red-300/80 ${className}`.trim
         id={id ?? name} placeholder={placeholder} pattern={pattern}
         required={required} className={style} onChange={onChange}
         defaultValue={defaultValue} list={list}
-        autoComplete={autocomplete ?? undefined} />
+        autoComplete={autocomplete ?? ""} />
     </div>
   )
 }
