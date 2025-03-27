@@ -54,9 +54,9 @@ export const jobsTable = pgTable('jobs_table', {
   minSalary: integer('min_salary').default(0),
   maxSalary: integer('max_salary').default(50000),
   city: text('city').default('New Jersey'),
-  jobType: text('job_type').default('remote'),
-  contractType: text('contract_type').default('b2b'),
-  workhourType: text('workhour_Type').default('fullTime'),
+  jobType: text('job_type').default('remote').notNull(),
+  contractType: text('contract_type').default('b2b').notNull(),
+  workhourType: text('workhour_Type').default('fullTime').notNull(),
 });
 
 export const technologiesRequirementsToJobsTable = pgTable('technologies_requirements_to_jobs_table', {

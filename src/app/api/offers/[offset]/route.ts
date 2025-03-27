@@ -1,17 +1,6 @@
+import { langReturnData, MAX_JOBS_PER_PAGE, techReturnData } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getHumanLanguagesForMax20jobs, getTechnologiesForMax20jobs } from "@/db/queries/select"
-
-type techReturnData = {
-  jobId: number,
-  name: string,
-  experience: string
-}
-
-type langReturnData = {
-  jobId: number,
-  name: string,
-  level: string
-}
 
 export async function GET(req: Request) {
   const userId: number = await getUserId();
@@ -44,7 +33,8 @@ export async function GET(req: Request) {
   return Response.json({
     offers: offers,
     tech: combinedTech ?? [],
-    langs: combinedLang ?? []
+    langs: combinedLang ?? [],
+    count: Math.ceil(offers.length / MAX_JOBS_PER_PAGE)
   },
     { status: 200 })
 }

@@ -10,7 +10,19 @@ import { type Filter } from '../lib/definitions';
 export default function Offers() {
   const auth = useContext(AuthContext);
   const isLoggedIn = auth?.isLoggedIn ?? false;
-  const { isLoading, offset, setOffset, offers, setOffers, technologies, humanLanguages } = useOffers();
+  const {
+    isLoading,
+    offset,
+    setOffset,
+    offers,
+    setOffers,
+    technologies,
+    setTechnologies,
+    humanLanguages,
+    setHumanLanguages,
+    maxPages,
+    setMaxPages
+  } = useOffers();
   // useFilter?
   const defaultFilter: Filter = {
     title: "any",
@@ -70,6 +82,9 @@ export default function Offers() {
       .then(async (res) => {
         const _data = await res.json();
         setOffers(() => [..._data.offers]);
+        setTechnologies(() => [..._data.tech]);
+        setHumanLanguages(() => [..._data.lang]);
+        setMaxPages(() => _data.count);
       })
       .finally(() => controller.abort());
   }
@@ -91,7 +106,10 @@ export default function Offers() {
           technologies={technologies}
           humanLanguages={humanLanguages} />
       </div>
-      <Pagination offset={offset} setOffsetAction={setOffset} />
+      <Pagination
+        offset={offset}
+        setOffsetAction={setOffset}
+        maxPages={maxPages} />
     </div>
   )
 }

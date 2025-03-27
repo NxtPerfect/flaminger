@@ -1,6 +1,12 @@
-import { Filter } from "@/app/lib/definitions";
+import { CompaniesTable, Filter, JobsTable, JobsToUsersTable, langReturnData, MAX_JOBS_PER_PAGE, techReturnData } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
-import { getJobsFiltered } from "@/db/queries/select"
+import { getCountFilteredJobs, getHumanLanguagesForMultipleIds, getJobsFiltered, getTechnologiesForMultipleIds } from "@/db/queries/select"
+
+type FilteredJobs = {
+  jobsTable: JobsTable
+  companiesTable: CompaniesTable
+  jobsToUsersTable?: JobsToUsersTable | null | undefined
+}
 
 export async function GET(_req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
   const userId: number = await getUserId();
@@ -14,8 +20,24 @@ export async function GET(_req: Request, { params }: { params: Promise<{ offset:
   const parsedOffset = Number.parseInt(offset[0]) - 1;
 
   const offers = await getJobsFiltered(userId, parsedOffset, parsedFilter);
+  const [{ count }] = await getCountFilteredJobs(userId, parsedFilter);
+  const uniqueOffersIds = getUniqueIds(offers);
+  const tech = await getTechnologiesForMultipleIds(uniqueOffersIds);
+  const lang = await getHumanLanguagesForMultipleIds(uniqueOffersIds);
 
-  return Response.json({ offers }, { status: 200 });
+  const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueOffersIds);
+  const combinedLang = combineHumanLanguagesOfSameJobId(lang, uniqueOffersIds);
+
+  console.log("Tech", combinedTech, "Lang", combinedLang);
+  console.log(Math.ceil(offers.length / MAX_JOBS_PER_PAGE));
+
+  return Response.json({
+    offers: offers,
+    tech: combinedTech ?? [],
+    lang: combinedLang ?? [],
+    count: Math.ceil(count / MAX_JOBS_PER_PAGE)
+  },
+    { status: 200 });
 }
 
 function getParsedFilters(arr: string[]) {
@@ -52,4 +74,53 @@ function getParsedFilters(arr: string[]) {
 
 function getKeyCount<T extends object>(obj: T): number {
   return Object.keys(obj).length;
+}
+
+function getUniqueIds(offers: FilteredJobs[]) {
+  const uniqueIds: number[] = [];
+  for (let i = 0; i < offers.length; i++) {
+    if (!uniqueIds.some((id) => offers[i].jobsTable!.id === id)) {
+      uniqueIds.push(offers[i].jobsTable!.id);
+    }
+  }
+  return uniqueIds;
+}
+
+function combineTechnologiesOfSameJobId(tech: techReturnData[], uniqueIds: number[]) {
+  const combinedTech = [];
+  for (let i = 0; i < uniqueIds.length; i++) {
+    const arr = tech.filter((t) =>
+      t.jobId === uniqueIds[i]
+    )
+      .map((t) => {
+        return {
+          name: t.name,
+          experience: t.experience
+        }
+      });
+
+    combinedTech.push({
+      jobId: uniqueIds[i],
+      tech: arr
+    });
+  }
+
+  return combinedTech;
+}
+
+function combineHumanLanguagesOfSameJobId(lang: langReturnData[], uniqueIds: number[]) {
+  const combinedLang = [];
+  for (let i = 0; i < uniqueIds.length; i++) {
+    const arr = lang.filter((l) =>
+      l.jobId === uniqueIds[i]
+    )
+      .map((l) => {
+        return { name: l.name, level: l.level };
+      })
+    combinedLang.push({
+      jobId: uniqueIds[i],
+      langs: arr
+    });
+  }
+  return combinedLang;
 }

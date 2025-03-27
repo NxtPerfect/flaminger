@@ -1,27 +1,14 @@
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import ActionButton from '../atoms/ActionButton';
 
 type Props = {
   offset: number
   setOffsetAction: Dispatch<SetStateAction<number>>
+  maxPages: number
 }
 
-export default function PaginationTest({ offset, setOffsetAction }: Props) {
-  const [maxPages, setMaxPages] = useState<number>(1);
-
-  useEffect(() => {
-    const fetchLength = async () => {
-      await fetch(`/api/offers/length`)
-        .then(async (res) => {
-          const responseJson = await res.json();
-          setMaxPages(responseJson.count);
-        })
-    }
-    fetchLength();
-  }, [])
-
-
+export default function PaginationTest({ offset, setOffsetAction, maxPages }: Props) {
   return (
     <div className={`mt-8 flex flex-row gap-2
       px-4 py-1 justify-center items-center`}>
@@ -64,8 +51,8 @@ export default function PaginationTest({ offset, setOffsetAction }: Props) {
           return (
             <ActionButton variant="navigation"
               onClick={() => setOffsetAction(() => nextPage)}
-              className="hover:text-black/20 hover:dark:text-white/20
-              p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
+              className={`hover:text-black/20 hover:dark:text-white/20
+              p-2 text-xl focus:text-black/20 focus:dark:text-white/20`}
               key={id}
             >
               {nextPage}
@@ -78,8 +65,8 @@ export default function PaginationTest({ offset, setOffsetAction }: Props) {
       {offset < maxPages &&
         <ActionButton variant="navigation"
           onClick={() => setOffsetAction(() => maxPages)}
-          className="hover:text-black/20 hover:dark:text-white/20
-          p-2 text-xl focus:text-black/20 focus:dark:text-white/20"
+          className={`hover:text-black/20 hover:dark:text-white/20
+          p-2 text-xl focus:text-black/20 focus:dark:text-white/20`}
         >
           {maxPages}
         </ActionButton>}

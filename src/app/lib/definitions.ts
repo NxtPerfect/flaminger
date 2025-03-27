@@ -70,6 +70,21 @@ export type Offer = {
   createdAt?: Date
 }
 
+export type JobsTable = {
+  id: number
+  title: string
+  description: string
+  byCompanyId: number
+  isClosed: boolean | null
+  createdAt: Date
+  minSalary: number | null
+  maxSalary: number | null
+  city: string | null
+  jobType: "remote" | "hybrid" | "stationary" | string | null
+  contractType: "b2b" | "contract" | string | null
+  workhourType: "full" | "part" | "internship" | string | null
+}
+
 export type StatisticsForUserApplicationsFromDatabase = {
   accepted: { count: number }
   rejected: { count: number }
@@ -114,6 +129,14 @@ export type Company = {
   acceptanceRate: number
 }
 
+export type CompaniesTable = {
+  id: number
+  name: string
+  jobsAccepted: number | null
+  jobsRejected: number | null
+  acceptanceRate: number | null
+}
+
 export type UserApplications = {
   id: number
   userId: number
@@ -122,6 +145,15 @@ export type UserApplications = {
   isApplicationInProgress: boolean
   isAccepted: boolean
   rejectionReason: string
+}
+
+export type JobsToUsersTable = {
+  userId: number
+  jobId: number
+  isApplied: boolean
+  isApplicationInProgress: boolean
+  isAccepted: boolean
+  rejectionReason: string | null
 }
 
 export type User = {
@@ -241,4 +273,16 @@ export type Filter = {
   contractType: "b2b" | "contract" | string
   workhourType: "full" | "part" | "internship" | string
   city: string
+}
+
+export type techReturnData = {
+  jobId: number,
+  name: string,
+  experience: string
+}
+
+export type langReturnData = {
+  jobId: number,
+  name: string,
+  level: string
 }

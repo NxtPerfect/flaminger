@@ -242,6 +242,30 @@ export async function getJobsMaxPages() {
     .from(jobsTable);
 }
 
+export async function getJobsFiltered(userId: number, offset: number, filter: Filter) {
+  const { id: _id, ...rest } = getTableColumns(jobsToUsersTable);
+
+  return db.select({
+    jobsTable,
+    companiesTable,
+    ...(userId === -1 ? {} : { jobsToUsersTable: { ...rest } }),
+  })
+    .from(jobsTable)
+    .where(buildJobFilterConditions(filter))
+    .innerJoin(companiesTable, buildCompanyJoinConditions(filter))
+    .leftJoin(jobsToUsersTable, buildUserJoinConditions(userId))
+    .offset(MAX_JOBS_PER_PAGE * offset)
+    .limit(MAX_JOBS_PER_PAGE);
+}
+
+export async function getCountFilteredJobs(userId: number, filter: Filter) {
+  return db.select({ count: count() })
+    .from(jobsTable)
+    .where(buildJobFilterConditions(filter))
+    .innerJoin(companiesTable, buildCompanyJoinConditions(filter))
+    .leftJoin(jobsToUsersTable, buildUserJoinConditions(userId));
+}
+
 function buildJobFilterConditions(filter: Filter) {
   return and(
     ilike(jobsTable.title, `%${filter.title}%`),
@@ -268,18 +292,14 @@ function buildUserJoinConditions(userId: number) {
   );
 }
 
-export async function getJobsFiltered(userId: number, offset: number, filter: Filter) {
-  const { id: _id, ...rest } = getTableColumns(jobsToUsersTable);
+export async function getTechnologiesForMultipleIds(userIds: number[]) {
+  return db.select()
+    .from(technologiesRequirementsToJobsTable)
+    .where(inArray(technologiesRequirementsToJobsTable.jobId, userIds));
+}
 
-  return db.select({
-    jobsTable,
-    companiesTable,
-    ...(userId === -1 ? {} : { jobsToUsersTable: { ...rest } }),
-  })
-    .from(jobsTable)
-    .where(buildJobFilterConditions(filter))
-    .innerJoin(companiesTable, buildCompanyJoinConditions(filter))
-    .leftJoin(jobsToUsersTable, buildUserJoinConditions(userId))
-    .offset(MAX_JOBS_PER_PAGE * offset)
-    .limit(MAX_JOBS_PER_PAGE);
+export async function getHumanLanguagesForMultipleIds(userIds: number[]) {
+  return db.select()
+    .from(humanLanguagesRequirementsToJobsTable)
+    .where(inArray(humanLanguagesRequirementsToJobsTable.jobId, userIds));
 }

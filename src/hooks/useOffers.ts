@@ -22,8 +22,9 @@ export function useOffers() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);
   const [offset, setOffset] = useState<number>(1);
-  const [technologies, setTechnology] = useState<TechRequirement[]>([]);
+  const [technologies, setTechnologies] = useState<TechRequirement[]>([]);
   const [humanLanguages, setHumanLanguages] = useState<LangRequirement[]>([]);
+  const [maxPages, setMaxPages] = useState<number>(6);
 
   const fetchOffers = useCallback(async () => {
     const controller = new AbortController();
@@ -33,8 +34,9 @@ export function useOffers() {
       .then(async (res) => {
         const responseJson = await res.json();
         setOffers(responseJson.offers);
-        setTechnology(responseJson.tech);
+        setTechnologies(responseJson.tech);
         setHumanLanguages(responseJson.langs);
+        setMaxPages(responseJson.count);
       })
     setIsLoading(false);
     return () => controller.abort();
@@ -52,6 +54,10 @@ export function useOffers() {
     offset,
     setOffset,
     technologies,
-    humanLanguages
+    setTechnologies,
+    humanLanguages,
+    setHumanLanguages,
+    maxPages,
+    setMaxPages
   }
 }
