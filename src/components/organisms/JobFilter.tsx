@@ -2,17 +2,17 @@ import React, { ChangeEvent } from 'react'
 import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
 import NumberInput from '../atoms/NumberInput';
+import { Filter } from '@/app/lib/definitions';
 
 type Props = {
   handleTitle: (event: ChangeEvent<HTMLInputElement>) => void
   handleCompanyName: (event: ChangeEvent<HTMLInputElement>) => void
   handleMinSalary: (event: ChangeEvent<HTMLInputElement>) => void
   handleMaxSalary: (event: ChangeEvent<HTMLInputElement>) => void
-  submitFilter: () => void
+  submitFilter: (filter: Filter) => void
 }
 
 export default function JobFilter({ handleTitle, handleCompanyName, handleMinSalary, handleMaxSalary, submitFilter }: Props) {
-
   return (
     <div className={`flex flex-col w-1/6 gap-4 bg-neutral-900 p-4
 text-black dark:text-white rounded-md`}>

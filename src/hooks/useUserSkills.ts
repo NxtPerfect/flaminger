@@ -8,12 +8,10 @@ type Skills = {
 
 export function useUserSkills() {
   const [skills, setSkills] = useState<Skills>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const getSkills = async () => {
-      setIsLoading(true);
       const controller = new AbortController();
       const signal = controller.signal;
       try {
@@ -41,12 +39,14 @@ export function useUserSkills() {
         setError('Failed to load skills.');
         controller.abort();
       } finally {
-        setIsLoading(false);
       }
     }
 
     getSkills();
   }, [])
 
-  return { skills, isLoading, error };
+  return {
+    skills,
+    error
+  };
 }

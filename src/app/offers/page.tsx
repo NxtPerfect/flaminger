@@ -5,54 +5,28 @@ import JobList from '@/components/organisms/JobList';
 import { useOffers } from '@/hooks/useOffers';
 import { AuthContext } from '@/providers/AuthProvider';
 import React, { useContext } from 'react'
-import { useFilter } from '@/hooks/useFilter';
+import { useFiltering } from '@/hooks/useFiltering';
 
 export default function Offers() {
   const auth = useContext(AuthContext);
   const isLoggedIn = auth?.isLoggedIn ?? false;
   const {
-    isLoading: isOfferLoading,
-    offset,
-    setOffset,
-    offers,
-    setOffers,
-    technologies,
-    setTechnologies,
-    humanLanguages,
-    setHumanLanguages,
-    maxPages,
-    setMaxPages
-  } = useOffers();
-  const {
     handleTitle,
     handleCompanyName,
     handleMinSalary,
     handleMaxSalary,
-    createFetchUrlFromFilter
-  } = useFilter();
-
-  function submitFilter() {
-    const controller = new AbortController;
-    const signal = controller.signal;
-    const apiUrl = "/api/offers/" + offset + createFetchUrlFromFilter();
-
-    fetch(apiUrl,
-      {
-        method: "GET",
-        credentials: "include",
-        signal
-      })
-      .then(async (res) => {
-        const data = await res.json();
-        setOffers(() => [...data.offers]);
-        setTechnologies(() => [...data.tech]);
-        setHumanLanguages(() => [...data.lang]);
-        setMaxPages(() => data.count);
-      })
-      .finally(() => {
-        controller.abort();
-      });
-  }
+    filter
+  } = useFiltering();
+  const {
+    isLoading,
+    offset,
+    setOffset,
+    offers,
+    fetchOffers,
+    technologies,
+    humanLanguages,
+    maxPages
+  } = useOffers(filter);
 
   return (
     <div>
@@ -62,10 +36,10 @@ export default function Offers() {
           handleCompanyName={handleCompanyName}
           handleMinSalary={handleMinSalary}
           handleMaxSalary={handleMaxSalary}
-          submitFilter={submitFilter}
+          submitFilter={fetchOffers}
         />
         <JobList
-          isLoading={isOfferLoading}
+          isLoading={isLoading}
           isNotLoggedIn={!isLoggedIn}
           offers={offers}
           technologies={technologies}

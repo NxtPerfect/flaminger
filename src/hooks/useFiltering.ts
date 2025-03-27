@@ -1,7 +1,7 @@
 import { Filter } from "@/app/lib/definitions";
 import { ChangeEvent, useState } from "react";
 
-export function useFilter() {
+export function useFiltering() {
   const defaultFilter: Filter = {
     title: "any",
     companyName: "any",
@@ -16,6 +16,12 @@ export function useFilter() {
 
   function handleTitle(event: ChangeEvent<HTMLInputElement>) {
     const title = event.currentTarget.value;
+    if (title.length === 0) {
+      setFilter((cur) => {
+        return { ...cur, title: "any" };
+      });
+      return;
+    }
     setFilter((cur) => {
       return { ...cur, title: title };
     });
@@ -23,6 +29,12 @@ export function useFilter() {
 
   function handleCompanyName(event: ChangeEvent<HTMLInputElement>) {
     const companyName = event.currentTarget.value;
+    if (companyName.length === 0) {
+      setFilter((cur) => {
+        return { ...cur, companyName: "any" };
+      });
+      return;
+    }
     setFilter((cur) => {
       return { ...cur, companyName: companyName };
     });
@@ -42,14 +54,11 @@ export function useFilter() {
     });
   }
 
-  function createFetchUrlFromFilter() {
-    return `/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
-  }
   return {
     handleTitle,
     handleCompanyName,
     handleMinSalary,
     handleMaxSalary,
-    createFetchUrlFromFilter
+    filter
   }
 }

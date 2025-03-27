@@ -28,9 +28,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ offset:
   const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueOffersIds);
   const combinedLang = combineHumanLanguagesOfSameJobId(lang, uniqueOffersIds);
 
-  console.log("Tech", combinedTech, "Lang", combinedLang);
-  console.log(Math.ceil(offers.length / MAX_JOBS_PER_PAGE));
-
   return Response.json({
     offers: offers,
     tech: combinedTech ?? [],
