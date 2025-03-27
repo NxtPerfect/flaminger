@@ -52,7 +52,9 @@ text-black dark:text-white rounded-md`}>
           Berlin
         </option>
       </select>
-      <ActionButton variant="alt" onClick={submitFilter}>
+      <ActionButton
+        variant="alt"
+        onClick={() => submitFilter}>
         Filter
       </ActionButton>
     </div>

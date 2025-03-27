@@ -36,8 +36,6 @@ export function useOffers(filter: Filter) {
 
   const fetchOffers = useCallback(async () => {
     setIsLoading(true);
-    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    await sleep(1000);
     const controller = new AbortController;
     const signal = controller.signal;
     const apiUrl = createFetchUrlFromFilter(offset);
