@@ -48,6 +48,7 @@ export function useOffers() {
     isLoading,
     fetchOffers,
     offers,
+    setOffers,
     offset,
     setOffset,
     technologies,
