@@ -53,7 +53,7 @@ function getParsedFilters(arr: string[]) {
   }
   const FILTER_KEY_COUNT = getKeyCount(sampleFilter);
   if (arr.length !== FILTER_KEY_COUNT) {
-    console.error(`Not enough arguments for filter. Expected ${FILTER_KEY_COUNT}, got ${arr.length}`);
+    console.error(`Not enough arguments for filter. Expected ${FILTER_KEY_COUNT}, got ${arr.length}, fallback to default filter.`);
     return sampleFilter;
   }
 

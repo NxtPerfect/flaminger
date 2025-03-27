@@ -4,14 +4,14 @@ import JobFilter from '@/components/organisms/JobFilter';
 import JobList from '@/components/organisms/JobList';
 import { useOffers } from '@/hooks/useOffers';
 import { AuthContext } from '@/providers/AuthProvider';
-import React, { ChangeEvent, useContext, useState } from 'react'
-import { type Filter } from '../lib/definitions';
+import React, { useContext } from 'react'
+import { useFilter } from '@/hooks/useFilter';
 
 export default function Offers() {
   const auth = useContext(AuthContext);
   const isLoggedIn = auth?.isLoggedIn ?? false;
   const {
-    isLoading,
+    isLoading: isOfferLoading,
     offset,
     setOffset,
     offers,
@@ -23,55 +23,18 @@ export default function Offers() {
     maxPages,
     setMaxPages
   } = useOffers();
-  // useFilter?
-  const defaultFilter: Filter = {
-    title: "any",
-    companyName: "any",
-    minSalary: 0,
-    maxSalary: 999999,
-    jobType: "any",
-    contractType: "any",
-    workhourType: "any",
-    city: "any"
-  }
-  const [filter, setFilter] = useState<Filter>(defaultFilter);
-
-  function handleTitle(event: ChangeEvent<HTMLInputElement>) {
-    const title = event.currentTarget.value;
-    setFilter((cur) => {
-      return { ...cur, title: title };
-    });
-  }
-
-  function handleCompanyName(event: ChangeEvent<HTMLInputElement>) {
-    const companyName = event.currentTarget.value;
-    setFilter((cur) => {
-      return { ...cur, companyName: companyName };
-    });
-  }
-
-  function handleMinSalary(event: ChangeEvent<HTMLInputElement>) {
-    const minSalary = event.currentTarget.valueAsNumber ?? 0;
-    setFilter((cur) => {
-      return { ...cur, minSalary: minSalary };
-    });
-  }
-
-  function handleMaxSalary(event: ChangeEvent<HTMLInputElement>) {
-    const maxSalary = event.currentTarget.valueAsNumber ?? 999999;
-    setFilter((cur) => {
-      return { ...cur, maxSalary: maxSalary };
-    });
-  }
-
-  function createFetchUrlFromFilter() {
-    return `/api/offers/${offset}/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
-  }
+  const {
+    handleTitle,
+    handleCompanyName,
+    handleMinSalary,
+    handleMaxSalary,
+    createFetchUrlFromFilter
+  } = useFilter();
 
   function submitFilter() {
     const controller = new AbortController;
     const signal = controller.signal;
-    const apiUrl = createFetchUrlFromFilter();
+    const apiUrl = "/api/offers/" + offset + createFetchUrlFromFilter();
 
     fetch(apiUrl,
       {
@@ -80,13 +43,15 @@ export default function Offers() {
         signal
       })
       .then(async (res) => {
-        const _data = await res.json();
-        setOffers(() => [..._data.offers]);
-        setTechnologies(() => [..._data.tech]);
-        setHumanLanguages(() => [..._data.lang]);
-        setMaxPages(() => _data.count);
+        const data = await res.json();
+        setOffers(() => [...data.offers]);
+        setTechnologies(() => [...data.tech]);
+        setHumanLanguages(() => [...data.lang]);
+        setMaxPages(() => data.count);
       })
-      .finally(() => controller.abort());
+      .finally(() => {
+        controller.abort();
+      });
   }
 
   return (
@@ -100,7 +65,7 @@ export default function Offers() {
           submitFilter={submitFilter}
         />
         <JobList
-          isLoading={isLoading}
+          isLoading={isOfferLoading}
           isNotLoggedIn={!isLoggedIn}
           offers={offers}
           technologies={technologies}
