@@ -1,30 +1,68 @@
 import React, { ChangeEvent, useState } from 'react'
 import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
+import { type Filter } from '@/app/lib/definitions';
+import NumberInput from '../atoms/NumberInput';
 
 export default function Filter() {
-  const [title, setTitle] = useState<string>("");
+  const defaultFilter: Filter = {
+    title: "any",
+    companyName: "any",
+    minSalary: 0,
+    maxSalary: 999999,
+    jobType: "any",
+    contractType: "any",
+    workhourType: "any",
+    city: "any"
+  }
+  const [filter, setFilter] = useState<Filter>(defaultFilter);
 
-  function handleTitleInput(event: ChangeEvent<HTMLInputElement>) {
-    const _name = event.currentTarget.value;
-    setTitle((cur) => {
-      console.log("Current", cur);
-      return _name;
+  function handleTitle(event: ChangeEvent<HTMLInputElement>) {
+    const title = event.currentTarget.value;
+    setFilter((cur) => {
+      return { ...cur, title: title };
     });
+  }
+
+  function handleCompanyName(event: ChangeEvent<HTMLInputElement>) {
+    const companyName = event.currentTarget.value;
+    setFilter((cur) => {
+      return { ...cur, companyName: companyName };
+    });
+  }
+
+  function handleMinSalary(event: ChangeEvent<HTMLInputElement>) {
+    const minSalary = event.currentTarget.valueAsNumber ?? 0;
+    setFilter((cur) => {
+      return { ...cur, minSalary: minSalary };
+    });
+  }
+
+  function handleMaxSalary(event: ChangeEvent<HTMLInputElement>) {
+    const maxSalary = event.currentTarget.valueAsNumber ?? 999999;
+    setFilter((cur) => {
+      return { ...cur, maxSalary: maxSalary };
+    });
+  }
+
+  function createFetchUrlFromFilter() {
+    return `/api/offers/1/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
   }
 
   function submitFilter() {
     const controller = new AbortController;
     const signal = controller.signal;
-    fetch(`/api/offers/1/${title}/minsal/maxsal/remote/full/b2b/city`,
+    const fetchUrl = createFetchUrlFromFilter();
+
+    fetch(fetchUrl,
       {
         method: "GET",
         credentials: "include",
         signal
       })
       .then(async (res) => {
-        const data = await res.json();
-        console.log(res, data, data.offset, data.name);
+        const _data = await res.json();
+        // TODO: Update offers in list
       })
       .finally(() => controller.abort());
   }
@@ -35,10 +73,23 @@ text-black dark:text-white rounded-md`}>
       <TextInput
         name="title"
         placeholder="Webdeveloper"
-        onChange={handleTitleInput} />
-      <input name="company" placeholder="Microsoft" />
-      <input name="minSalary" placeholder="$5,000" />
-      <input name="maxSalary" placeholder="$50,000" />
+        onChange={handleTitle} />
+      <TextInput
+        name="company"
+        placeholder="Microsoft"
+        onChange={handleCompanyName} />
+      <NumberInput
+        name="minSalary"
+        placeholder="$5,000"
+        min={0}
+        max={999999}
+        onChange={handleMinSalary} />
+      <NumberInput
+        name="maxSalary"
+        placeholder="$50,000"
+        min={0}
+        max={999999}
+        onChange={handleMaxSalary} />
       <input type="checkbox" name="remote" />
       <input type="checkbox" name="hybrid" />
       <input type="checkbox" name="stationary" />

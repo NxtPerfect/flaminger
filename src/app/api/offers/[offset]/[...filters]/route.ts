@@ -1,28 +1,12 @@
+import { Filter } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
-import { getAllJobsForLoggedUserWithCompanyInfo, getAllJobsWithCompanyInfo, getFilteredJobsByTitleForLoggedInUser, getHumanLanguagesForMax20jobs, getTechnologiesForMax20jobs } from "@/db/queries/select"
-
-type techReturnData = {
-  jobId: number,
-  name: string,
-  experience: string
-}
-
-type langReturnData = {
-  jobId: number,
-  name: string,
-  level: string
-}
+import { getJobsFiltered } from "@/db/queries/select"
 
 export async function GET(req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
-  // get name, city etc from params
-  // send sql query with all the filters
-  // i can make multiple queries, all filtering on specific thing
-  // and chain them together
-  // then get offset * 20
-  //
   const userId: number = await getUserId();
   const { offset, ...filters } = await params;
-  console.log(filters);
+  const parsedFilter = getParsedFilters(filters.filters);
+  console.log(parsedFilter);
 
   if (!offset) {
     return Response.json({ errorType: "badData" }, { status: 400 });
@@ -30,26 +14,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ offset: 
 
   const parsedOffset = Number.parseInt(offset[0]) - 1;
 
-  let offers;
-  if (userId !== -1) {
-    offers = await getFilteredJobsByTitleForLoggedInUser(filters[0], userId, parsedOffset);
-  }
-  else {
-    offers = await getAllJobsWithCompanyInfo(parsedOffset);
-  }
+  const offers = await getJobsFiltered(userId, parsedOffset, parsedFilter);
   console.log(offers);
 
-  // const tech = await getTechnologiesForMax20jobs(parsedOffset);
-  // const lang = await getHumanLanguagesForMax20jobs(parsedOffset);
-  // const uniqueIds = getUniqueIdsFromTechAndLang(tech, lang)
-  //
-  // const combinedTech = combineTechnologiesOfSameJobId(tech, uniqueIds);
-  // const combinedLang = combineHumanLanguagesOfSameJobId(lang, uniqueIds);
-  //
-  // if (offers.length > 0 && (combinedTech.length === 0 || combinedLang.length === 0)) {
-  //   return Response.json({ errorType: "serverError" }, { status: 500 })
-  // }
-  //
   // return Response.json({
   //   offers,
   //   tech: combinedTech ?? [],
@@ -57,64 +24,41 @@ export async function GET(req: Request, { params }: { params: Promise<{ offset: 
   // },
   //   { status: 200 }
   // );
-  return Response.json({ status: 200 });
+  return Response.json({ offers }, { status: 200 });
 }
 
-function getOffset(url: string) {
-  return url.split('/')[5].split('/')[0];
+function getParsedFilters(arr: string[]) {
+  const sampleFilter = {
+    title: "",
+    companyName: "",
+    minSalary: 0,
+    maxSalary: 999999,
+    jobType: "",
+    workhourType: "",
+    contractType: "",
+    city: ""
+  }
+  const FILTER_KEY_COUNT = getKeyCount(sampleFilter);
+  if (arr.length !== FILTER_KEY_COUNT) {
+    console.error(`Not enough arguments for filter. Expected ${FILTER_KEY_COUNT}, got ${arr.length}`);
+    return sampleFilter;
+  }
+
+  const filter: Filter = {
+    ...sampleFilter,
+    title: arr[0] === "any" ? "" : arr[0],
+    companyName: arr[1] === "any" ? "" : arr[1],
+    minSalary: Number.parseInt(arr[2]),
+    maxSalary: Number.parseInt(arr[3]),
+    jobType: arr[4] === "any" ? "" : arr[4],
+    workhourType: arr[5] === "any" ? "" : arr[5],
+    contractType: arr[6] === "any" ? "" : arr[6],
+    city: arr[7] === "any" ? "" : arr[7]
+  }
+
+  return filter;
 }
 
-function getUniqueIdsFromTechAndLang(tech: techReturnData[], lang: langReturnData[]) {
-  const uniqueIds: number[] = [];
-  for (let i = 0; i < tech.length; i++) {
-    if (!uniqueIds.some((id) => tech[i].jobId === id)) {
-      uniqueIds.push(tech[i].jobId);
-    }
-  }
-
-  for (let i = 0; i < lang.length; i++) {
-    if (!uniqueIds.some((id) => lang[i].jobId === id)) {
-      uniqueIds.push(lang[i].jobId);
-    }
-  }
-  return uniqueIds;
-}
-
-function combineTechnologiesOfSameJobId(tech: techReturnData[], uniqueIds: number[]) {
-  const combinedTech = [];
-  for (let i = 0; i < uniqueIds.length; i++) {
-    const arr = tech.filter((t) =>
-      t.jobId === uniqueIds[i]
-    )
-      .map((t) => {
-        return {
-          name: t.name,
-          experience: t.experience
-        }
-      });
-
-    combinedTech.push({
-      jobId: uniqueIds[i],
-      tech: arr
-    });
-  }
-
-  return combinedTech;
-}
-
-function combineHumanLanguagesOfSameJobId(lang: langReturnData[], uniqueIds: number[]) {
-  const combinedLang = [];
-  for (let i = 0; i < uniqueIds.length; i++) {
-    const arr = lang.filter((l) =>
-      l.jobId === uniqueIds[i]
-    )
-      .map((l) => {
-        return { name: l.name, level: l.level };
-      })
-    combinedLang.push({
-      jobId: uniqueIds[i],
-      langs: arr
-    });
-  }
-  return combinedLang;
+function getKeyCount<T extends object>(obj: T): number {
+  return Object.keys(obj).length;
 }

@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, gte, inArray, like, lte, not } from "drizzle-orm";
+import { and, count, eq, getTableColumns, gte, ilike, inArray, lte, not } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 import { Filter, MAX_JOBS_PER_PAGE } from "@/app/lib/definitions";
@@ -119,7 +119,7 @@ export async function getAllJobsForLoggedUserWithCompanyInfo(userId: SelectUser[
   return db.select({
     jobsTable,
     companiesTable,
-    jobsToUsersTable: { ...rest },
+    jobsToUsersTable: { ...rest }
   })
     .from(jobsTable)
     .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
@@ -242,127 +242,44 @@ export async function getJobsMaxPages() {
     .from(jobsTable);
 }
 
-export async function getJobsIncludingTitle(title: SelectJobs['title'], offset: number) {
-  return db.select()
-    .from(jobsTable)
-    .where(like(jobsTable.title, `%${title}%`))
-    .offset(MAX_JOBS_PER_PAGE * offset)
-    .limit(MAX_JOBS_PER_PAGE);
+function buildJobFilterConditions(filter: Filter) {
+  return and(
+    ilike(jobsTable.title, `%${filter.title}%`),
+    gte(jobsTable.minSalary, filter.minSalary),
+    lte(jobsTable.maxSalary, filter.maxSalary),
+    ilike(jobsTable.jobType, `%${filter.jobType}%`),
+    ilike(jobsTable.contractType, `%${filter.contractType}%`),
+    ilike(jobsTable.workhourType, `%${filter.workhourType}%`),
+    ilike(jobsTable.city, `%${filter.city}%`)
+  );
 }
 
-export async function getFilteredJobsByTitleForLoggedInUser(title: SelectJobs['title'], userId: number, offset: number) {
+function buildCompanyJoinConditions(filter: Filter) {
+  return and(
+    ilike(companiesTable.name, `%${filter.companyName}%`),
+    eq(jobsTable.byCompanyId, companiesTable.id)
+  );
+}
+
+function buildUserJoinConditions(userId: number) {
+  return and(
+    eq(jobsToUsersTable.userId, userId),
+    eq(jobsToUsersTable.jobId, jobsTable.id)
+  );
+}
+
+export async function getJobsFiltered(userId: number, offset: number, filter: Filter) {
   const { id: _id, ...rest } = getTableColumns(jobsToUsersTable);
+
   return db.select({
     jobsTable,
     companiesTable,
-    jobsToUsersTable: { ...rest },
+    ...(userId === -1 ? {} : { jobsToUsersTable: { ...rest } }),
   })
     .from(jobsTable)
-    .where(like(jobsTable.title, `%${title}%`))
-    .innerJoin(companiesTable, eq(jobsTable.byCompanyId, companiesTable.id))
-    .leftJoin(jobsToUsersTable,
-      and(
-        eq(jobsToUsersTable.userId, userId),
-        eq(jobsToUsersTable.jobId, jobsTable.id)
-      )
-    )
+    .where(buildJobFilterConditions(filter))
+    .innerJoin(companiesTable, buildCompanyJoinConditions(filter))
+    .leftJoin(jobsToUsersTable, buildUserJoinConditions(userId))
     .offset(MAX_JOBS_PER_PAGE * offset)
     .limit(MAX_JOBS_PER_PAGE);
-}
-
-export async function getJobsByCompanyName(companyName: SelectCompany['name'], table?: typeof jobsTable) {
-  return db.select({ jobsTable })
-    .from(table ?? jobsTable)
-    .innerJoin(companiesTable,
-      and(
-        eq(table?.byCompanyId ?? jobsTable.byCompanyId, companiesTable.id),
-        like(companiesTable.name, `%${companyName}%`)
-      )
-    );
-}
-
-export async function getJobsByMinSalary(minSalary: number, table?: typeof jobsTable) {
-  return db.select()
-    .from(table ?? jobsTable)
-    .where(gte(table?.minSalary ?? jobsTable.minSalary, minSalary));
-}
-
-export async function getJobsByMaxSalary(maxSalary: number, table?: typeof jobsTable) {
-  return db.select()
-    .from(table ?? jobsTable)
-    .where(lte(table?.maxSalary ?? jobsTable.maxSalary, maxSalary));
-}
-
-export async function getJobsByJobType(jobType: SelectJobs['jobType'], table?: typeof jobsTable) {
-  return db.select()
-    .from(table ?? jobsTable)
-    .where(like(table?.jobType ?? jobsTable.jobType, `%${jobType}%`));
-}
-
-export async function getJobsByContractType(contractType: SelectJobs['contractType'], table?: typeof jobsTable) {
-  return db.select()
-    .from(table ?? jobsTable)
-    .where(like(table?.contractType ?? jobsTable.contractType, `%${contractType}%`));
-}
-
-export async function getJobsByCity(city: SelectJobs['city'], table?: typeof jobsTable) {
-  return db.select()
-    .from(table ?? jobsTable)
-    .where(like(table?.city ?? jobsTable.city, `%${city}%`));
-}
-
-export async function getJobsFiltered(filter: Filter) {
-  // query for each filter parameter
-  // then combine and limit to 20
-  // and offset
-  const byTitle = db.select()
-    .from(jobsTable)
-    .where(like(jobsTable.title, `%${filter.companyName}%`)).as('byTitle');
-
-  const byCompanyName = db.select({ jobsTable })
-    .from(byTitle)
-    .innerJoin(companiesTable,
-      and(
-        eq(jobsTable.byCompanyId, companiesTable.id),
-        like(companiesTable.name, `%${filter.companyName}%`)
-      )
-    ).as('byCompanyName');
-
-  const byMinSalary = db.select()
-    .from(byCompanyName)
-    .where(gte(byCompanyName.jobsTable.minSalary, filter.minSalary)).as('byMinSalary');
-
-  const byMaxSalary = db.select()
-    .from(byMinSalary)
-    .where(lte(byMinSalary.jobsTable.maxSalary, filter.maxSalary)).as('byMaxSalary');
-
-  const byJobType = db.select()
-    .from(byMaxSalary)
-    .where(like(byMaxSalary.jobsTable.jobType, `%${filter.jobType}%`)).as('byJobType');
-
-  const byContractType = db.select()
-    .from(byJobType)
-    .where(like(byJobType.jobsTable.contractType, `%${filter.contractType}%`)).as('byContractType');
-
-  const byCity = db.select()
-    .from(byContractType)
-    .where(like(byContractType.jobsTable.city, `%${filter.city}%`));
-
-  return byCity;
-  // shouldn't length be also calculated from this then?
-}
-
-type Job = {
-  id: number
-  city: string
-  title: string
-  description: string
-  byCompanyId: number
-  createdAt: string
-  isClosed: boolean
-  contractType: string
-  workhourType: string
-  jobType: string
-  minSalary: number
-  maxSalary: number
 }

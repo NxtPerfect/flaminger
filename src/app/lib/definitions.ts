@@ -237,8 +237,8 @@ export type Filter = {
   companyName: string
   minSalary: number
   maxSalary: number
-  jobType: "remote" | "hybrid" | "stationary"
-  contractType: "b2b" | "contract"
-  workhourType: "fullTime" | "partTime" | "internship"
+  jobType: "remote" | "hybrid" | "stationary" | string
+  contractType: "b2b" | "contract" | string
+  workhourType: "full" | "part" | "internship" | string
   city: string
 }
