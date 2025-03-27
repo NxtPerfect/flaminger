@@ -2,7 +2,6 @@ import { Filter } from "@/app/lib/definitions";
 import { ChangeEvent, useState } from "react";
 
 export function useFilter() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const defaultFilter: Filter = {
     title: "any",
     companyName: "any",
