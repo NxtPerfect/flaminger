@@ -23,6 +23,7 @@ export default function Offers() {
     city: "any"
   }
   const [filter, setFilter] = useState<Filter>(defaultFilter);
+
   function handleTitle(event: ChangeEvent<HTMLInputElement>) {
     const title = event.currentTarget.value;
     setFilter((cur) => {
@@ -52,15 +53,15 @@ export default function Offers() {
   }
 
   function createFetchUrlFromFilter() {
-    return `/api/offers/1/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
+    return `/api/offers/${offset}/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
   }
 
   function submitFilter() {
     const controller = new AbortController;
     const signal = controller.signal;
-    const fetchUrl = createFetchUrlFromFilter();
+    const apiUrl = createFetchUrlFromFilter();
 
-    fetch(fetchUrl,
+    fetch(apiUrl,
       {
         method: "GET",
         credentials: "include",

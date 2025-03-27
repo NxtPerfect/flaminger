@@ -2,11 +2,10 @@ import { Filter } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { getJobsFiltered } from "@/db/queries/select"
 
-export async function GET(req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
   const userId: number = await getUserId();
   const { offset, ...filters } = await params;
   const parsedFilter = getParsedFilters(filters.filters);
-  console.log(parsedFilter);
 
   if (!offset) {
     return Response.json({ errorType: "badData" }, { status: 400 });
@@ -15,15 +14,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ offset: 
   const parsedOffset = Number.parseInt(offset[0]) - 1;
 
   const offers = await getJobsFiltered(userId, parsedOffset, parsedFilter);
-  console.log(offers);
 
-  // return Response.json({
-  //   offers,
-  //   tech: combinedTech ?? [],
-  //   langs: combinedLang ?? []
-  // },
-  //   { status: 200 }
-  // );
   return Response.json({ offers }, { status: 200 });
 }
 
