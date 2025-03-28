@@ -18,6 +18,7 @@ export default function Offers() {
     handleJobType,
     handleWorkhourType,
     handleContractType,
+    handleCity,
     filter
   } = useFiltering();
   const {
@@ -43,6 +44,7 @@ export default function Offers() {
           handleJobType={handleJobType}
           handleWorkhourType={handleWorkhourType}
           handleContractType={handleContractType}
+          handleCity={handleCity}
           submitFilter={fetchOffers}
         />
         <JobList

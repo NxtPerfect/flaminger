@@ -318,3 +318,8 @@ export async function getHumanLanguagesForMultipleIds(userIds: number[]) {
     .from(humanLanguagesRequirementsToJobsTable)
     .where(inArray(humanLanguagesRequirementsToJobsTable.jobId, userIds));
 }
+
+export async function getAllCities() {
+  return db.selectDistinct({ city: jobsTable.city })
+    .from(jobsTable)
+}

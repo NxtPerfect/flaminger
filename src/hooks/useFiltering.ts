@@ -93,6 +93,18 @@ export function useFiltering() {
     });
   }
 
+  function handleCity(city: string) {
+    if (city.length === 0) {
+      setFilter((cur) => {
+        return { ...cur, city: "" };
+      });
+      return;
+    }
+    setFilter((cur) => {
+      return { ...cur, city: city };
+    });
+  }
+
   return {
     handleTitle,
     handleCompanyName,
@@ -101,6 +113,7 @@ export function useFiltering() {
     handleJobType,
     handleWorkhourType,
     handleContractType,
+    handleCity,
     filter
   }
 }

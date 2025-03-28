@@ -1,11 +1,10 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
 import NumberInput from '../atoms/NumberInput';
 import { ContractType, Filter, JobType, WorkhourType } from '@/app/lib/definitions';
-import Select from '../atoms/Select';
-import Option from '../atoms/Option';
 import ButtonCheckboxFilter from '../molecules/ButtonCheckboxFilter';
+import CityFilter from '../molecules/CityFilter';
 
 type Props = {
   filter: Filter
@@ -16,6 +15,7 @@ type Props = {
   handleJobType: (jobType: JobType) => void
   handleWorkhourType: (workhourType: WorkhourType) => void
   handleContractType: (contractType: ContractType) => void
+  handleCity: (city: string) => void
   submitFilter: (filter: Filter) => void
 }
 
@@ -28,35 +28,21 @@ export default function JobFilter({
   handleJobType,
   handleWorkhourType,
   handleContractType,
+  handleCity,
   submitFilter }: Props) {
-  function handleButton() {
-    submitFilter(filter);
-  }
+  const [cities, setCities] = useState<string[]>(["New Jersey", "Berlin"]);
 
-  function handleRemoteJobType() {
-    handleJobType("remote");
-  }
-  function handleHybridJobType() {
-    handleJobType("hybrid");
-  }
-  function handleStationaryJobType() {
-    handleJobType("stationary");
-  }
-  function handleFullWorkhourType() {
-    handleWorkhourType("full");
-  }
-  function handlePartWorkhourType() {
-    handleWorkhourType("part");
-  }
-  function handleInternWorkhourType() {
-    handleWorkhourType("intern");
-  }
-  function handleB2BContractType() {
-    handleContractType("b2b");
-  }
-  function handleEmploymentContractType() {
-    handleContractType("contract");
-  }
+  const fetchCities = (async () => {
+    await fetch('/api/cities', { method: "GET" })
+      .then(async (res) => {
+        const data = await res.json();
+        console.log("Got data", data);
+        setCities((_cur) => [...data.cities]);
+      })
+  });
+  useEffect(() => {
+    fetchCities();
+  }, [fetchCities]);
 
   return (
     <div className={`flex flex-col w-1/6 gap-4 bg-neutral-900 p-4
@@ -105,15 +91,15 @@ text-black dark:text-white rounded-md min-w-fit`}>
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
           <ButtonCheckboxFilter
-            onClick={handleRemoteJobType}>
+            onClick={() => handleJobType("remote")}>
             Remote
           </ButtonCheckboxFilter>
           <ButtonCheckboxFilter
-            onClick={handleHybridJobType}>
+            onClick={() => handleJobType("hybrid")}>
             Hybrid
           </ButtonCheckboxFilter>
           <ButtonCheckboxFilter
-            onClick={handleStationaryJobType}>
+            onClick={() => handleJobType("stationary")}>
             Stationary
           </ButtonCheckboxFilter>
         </div>
@@ -124,15 +110,15 @@ text-black dark:text-white rounded-md min-w-fit`}>
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
           <ButtonCheckboxFilter
-            onClick={handleFullWorkhourType}>
+            onClick={() => handleWorkhourType("full")}>
             Full-time
           </ButtonCheckboxFilter>
           <ButtonCheckboxFilter
-            onClick={handlePartWorkhourType}>
+            onClick={() => handleWorkhourType("part")}>
             Part-time
           </ButtonCheckboxFilter>
           <ButtonCheckboxFilter
-            onClick={handleInternWorkhourType}>
+            onClick={() => handleWorkhourType("intern")}>
             Internship
           </ButtonCheckboxFilter>
         </div>
@@ -143,31 +129,21 @@ text-black dark:text-white rounded-md min-w-fit`}>
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
           <ButtonCheckboxFilter
-            onClick={handleB2BContractType}>
+            onClick={() => handleContractType("b2b")}>
             B2B
           </ButtonCheckboxFilter>
           <ButtonCheckboxFilter
-            onClick={handleEmploymentContractType}>
+            onClick={() => handleContractType("contract")}>
             Employment
           </ButtonCheckboxFilter>
         </div>
       </div>
-      <div>
-        <label htmlFor="city">
-          City
-        </label>
-        <Select name="city">
-          <Option value="NewJersey" >
-            New Jersey
-          </Option>
-          <Option value="Berlin" >
-            Berlin
-          </Option>
-        </Select>
-      </div>
+      <CityFilter
+        cities={cities}
+        handleCity={handleCity} />
       <ActionButton
         variant="alt"
-        onClick={handleButton}>
+        onClick={() => submitFilter(filter)}>
         Filter
       </ActionButton>
     </div>

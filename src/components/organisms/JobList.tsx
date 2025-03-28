@@ -98,6 +98,10 @@ export default function JobListTest({ isLoading, isNotLoggedIn, offers, technolo
           <SkeletonJobOffer />
         </>
       }
+      {!isLoading && offers.length === 0 &&
+        <>
+          <p>No offers found, try changing your filters.</p>
+        </>}
       {isOpenModalReadMore &&
         <ModalReadMore data={modalData} onClick={openModalReadMore} />}
       {offers && offers!.map((offerFullInfo: OfferWithCompanyInfo) => {
