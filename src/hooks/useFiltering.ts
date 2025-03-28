@@ -3,14 +3,14 @@ import { ChangeEvent, useState } from "react";
 
 export function useFiltering() {
   const defaultFilter: Filter = {
-    title: "any",
-    companyName: "any",
+    title: "",
+    companyName: "",
     minSalary: 0,
-    maxSalary: 999999,
-    jobType: "any",
-    contractType: "any",
-    workhourType: "any",
-    city: "any"
+    maxSalary: 0,
+    jobType: "",
+    contractType: "",
+    workhourType: "",
+    city: ""
   }
   const [filter, setFilter] = useState<Filter>(defaultFilter);
 
@@ -18,7 +18,7 @@ export function useFiltering() {
     const title = event.currentTarget.value;
     if (title.length === 0) {
       setFilter((cur) => {
-        return { ...cur, title: "any" };
+        return { ...cur, title: "" };
       });
       return;
     }
@@ -31,7 +31,7 @@ export function useFiltering() {
     const companyName = event.currentTarget.value;
     if (companyName.length === 0) {
       setFilter((cur) => {
-        return { ...cur, companyName: "any" };
+        return { ...cur, companyName: "" };
       });
       return;
     }
@@ -48,7 +48,7 @@ export function useFiltering() {
   }
 
   function handleMaxSalary(event: ChangeEvent<HTMLInputElement>) {
-    const maxSalary = event.currentTarget.valueAsNumber ?? 999999;
+    const maxSalary = event.currentTarget.valueAsNumber ?? 0;
     setFilter((cur) => {
       return { ...cur, maxSalary: maxSalary };
     });

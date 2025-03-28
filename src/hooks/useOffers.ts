@@ -31,7 +31,17 @@ export function useOffers(filter: Filter) {
   }, [offset]);
 
   function createFetchUrlFromFilter(offset: number) {
-    return `/api/offers/${offset}/${filter.title}/${filter.companyName}/${filter.minSalary}/${filter.maxSalary}/${filter.jobType}/${filter.workhourType}/${filter.contractType}/${filter.city}`;
+    let url = "/api/offers?page=" + offset;
+    if (filter.title) url += "&title=" + filter.title;
+    if (filter.companyName) url += "&companyName=" + filter.companyName;
+    if (filter.minSalary) url += "&minSalary=" + filter.minSalary;
+    if (filter.maxSalary) url += "&maxSalary=" + filter.maxSalary;
+    if (filter.jobType) url += "&jobType=" + filter.jobType;
+    if (filter.workhourType) url += "&workhourType=" + filter.workhourType;
+    if (filter.contractType) url += "&contractType=" + filter.contractType;
+    if (filter.city) url += "&city=" + filter.city;
+    console.log("Filter on url", filter);
+    return url;
   }
 
   const fetchOffers = useCallback(async () => {

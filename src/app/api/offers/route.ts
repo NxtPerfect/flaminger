@@ -1,6 +1,7 @@
 import { CompaniesTable, Filter, JobsTable, JobsToUsersTable, langReturnData, MAX_JOBS_PER_PAGE, techReturnData } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { getCountFilteredJobs, getHumanLanguagesForMultipleIds, getJobsFiltered, getTechnologiesForMultipleIds } from "@/db/queries/select"
+import { NextRequest } from "next/server";
 
 type FilteredJobs = {
   jobsTable: JobsTable
@@ -8,19 +9,19 @@ type FilteredJobs = {
   jobsToUsersTable?: JobsToUsersTable | null | undefined
 }
 
-export async function GET(_req: Request, { params }: { params: Promise<{ offset: string, filters: string[] }> }) {
+export async function GET(req: NextRequest) {
   const userId: number = await getUserId();
-  const { offset, ...filters } = await params;
-  const parsedFilter = getParsedFilters(filters.filters);
+  const queryParams = req.nextUrl.searchParams;
+  const { offset, filter } = getParsedFilters(queryParams);
 
   if (!offset) {
     return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  const parsedOffset = Number.parseInt(offset[0]) - 1;
+  const parsedOffset = Number.parseInt(offset) - 1;
 
-  const offers = await getJobsFiltered(userId, parsedOffset, parsedFilter);
-  const [{ count }] = await getCountFilteredJobs(userId, parsedFilter);
+  const offers = await getJobsFiltered(userId, parsedOffset, filter);
+  const [{ count }] = await getCountFilteredJobs(userId, filter);
   const uniqueOffersIds = getUniqueIds(offers);
   const tech = await getTechnologiesForMultipleIds(uniqueOffersIds);
   const lang = await getHumanLanguagesForMultipleIds(uniqueOffersIds);
@@ -37,7 +38,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ offset:
     { status: 200 });
 }
 
-function getParsedFilters(arr: string[]) {
+function getParsedFilters(queryParams: URLSearchParams) {
   const sampleFilter = {
     title: "",
     companyName: "",
@@ -48,29 +49,20 @@ function getParsedFilters(arr: string[]) {
     contractType: "",
     city: ""
   }
-  const FILTER_KEY_COUNT = getKeyCount(sampleFilter);
-  if (arr.length !== FILTER_KEY_COUNT) {
-    console.error(`Not enough arguments for filter. Expected ${FILTER_KEY_COUNT}, got ${arr.length}, fallback to default filter.`);
-    return sampleFilter;
-  }
 
   const filter: Filter = {
     ...sampleFilter,
-    title: arr[0] === "any" ? "" : arr[0],
-    companyName: arr[1] === "any" ? "" : arr[1],
-    minSalary: Number.parseInt(arr[2]),
-    maxSalary: Number.parseInt(arr[3]),
-    jobType: arr[4] === "any" ? "" : arr[4],
-    workhourType: arr[5] === "any" ? "" : arr[5],
-    contractType: arr[6] === "any" ? "" : arr[6],
-    city: arr[7] === "any" ? "" : arr[7]
+    title: queryParams.get("title") ?? "",
+    companyName: queryParams.get("companyName") ?? "",
+    minSalary: Number.parseInt(queryParams.get("minSalary") ?? "0"),
+    maxSalary: Number.parseInt(queryParams.get("maxSalary") ?? "999999"),
+    jobType: queryParams.get("jobType") ?? "",
+    workhourType: queryParams.get("workhourType") ?? "",
+    contractType: queryParams.get("contractType") ?? "",
+    city: queryParams.get("city") ?? ""
   }
 
-  return filter;
-}
-
-function getKeyCount<T extends object>(obj: T): number {
-  return Object.keys(obj).length;
+  return { offset: queryParams.get("page") ?? "1", filter: filter };
 }
 
 function getUniqueIds(offers: FilteredJobs[]) {

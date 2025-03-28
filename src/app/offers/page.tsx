@@ -32,6 +32,7 @@ export default function Offers() {
     <div>
       <div className="flex flex-row">
         <JobFilter
+          filter={filter}
           handleTitle={handleTitle}
           handleCompanyName={handleCompanyName}
           handleMinSalary={handleMinSalary}
