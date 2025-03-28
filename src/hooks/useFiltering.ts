@@ -56,9 +56,9 @@ export function useFiltering() {
 
   function handleJobType(jobType: JobType) {
     if (filter.jobType.includes(jobType)) {
-      const newJobTypes = filter.jobType.filter((cur) => cur === jobType)
+      const newJobTypes = filter.jobType.filter((cur) => cur !== jobType)
       setFilter((cur) => {
-        return { ...cur, newJobTypes };
+        return { ...cur, jobType: newJobTypes };
       });
       return;
     }
@@ -69,9 +69,9 @@ export function useFiltering() {
 
   function handleWorkhourType(workhourType: WorkhourType) {
     if (filter.workhourType.includes(workhourType)) {
-      const newWorkhourTypes = filter.workhourType.filter((cur) => cur === workhourType)
+      const newWorkhourTypes = filter.workhourType.filter((cur) => cur !== workhourType)
       setFilter((cur) => {
-        return { ...cur, newWorkhourTypes };
+        return { ...cur, workhourType: newWorkhourTypes };
       });
       return;
     }
@@ -82,9 +82,9 @@ export function useFiltering() {
 
   function handleContractType(contractType: ContractType) {
     if (filter.contractType.includes(contractType)) {
-      const newContractTypes = filter.contractType.filter((cur) => cur === contractType)
+      const newContractTypes = filter.contractType.filter((cur) => cur !== contractType)
       setFilter((cur) => {
-        return { ...cur, newContractTypes };
+        return { ...cur, contractType: newContractTypes };
       });
       return;
     }
