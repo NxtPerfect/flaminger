@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, gte, ilike, inArray, lte, not } from "drizzle-orm";
+import { and, count, eq, getTableColumns, gte, ilike, inArray, lte, not, sql } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 import { Filter, MAX_JOBS_PER_PAGE } from "@/app/lib/definitions";
@@ -271,11 +271,26 @@ function buildJobFilterConditions(filter: Filter) {
     ilike(jobsTable.title, `%${filter.title}%`),
     gte(jobsTable.minSalary, filter.minSalary),
     lte(jobsTable.maxSalary, filter.maxSalary),
-    ilike(jobsTable.jobType, `%${filter.jobType}%`),
-    ilike(jobsTable.contractType, `%${filter.contractType}%`),
-    ilike(jobsTable.workhourType, `%${filter.workhourType}%`),
+    isInJobArrayOrEmptyArray(filter),
+    isInContractArrayOrEmptyArray(filter),
+    isInWorkhourArrayOrEmptyArray(filter),
     ilike(jobsTable.city, `%${filter.city}%`)
   );
+}
+
+function isInJobArrayOrEmptyArray(filter: Filter) {
+  if (filter.jobType.length === 0) return eq(sql`1`, sql`1`);
+  return inArray(jobsTable.jobType, filter.jobType);
+}
+
+function isInWorkhourArrayOrEmptyArray(filter: Filter) {
+  if (filter.workhourType.length === 0) return eq(sql`1`, sql`1`);
+  return inArray(jobsTable.workhourType, filter.workhourType);
+}
+
+function isInContractArrayOrEmptyArray(filter: Filter) {
+  if (filter.contractType.length === 0) return eq(sql`1`, sql`1`);
+  return inArray(jobsTable.contractType, filter.contractType);
 }
 
 function buildCompanyJoinConditions(filter: Filter) {

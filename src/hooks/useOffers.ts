@@ -36,11 +36,22 @@ export function useOffers(filter: Filter) {
     if (filter.companyName) url += "&companyName=" + filter.companyName;
     if (filter.minSalary) url += "&minSalary=" + filter.minSalary;
     if (filter.maxSalary) url += "&maxSalary=" + filter.maxSalary;
-    if (filter.jobType) url += "&jobType=" + filter.jobType;
-    if (filter.workhourType) url += "&workhourType=" + filter.workhourType;
-    if (filter.contractType) url += "&contractType=" + filter.contractType;
+    if (filter.jobType.length > 0) {
+      for (let i = 0; i < filter.jobType.length; i++) {
+        url += "&jobType=" + filter.jobType[i];
+      }
+    }
+    if (filter.workhourType.length > 0) {
+      for (let i = 0; i < filter.workhourType.length; i++) {
+        url += "&workhourType=" + filter.workhourType[i];
+      }
+    }
+    if (filter.contractType.length > 0) {
+      for (let i = 0; i < filter.contractType.length; i++) {
+        url += "&contractType=" + filter.contractType[i];
+      }
+    }
     if (filter.city) url += "&city=" + filter.city;
-    console.log("Filter on url", filter);
     return url;
   }
 

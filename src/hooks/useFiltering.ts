@@ -1,4 +1,4 @@
-import { Filter } from "@/app/lib/definitions";
+import { ContractType, Filter, JobType, WorkhourType } from "@/app/lib/definitions";
 import { ChangeEvent, useState } from "react";
 
 export function useFiltering() {
@@ -7,9 +7,9 @@ export function useFiltering() {
     companyName: "",
     minSalary: 0,
     maxSalary: 0,
-    jobType: "",
-    contractType: "",
-    workhourType: "",
+    jobType: [],
+    contractType: [],
+    workhourType: [],
     city: ""
   }
   const [filter, setFilter] = useState<Filter>(defaultFilter);
@@ -54,11 +54,53 @@ export function useFiltering() {
     });
   }
 
+  function handleJobType(jobType: JobType) {
+    if (filter.jobType.includes(jobType)) {
+      const newJobTypes = filter.jobType.filter((cur) => cur === jobType)
+      setFilter((cur) => {
+        return { ...cur, newJobTypes };
+      });
+      return;
+    }
+    setFilter((cur) => {
+      return { ...cur, jobType: [...cur.jobType, jobType] }
+    });
+  }
+
+  function handleWorkhourType(workhourType: WorkhourType) {
+    if (filter.workhourType.includes(workhourType)) {
+      const newWorkhourTypes = filter.workhourType.filter((cur) => cur === workhourType)
+      setFilter((cur) => {
+        return { ...cur, newWorkhourTypes };
+      });
+      return;
+    }
+    setFilter((cur) => {
+      return { ...cur, workhourType: [...cur.workhourType, workhourType] }
+    });
+  }
+
+  function handleContractType(contractType: ContractType) {
+    if (filter.contractType.includes(contractType)) {
+      const newContractTypes = filter.contractType.filter((cur) => cur === contractType)
+      setFilter((cur) => {
+        return { ...cur, newContractTypes };
+      });
+      return;
+    }
+    setFilter((cur) => {
+      return { ...cur, contractType: [...cur.contractType, contractType] }
+    });
+  }
+
   return {
     handleTitle,
     handleCompanyName,
     handleMinSalary,
     handleMaxSalary,
+    handleJobType,
+    handleWorkhourType,
+    handleContractType,
     filter
   }
 }

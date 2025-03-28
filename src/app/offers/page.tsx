@@ -15,6 +15,9 @@ export default function Offers() {
     handleCompanyName,
     handleMinSalary,
     handleMaxSalary,
+    handleJobType,
+    handleWorkhourType,
+    handleContractType,
     filter
   } = useFiltering();
   const {
@@ -37,6 +40,9 @@ export default function Offers() {
           handleCompanyName={handleCompanyName}
           handleMinSalary={handleMinSalary}
           handleMaxSalary={handleMaxSalary}
+          handleJobType={handleJobType}
+          handleWorkhourType={handleWorkhourType}
+          handleContractType={handleContractType}
           submitFilter={fetchOffers}
         />
         <JobList

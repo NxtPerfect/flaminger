@@ -269,11 +269,15 @@ export type Filter = {
   companyName: string
   minSalary: number
   maxSalary: number
-  jobType: "remote" | "hybrid" | "stationary" | string
-  contractType: "b2b" | "contract" | string
-  workhourType: "full" | "part" | "internship" | string
+  jobType: JobType[]
+  contractType: ContractType[]
+  workhourType: WorkhourType[]
   city: string
 }
+
+export type JobType = "remote" | "hybrid" | "stationary" | string
+export type ContractType = "b2b" | "contract" | string
+export type WorkhourType = "full" | "part" | "internship" | string
 
 export type techReturnData = {
   jobId: number,

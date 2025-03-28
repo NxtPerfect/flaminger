@@ -56,9 +56,9 @@ function getParsedFilters(queryParams: URLSearchParams) {
     companyName: queryParams.get("companyName") ?? "",
     minSalary: Number.parseInt(queryParams.get("minSalary") ?? "0"),
     maxSalary: Number.parseInt(queryParams.get("maxSalary") ?? "999999"),
-    jobType: queryParams.get("jobType") ?? "",
-    workhourType: queryParams.get("workhourType") ?? "",
-    contractType: queryParams.get("contractType") ?? "",
+    jobType: queryParams.getAll("jobType").length === 0 ? [] : queryParams.getAll("jobType"),
+    workhourType: queryParams.getAll("workhourType").length === 0 ? [] : queryParams.getAll("workhourType"),
+    contractType: queryParams.getAll("contractType").length === 0 ? [] : queryParams.getAll("contractType"),
     city: queryParams.get("city") ?? ""
   }
 
