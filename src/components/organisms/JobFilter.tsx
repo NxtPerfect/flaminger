@@ -3,6 +3,9 @@ import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
 import NumberInput from '../atoms/NumberInput';
 import { ContractType, Filter, JobType, WorkhourType } from '@/app/lib/definitions';
+import Select from '../atoms/Select';
+import Option from '../atoms/Option';
+import ButtonCheckboxFilter from '../molecules/ButtonCheckboxFilter';
 
 type Props = {
   filter: Filter
@@ -31,7 +34,6 @@ export default function JobFilter({
   }
 
   function handleRemoteJobType() {
-    console.log("Adding remote");
     handleJobType("remote");
   }
   function handleHybridJobType() {
@@ -59,46 +61,61 @@ export default function JobFilter({
   return (
     <div className={`flex flex-col w-1/6 gap-4 bg-neutral-900 p-4
 text-black dark:text-white rounded-md min-w-fit`}>
-      <TextInput
-        name="title"
-        placeholder="Webdeveloper"
-        onChange={handleTitle} />
-      <TextInput
-        name="company"
-        placeholder="Microsoft"
-        onChange={handleCompanyName} />
-      <NumberInput
-        name="minSalary"
-        placeholder="$5,000"
-        min={0}
-        max={999999}
-        onChange={handleMinSalary} />
-      <NumberInput
-        name="maxSalary"
-        placeholder="$50,000"
-        min={0}
-        max={999999}
-        onChange={handleMaxSalary} />
+      <div>
+        <label htmlFor="title">
+          Title
+        </label>
+        <TextInput
+          name="title"
+          placeholder="Webdeveloper"
+          onChange={handleTitle} />
+      </div>
+      <div>
+        <label htmlFor="company">
+          Company
+        </label>
+        <TextInput
+          name="company"
+          placeholder="Microsoft"
+          onChange={handleCompanyName} />
+      </div>
+      <div>
+        <label htmlFor="minSalary">
+          Minimum Salary
+        </label>
+        <NumberInput
+          name="minSalary"
+          placeholder="$5,000"
+          min={0}
+          max={999999}
+          onChange={handleMinSalary} />
+        <label htmlFor="maxSalary">
+          Maximum Salary
+        </label>
+        <NumberInput
+          name="maxSalary"
+          placeholder="$50,000"
+          min={0}
+          max={999999}
+          onChange={handleMaxSalary} />
+      </div>
       <div className="flex flex-col border-2 border-neutral-600 p-2 rounded-md">
         <h3 className="font-bold">
           Job Type
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
-          <ActionButton
-            variant="checkbox"
+          <ButtonCheckboxFilter
             onClick={handleRemoteJobType}>
             Remote
-          </ActionButton>
-          <ActionButton
-            variant="checkbox"
+          </ButtonCheckboxFilter>
+          <ButtonCheckboxFilter
             onClick={handleHybridJobType}>
             Hybrid
-          </ActionButton>
-          <ActionButton
-            variant="checkbox"
+          </ButtonCheckboxFilter>
+          <ButtonCheckboxFilter
             onClick={handleStationaryJobType}>
             Stationary
-          </ActionButton>
+          </ButtonCheckboxFilter>
         </div>
       </div>
       <div className="flex flex-col border-2 border-neutral-600 p-2 rounded-md">
@@ -106,21 +123,18 @@ text-black dark:text-white rounded-md min-w-fit`}>
           Workhour Type
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
-          <ActionButton
-            variant="checkbox"
+          <ButtonCheckboxFilter
             onClick={handleFullWorkhourType}>
             Full-time
-          </ActionButton>
-          <ActionButton
-            variant="checkbox"
+          </ButtonCheckboxFilter>
+          <ButtonCheckboxFilter
             onClick={handlePartWorkhourType}>
             Part-time
-          </ActionButton>
-          <ActionButton
-            variant="checkbox"
+          </ButtonCheckboxFilter>
+          <ButtonCheckboxFilter
             onClick={handleInternWorkhourType}>
             Internship
-          </ActionButton>
+          </ButtonCheckboxFilter>
         </div>
       </div>
       <div className="flex flex-col border-2 border-neutral-600 p-2 rounded-md">
@@ -128,26 +142,29 @@ text-black dark:text-white rounded-md min-w-fit`}>
           Contract Type
         </h3>
         <div className="mt-1 flex flex-row flex-wrap gap-2">
-          <ActionButton
-            variant="checkbox"
+          <ButtonCheckboxFilter
             onClick={handleB2BContractType}>
             B2B
-          </ActionButton>
-          <ActionButton
-            variant="checkbox"
+          </ButtonCheckboxFilter>
+          <ButtonCheckboxFilter
             onClick={handleEmploymentContractType}>
-            Employment Contract
-          </ActionButton>
+            Employment
+          </ButtonCheckboxFilter>
         </div>
       </div>
-      <select name="city">
-        <option value="NewJersey" >
-          New Jersey
-        </option>
-        <option value="Berlin" >
-          Berlin
-        </option>
-      </select>
+      <div>
+        <label htmlFor="city">
+          City
+        </label>
+        <Select name="city">
+          <Option value="NewJersey" >
+            New Jersey
+          </Option>
+          <Option value="Berlin" >
+            Berlin
+          </Option>
+        </Select>
+      </div>
       <ActionButton
         variant="alt"
         onClick={handleButton}>
