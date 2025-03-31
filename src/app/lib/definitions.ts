@@ -273,6 +273,8 @@ export type Filter = {
   contractType: ContractType[]
   workhourType: WorkhourType[]
   city: string
+  technologies: Technology[]
+  humanLanguages: HumanLanguage[]
 }
 
 export type JobType = "remote" | "hybrid" | "stationary" | string

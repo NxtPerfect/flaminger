@@ -19,7 +19,9 @@ export default function CityFilter({ cities, handleCity }: Props) {
         onChange={(event: ChangeEvent<HTMLSelectElement>) => {
           console.log("Event", event.currentTarget.value);
           handleCity(event.currentTarget.value);
-        }}>
+        }}
+        className="px-2 py-2"
+      >
         <Option value="" key={0}>
           Any
         </Option>

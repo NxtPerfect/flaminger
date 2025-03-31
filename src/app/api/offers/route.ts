@@ -47,7 +47,9 @@ function getParsedFilters(queryParams: URLSearchParams) {
     jobType: "",
     workhourType: "",
     contractType: "",
-    city: ""
+    city: "",
+    technologies: [],
+    humanLanguages: []
   }
 
   const filter: Filter = {
@@ -59,7 +61,9 @@ function getParsedFilters(queryParams: URLSearchParams) {
     jobType: queryParams.getAll("jobType").length === 0 ? [] : queryParams.getAll("jobType"),
     workhourType: queryParams.getAll("workhourType").length === 0 ? [] : queryParams.getAll("workhourType"),
     contractType: queryParams.getAll("contractType").length === 0 ? [] : queryParams.getAll("contractType"),
-    city: queryParams.get("city") ?? ""
+    city: queryParams.get("city") ?? "",
+    technologies: queryParams.getAll("technology").length === 0 ? [] : queryParams.getAll("technology"),
+    humanLanguages: queryParams.getAll("language").length === 0 ? [] : queryParams.getAll("language"),
   }
 
   return { offset: queryParams.get("page") ?? "1", filter: filter };

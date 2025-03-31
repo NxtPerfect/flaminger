@@ -22,7 +22,7 @@ export default function InputNewTechnology({ name, experience }: Props) {
   }
 
   return (
-    <div className="flex flex-row gap-3 w-full px-2">
+    <div className="flex flex-row gap-3 w-full px-2 h-full">
       <div className="w-2/3">
         <TextInput name="name" placeholder="Javascript"
           pattern="^\D{2,64}$" onChange={handleTextInput}

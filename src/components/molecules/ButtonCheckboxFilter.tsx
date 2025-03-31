@@ -8,7 +8,7 @@ type Props = {
 
 export default function ButtonCheckboxFilter({ onClick, children }: Props) {
   const [isActive, setIsActive] = useState<boolean>(false);
-  const className = `${isActive ? "bg-green-500 hover:bg-green-600 focus:bg-green-600" : "bg-red-500/60"}`.trim();
+  const className = `${isActive ? "bg-green-500 hover:bg-green-600 focus:bg-green-600" : "bg-neutral-500/60 hover:bg-green-600"}`.trim();
   function handleClick() {
     setIsActive((cur) => !cur);
     onClick();

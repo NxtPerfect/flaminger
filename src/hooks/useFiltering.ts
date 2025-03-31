@@ -1,5 +1,5 @@
 import { ContractType, Filter, JobType, WorkhourType } from "@/app/lib/definitions";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 
 export function useFiltering() {
   const defaultFilter: Filter = {
@@ -10,7 +10,9 @@ export function useFiltering() {
     jobType: [],
     contractType: [],
     workhourType: [],
-    city: ""
+    city: "",
+    technologies: [],
+    humanLanguages: []
   }
   const [filter, setFilter] = useState<Filter>(defaultFilter);
 
@@ -105,6 +107,26 @@ export function useFiltering() {
     });
   }
 
+  function addTechnology() {
+    if (filter.technologies.length > 20) return;
+    setFilter((cur) => {
+      return {
+        ...cur,
+        technologies: [...cur.technologies, { name: "", experience: 0 }]
+      }
+    }
+    );
+  }
+
+  function removeTechnology(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    if (filter.technologies.length === 0) return;
+    setFilter((cur) => {
+      const newTech = cur.technologies.filter((_, techIndex) => techIndex !== index);
+      return { ...cur, technologies: newTech };
+    });
+  }
+
   return {
     handleTitle,
     handleCompanyName,
@@ -114,6 +136,8 @@ export function useFiltering() {
     handleWorkhourType,
     handleContractType,
     handleCity,
+    addTechnology,
+    removeTechnology,
     filter
   }
 }

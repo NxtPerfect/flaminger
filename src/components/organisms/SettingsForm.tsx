@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, MouseEvent, useState } from 'react'
 import CityPicker from '../molecules/CityPicker'
 import TextInput from '../atoms/TextInput'
 import TechnologiesPicker from '../molecules/TechnologiesPicker'
@@ -76,6 +76,17 @@ export default function SettingsForm() {
     [ERROR_VARIANTS.OTHER]: "Unknown error. Please report the circumstances of the situation."
   }
 
+  function addTechnology() {
+    if (technologies.length > 20) return;
+    setTechnologies((cur) => [...cur, { name: "", experience: 0 }]);
+  }
+
+  function removeTechnology(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    if (technologies.length === 0) return;
+    setTechnologies((cur) => cur.filter((_, techIndex) => techIndex !== index));
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -93,7 +104,12 @@ export default function SettingsForm() {
       </div>
       <div className="flex flex-col border-2 bg-neutral-400/20 dark:bg-neutral-600/20 rounded-md p-4 gap-2">
         <h2 className="text-lg font-semibold">Professional Information</h2>
-        <TechnologiesPicker technologies={technologies} setTechnologiesAction={setTechnologies} >Known Technologies:</TechnologiesPicker>
+        <TechnologiesPicker
+          technologies={technologies}
+          addTechnologyAction={addTechnology}
+          removeTechnologyAction={removeTechnology}>
+          Known Technologies:
+        </TechnologiesPicker>
         <HumanLanguagesPicker humanLanguages={humanLanguages} setHumanLanguagesAction={setHumanLanguages}>Known Languages:</HumanLanguagesPicker>
       </div>
       <ActionButton variant="formSubmit" isLoading={isLoading}>Save Settings</ActionButton>

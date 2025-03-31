@@ -52,6 +52,16 @@ export function useOffers(filter: Filter) {
       }
     }
     if (filter.city) url += "&city=" + filter.city;
+    if (filter.technologies.length > 0) {
+      for (let i = 0; i < filter.technologies.length; i++) {
+        url += "&technology=" + filter.technologies[i].name;
+      }
+    }
+    if (filter.humanLanguages.length > 0) {
+      for (let i = 0; i < filter.humanLanguages.length; i++) {
+        url += "&language=" + filter.humanLanguages[i].name;
+      }
+    }
     return url;
   }
 

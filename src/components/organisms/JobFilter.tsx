@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
 import NumberInput from '../atoms/NumberInput';
 import { ContractType, Filter, JobType, WorkhourType } from '@/app/lib/definitions';
 import ButtonCheckboxFilter from '../molecules/ButtonCheckboxFilter';
 import CityFilter from '../molecules/CityFilter';
+import TechnologiesPicker from '../molecules/TechnologiesPicker';
 
 type Props = {
   filter: Filter
@@ -16,6 +17,8 @@ type Props = {
   handleWorkhourType: (workhourType: WorkhourType) => void
   handleContractType: (contractType: ContractType) => void
   handleCity: (city: string) => void
+  addTechnology: () => void
+  removeTechnology: (e: MouseEvent<HTMLButtonElement>, i: number) => void
   submitFilter: (filter: Filter) => void
 }
 
@@ -29,6 +32,8 @@ export default function JobFilter({
   handleWorkhourType,
   handleContractType,
   handleCity,
+  addTechnology,
+  removeTechnology,
   submitFilter }: Props) {
   const [cities, setCities] = useState<string[]>(["New Jersey", "Berlin"]);
 
@@ -40,13 +45,14 @@ export default function JobFilter({
         setCities((_cur) => [...data.cities]);
       })
   });
+
   useEffect(() => {
     fetchCities();
   }, [fetchCities]);
 
   return (
     <div className={`flex flex-col w-1/6 gap-4 bg-neutral-900 p-4
-text-black dark:text-white rounded-md min-w-fit`}>
+text-black dark:text-white rounded-md min-w-fit max-h-fit`}>
       <div>
         <label htmlFor="title">
           Title
@@ -141,6 +147,10 @@ text-black dark:text-white rounded-md min-w-fit`}>
       <CityFilter
         cities={cities}
         handleCity={handleCity} />
+      <TechnologiesPicker
+        technologies={filter.technologies}
+        addTechnologyAction={addTechnology}
+        removeTechnologyAction={removeTechnology} />
       <ActionButton
         variant="alt"
         onClick={() => submitFilter(filter)}>
