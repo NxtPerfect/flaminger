@@ -11,7 +11,7 @@ import SalaryRange from '@/components/molecules/SalaryRange'
 import TechnologiesPicker from '@/components/molecules/TechnologiesPicker'
 import WorkhourTypePicker from '@/components/molecules/WorkhourTypePicker'
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, MouseEvent, useState } from 'react'
 
 export default function Page() {
   const [employmentActiveRadio, setEmploymentActiveRadio] = useState<number>(0);
@@ -37,6 +37,24 @@ export default function Page() {
       })
     }
     addOffer();
+  }
+
+  function handleNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
+    if (parsedNumber < 0 || parsedNumber > 99) {
+      parsedNumber = 0;
+    }
+    technologies[index].experience = parsedNumber;
+  }
+
+  function handleTextInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    technologies[index].name = parsedName;
+  }
+
+  function handleRemoveTechnology(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    setTechnologies((cur) => cur.filter((_t, i) => i !== index));
   }
 
   return (
@@ -72,7 +90,10 @@ export default function Page() {
         setWhichRadioIsActiveAction={setWorkhourActiveRadio} />
       <TechnologiesPicker
         technologies={technologies}
-        setTechnologiesAction={setTechnologies} />
+        addTechnologyAction={() => setTechnologies((c) => [...c, { name: "", experience: 0 }])}
+        removeTechnologyAction={handleRemoveTechnology}
+        handleNumberInputAction={handleNumberInput}
+        handleTextInputAction={handleTextInput} />
       <HumanLanguagesPicker
         humanLanguages={humanLanguages}
         setHumanLanguagesAction={setHumanLanguages} />

@@ -21,6 +21,8 @@ export default function Offers() {
     handleCity,
     addTechnology,
     removeTechnology,
+    handleTechnologyName,
+    handleTechnologyExperience,
     filter
   } = useFiltering();
   const {
@@ -49,6 +51,8 @@ export default function Offers() {
           handleCity={handleCity}
           addTechnology={addTechnology}
           removeTechnology={removeTechnology}
+          handleTechnologyName={handleTechnologyName}
+          handleTechnologyExperience={handleTechnologyExperience}
           submitFilter={fetchOffers}
         />
         <JobList

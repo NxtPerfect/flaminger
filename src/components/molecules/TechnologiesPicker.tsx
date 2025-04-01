@@ -8,12 +8,14 @@ import ActionButton from '../atoms/ActionButton';
 
 type Props = {
   technologies: Technology[]
+  handleNumberInputAction: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+  handleTextInputAction: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
   addTechnologyAction: () => void
   removeTechnologyAction: (e: MouseEvent<HTMLButtonElement>, i: number) => void
   children?: React.ReactNode
 }
 
-export default function TechnologiesPicker({ technologies, addTechnologyAction, removeTechnologyAction, children }: Props) {
+export default function TechnologiesPicker({ technologies, handleNumberInputAction, handleTextInputAction, addTechnologyAction, removeTechnologyAction, children }: Props) {
   return (
     <div className="flex flex-col">
       <label htmlFor="technologies">
@@ -22,12 +24,14 @@ export default function TechnologiesPicker({ technologies, addTechnologyAction, 
       <div className={`flex flex-col border-2 border-neutral-200
         dark:border-neutral-700 px-4 py-2 rounded-md gap-1`}>
         {technologies && "Technology name | Years of Experience"}
-        {technologies.map((technology, index) => {
+        {technologies.map((_technology, index) => {
           return (
             <div key={index} className="flex flex-row items-center">
               <InputNewTechnology
-                name={technology.name}
-                experience={technology.experience} />
+                index={index}
+                handleNumberInput={handleNumberInputAction}
+                handleTextInput={handleTextInputAction}
+              />
               <ActionButton
                 variant="formSubmit"
                 className={`mt-0 h-fit py-1 px-6 bg-red-600

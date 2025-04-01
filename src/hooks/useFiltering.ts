@@ -110,10 +110,7 @@ export function useFiltering() {
   function addTechnology() {
     if (filter.technologies.length > 20) return;
     setFilter((cur) => {
-      return {
-        ...cur,
-        technologies: [...cur.technologies, { name: "", experience: 0 }]
-      }
+      return { ...cur, technologies: [...cur.technologies, { name: "", experience: 0 }] };
     }
     );
   }
@@ -127,6 +124,24 @@ export function useFiltering() {
     });
   }
 
+  function handleTechnologyName(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    e.preventDefault();
+    const taskName = e.currentTarget.value;
+    setFilter((cur) => {
+      cur.technologies[index].name = taskName;
+      return { ...cur };
+    })
+  }
+
+  function handleTechnologyExperience(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    e.preventDefault();
+    const taskExperience = e.currentTarget.value;
+    setFilter((cur) => {
+      cur.technologies[index].experience = taskExperience;
+      return { ...cur };
+    })
+  }
+
   return {
     handleTitle,
     handleCompanyName,
@@ -138,6 +153,8 @@ export function useFiltering() {
     handleCity,
     addTechnology,
     removeTechnology,
+    handleTechnologyName,
+    handleTechnologyExperience,
     filter
   }
 }

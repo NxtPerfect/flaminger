@@ -55,11 +55,13 @@ export function useOffers(filter: Filter) {
     if (filter.technologies.length > 0) {
       for (let i = 0; i < filter.technologies.length; i++) {
         url += "&technology=" + filter.technologies[i].name;
+        url += "&experience=" + filter.technologies[i].experience;
       }
     }
     if (filter.humanLanguages.length > 0) {
       for (let i = 0; i < filter.humanLanguages.length; i++) {
         url += "&language=" + filter.humanLanguages[i].name;
+        url += "&level=" + filter.humanLanguages[i].level;
       }
     }
     return url;

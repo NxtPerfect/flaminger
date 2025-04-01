@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import ActionButton from '../atoms/ActionButton'
 import TextInput from '../atoms/TextInput'
 import NumberInput from '../atoms/NumberInput';
@@ -19,6 +19,8 @@ type Props = {
   handleCity: (city: string) => void
   addTechnology: () => void
   removeTechnology: (e: MouseEvent<HTMLButtonElement>, i: number) => void
+  handleTechnologyName: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+  handleTechnologyExperience: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
   submitFilter: (filter: Filter) => void
 }
 
@@ -34,17 +36,19 @@ export default function JobFilter({
   handleCity,
   addTechnology,
   removeTechnology,
+  handleTechnologyName,
+  handleTechnologyExperience,
   submitFilter }: Props) {
   const [cities, setCities] = useState<string[]>(["New Jersey", "Berlin"]);
 
-  const fetchCities = (async () => {
+  const fetchCities = useCallback(async () => {
     await fetch('/api/cities', { method: "GET" })
       .then(async (res) => {
         const data = await res.json();
         console.log("Got data", data);
         setCities((_cur) => [...data.cities]);
       })
-  });
+  }, []);
 
   useEffect(() => {
     fetchCities();
@@ -149,6 +153,8 @@ text-black dark:text-white rounded-md min-w-fit max-h-fit`}>
         handleCity={handleCity} />
       <TechnologiesPicker
         technologies={filter.technologies}
+        handleTextInputAction={handleTechnologyName}
+        handleNumberInputAction={handleTechnologyExperience}
         addTechnologyAction={addTechnology}
         removeTechnologyAction={removeTechnology} />
       <ActionButton
