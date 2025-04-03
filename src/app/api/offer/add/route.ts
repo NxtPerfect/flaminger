@@ -10,7 +10,7 @@ export async function PUT(req: Request) {
   const userId = await getUserId();
   const [userData] = await getUserById(userId);
   if (userData.isEmployer === false) {
-    return Response.json({ status: 401 });
+    return Response.json({}, { status: 401 });
   }
   const companyId = userData.employerCompanyId;
 

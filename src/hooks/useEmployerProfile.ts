@@ -37,9 +37,12 @@ export function useEmployerProfile(): EmployerProfile {
     setIsLoading(true);
     const controller = new AbortController();
     const signal = controller.signal;
-    await fetch('/api/profile/employer', { method: "POST", signal })
+    await fetch('/api/profile/employer', { method: "POST", cache: 'no-store', signal })
       .then(async (res) => {
         const responseJson = await res.json();
+        if (!res.ok) {
+          return;
+        }
         setCompanyDataFromApi(responseJson);
       }).finally(() => {
         setIsLoading(false);

@@ -4,13 +4,13 @@ import { getApplicationsByCompanyId, getCompanyById, getJobsByCompanyId, getUser
 export async function POST() {
   const id = await getUserId();
   if (id === -1) {
-    return Response.json({ status: 400 });
+    return Response.json({}, { status: 400 });
   }
 
   const [userData] = await getUserById(id);
 
   if (!userData.isEmployer || !userData.employerCompanyId) {
-    return Response.json({ status: 403 });
+    return Response.json({}, { status: 403 });
   }
 
   const [company] = await getCompanyById(userData.employerCompanyId ?? -1);

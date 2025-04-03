@@ -4,7 +4,7 @@ import { getCompletedUserApplicationsByUserId, getHumanLanguagesByUserId, getPen
 export async function POST() {
   const id = await getUserId();
   if (id === -1) {
-    return Response.json({ status: 400 });
+    return Response.json({}, { status: 400 });
   }
   const [userData] = await getUserById(id);
   const statistics = await getStatisticsOfUserApplicationsByUserId(id);

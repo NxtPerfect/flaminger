@@ -4,12 +4,12 @@ import { getApplicationsByCompanyId, getHumanLanguagesByUserId, getHumanLanguage
 export async function POST() {
   const id = await getUserId();
   if (id === -1) {
-    return Response.json({ status: 400 });
+    return Response.json({}, { status: 400 });
   }
 
   const [userData] = await getUserById(id);
   if (!userData.isEmployer || !userData.employerCompanyId) {
-    return Response.json({ status: 401 });
+    return Response.json({}, { status: 401 });
   }
 
   let applications = await getApplicationsByCompanyId(userData.employerCompanyId);

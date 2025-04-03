@@ -4,7 +4,7 @@ import { getHumanLanguagesByUserId, getTechnologiesByUserId } from "@/db/queries
 export async function GET() {
   const userId = await getUserId();
   if (userId === -1) {
-    return Response.json({ status: 403 })
+    return Response.json({}, { status: 403 })
   }
 
   const technologies = await getTechnologiesByUserId(userId);

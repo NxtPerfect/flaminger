@@ -8,7 +8,7 @@ export async function PUT(req: Request) {
 
   const [userData] = await getUserById(userId);
   if (userData.isEmployer) {
-    return Response.json({ status: 403 });
+    return Response.json({}, { status: 403 });
   }
 
   const jobId = formData.get("jobId")?.toString();

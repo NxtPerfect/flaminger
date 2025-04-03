@@ -5,12 +5,12 @@ import { updateJobAcceptedForUserIdJobId, updateJobRejectedForUserIdJobId } from
 export async function POST(req: Request) {
   const id = await getUserId();
   if (id === -1) {
-    return Response.json({ status: 400 });
+    return Response.json({}, { status: 400 });
   }
 
   const [userData] = await getUserById(id);
   if (!userData.isEmployer || !userData.employerCompanyId) {
-    return Response.json({ status: 401 });
+    return Response.json({}, { status: 401 });
   }
 
   const formData = await req.formData();
@@ -37,5 +37,5 @@ export async function POST(req: Request) {
       return Response.json({ errorType: "badData" }, { status: 400 });
   }
 
-  return Response.json({ status: 200 });
+  return Response.json({}, { status: 200 });
 }
