@@ -3,13 +3,13 @@ import React, { MouseEvent } from 'react'
 import AddItemButton from './AddItemButton'
 import InputNewTechnology from '../molecules/InputNewTechnology';
 import TrashBinSvg from './TrashBinSvg';
-import { Technology } from '@/app/lib/definitions';
 import ActionButton from '../atoms/ActionButton';
+import { Technology } from '@/app/lib/definitions';
 
 type Props = {
   technologies: Technology[]
-  handleNumberInputAction: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
   handleTextInputAction: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+  handleNumberInputAction: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
   addTechnologyAction: () => void
   removeTechnologyAction: (e: MouseEvent<HTMLButtonElement>, i: number) => void
   children?: React.ReactNode
@@ -18,8 +18,8 @@ type Props = {
 
 export default function TechnologiesPicker({
   technologies,
-  handleNumberInputAction,
   handleTextInputAction,
+  handleNumberInputAction,
   addTechnologyAction,
   removeTechnologyAction,
   children,
@@ -39,8 +39,8 @@ export default function TechnologiesPicker({
             <div key={index} className="flex flex-row items-center">
               <InputNewTechnology
                 index={index}
-                handleNumberInput={handleNumberInputAction}
                 handleTextInput={handleTextInputAction}
+                handleNumberInput={handleNumberInputAction ? (e) => handleNumberInputAction(e, index) : (_e, _i) => { }}
                 includeExperience={includeExperience}
               />
               <ActionButton

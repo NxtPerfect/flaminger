@@ -21,7 +21,10 @@ type Props = {
   addTechnology: () => void
   removeTechnology: (e: MouseEvent<HTMLButtonElement>, i: number) => void
   handleTechnologyName: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
-  handleTechnologyExperience: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+  addHumanLanguage: () => void
+  removeHumanLanguage: (e: MouseEvent<HTMLButtonElement>, i: number) => void
+  handleHumanLanguageNameInput: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
+  handleHumanLanguageLevelInput: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void
   submitFilter: (filter: Filter) => void
 }
 
@@ -38,7 +41,10 @@ export default function JobFilter({
   addTechnology,
   removeTechnology,
   handleTechnologyName,
-  handleTechnologyExperience,
+  addHumanLanguage,
+  removeHumanLanguage,
+  handleHumanLanguageNameInput,
+  handleHumanLanguageLevelInput,
   submitFilter }: Props) {
   const [cities, setCities] = useState<string[]>(["New Jersey", "Berlin"]);
 
@@ -155,14 +161,17 @@ text-black dark:text-white rounded-md min-w-fit max-h-fit`}>
       <TechnologiesPicker
         technologies={filter.technologies}
         handleTextInputAction={handleTechnologyName}
-        handleNumberInputAction={handleTechnologyExperience}
+        handleNumberInputAction={() => { }}
         addTechnologyAction={addTechnology}
         removeTechnologyAction={removeTechnology}
         includeExperience={false} />
       <HumanLanguagesPicker
         humanLanguages={filter.humanLanguages}
-        setHumanLanguagesAction={() => { }}
-        includeExperience={true}
+        handleHumanLanguageNameInputAction={handleHumanLanguageNameInput}
+        handleHumanLanguageLevelInputAction={handleHumanLanguageLevelInput}
+        addHumanLanguageAction={addHumanLanguage}
+        removeHumanLanguageAction={removeHumanLanguage}
+        includeExperience={false}
       />
       <ActionButton
         variant="alt"

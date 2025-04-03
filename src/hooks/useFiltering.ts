@@ -1,4 +1,4 @@
-import { ContractType, Filter, JobType, WorkhourType } from "@/app/lib/definitions";
+import { ContractType, Filter, HUMAN_LANGUAGE_LEVELS, JobType, WorkhourType } from "@/app/lib/definitions";
 import { ChangeEvent, MouseEvent, useState } from "react";
 
 export function useFiltering() {
@@ -133,14 +133,51 @@ export function useFiltering() {
     })
   }
 
-  function handleTechnologyExperience(e: React.ChangeEvent<HTMLInputElement>, index: number) {
-    e.preventDefault();
-    const taskExperience = e.currentTarget.value;
+  function addHumanLanguage() {
+    if (filter.humanLanguages.length > 20) return;
     setFilter((cur) => {
-      cur.technologies[index].experience = taskExperience;
+      return { ...cur, humanLanguages: [...cur.humanLanguages, { name: "", level: "" }] };
+    }
+    );
+  }
+
+  function removeHumanLanguage(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    if (filter.humanLanguages.length === 0) return;
+    setFilter((cur) => {
+      const newLangs = cur.humanLanguages.filter((_, humanIndex) => humanIndex !== index);
+      return { ...cur, humanLanguages: newLangs };
+    });
+  }
+
+  function handleHumanLanguageNameInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    e.preventDefault();
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    if (parsedName.length === 0) {
+      setFilter((cur) => {
+        cur.humanLanguages[index].name = "";
+        return { ...cur };
+      });
+      return;
+    }
+    setFilter((cur) => {
+      cur.humanLanguages[index].name = parsedName[0].toUpperCase() + parsedName.slice(1).toLowerCase();
       return { ...cur };
     })
   }
+
+  function handleHumanLanguageLevelInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let parsedLevel = e.currentTarget.value ?? "None";
+    if (parsedLevel.toLowerCase()! in HUMAN_LANGUAGE_LEVELS) {
+      parsedLevel = "a1";
+    }
+    setFilter((cur) => {
+      cur.humanLanguages[index].level = parsedLevel.toLowerCase();
+      return { ...cur };
+    }
+    );
+  }
+
 
   return {
     handleTitle,
@@ -154,7 +191,10 @@ export function useFiltering() {
     addTechnology,
     removeTechnology,
     handleTechnologyName,
-    handleTechnologyExperience,
+    addHumanLanguage,
+    removeHumanLanguage,
+    handleHumanLanguageNameInput,
+    handleHumanLanguageLevelInput,
     filter
   }
 }

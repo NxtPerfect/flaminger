@@ -22,7 +22,10 @@ export default function Offers() {
     addTechnology,
     removeTechnology,
     handleTechnologyName,
-    handleTechnologyExperience,
+    addHumanLanguage,
+    removeHumanLanguage,
+    handleHumanLanguageNameInput,
+    handleHumanLanguageLevelInput,
     filter
   } = useFiltering();
   const {
@@ -52,7 +55,10 @@ export default function Offers() {
           addTechnology={addTechnology}
           removeTechnology={removeTechnology}
           handleTechnologyName={handleTechnologyName}
-          handleTechnologyExperience={handleTechnologyExperience}
+          addHumanLanguage={addHumanLanguage}
+          removeHumanLanguage={removeHumanLanguage}
+          handleHumanLanguageNameInput={handleHumanLanguageNameInput}
+          handleHumanLanguageLevelInput={handleHumanLanguageLevelInput}
           submitFilter={fetchOffers}
         />
         <JobList

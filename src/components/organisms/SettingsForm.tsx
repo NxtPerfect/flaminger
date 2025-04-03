@@ -3,7 +3,7 @@ import React, { FormEvent, MouseEvent, useState } from 'react'
 import CityPicker from '../molecules/CityPicker'
 import TextInput from '../atoms/TextInput'
 import TechnologiesPicker from '../molecules/TechnologiesPicker'
-import { HumanLanguage, Technology } from '@/app/lib/definitions';
+import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Technology } from '@/app/lib/definitions';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from '../atoms/ErrorMessage';
 import HumanLanguagesPicker from '../molecules/HumanLanguagesPicker';
@@ -87,7 +87,7 @@ export default function SettingsForm() {
     setTechnologies((cur) => cur.filter((_, techIndex) => techIndex !== index));
   }
 
-  function handleNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+  function handleTechnologyNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
     if (parsedNumber < 0 || parsedNumber > 99) {
       parsedNumber = 0;
@@ -95,9 +95,46 @@ export default function SettingsForm() {
     technologies[index].experience = parsedNumber;
   }
 
-  function handleTextInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+  function handleTechnologyTextInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
     technologies[index].name = parsedName;
+  }
+
+  function addHumanLanguage() {
+    if (humanLanguages.length > 20) return;
+    setHumanLanguages((cur) => [
+      ...cur, { name: "", level: "" }]
+    );
+  }
+
+  function removeHumanLanguage(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    if (humanLanguages.length === 0) return;
+    setHumanLanguages((cur) => {
+      cur.filter((_, humanIndex) => humanIndex !== index);
+      return { ...cur };
+    });
+  }
+
+  function handleHumanLanguageNameInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    e.preventDefault();
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    setHumanLanguages((cur) => {
+      cur[index].name = parsedName[0].toUpperCase() + parsedName.slice(1).toLowerCase();
+      return { ...cur };
+    })
+  }
+
+  function handleHumanLanguageLevelInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let parsedLevel = e.currentTarget.value ?? "None";
+    if (parsedLevel.toLowerCase()! in HUMAN_LANGUAGE_LEVELS) {
+      parsedLevel = "a1";
+    }
+    setHumanLanguages((cur) => {
+      cur[index].level = parsedLevel.toLowerCase();
+      return { ...cur };
+    }
+    );
   }
 
   return (
@@ -119,13 +156,20 @@ export default function SettingsForm() {
         <h2 className="text-lg font-semibold">Professional Information</h2>
         <TechnologiesPicker
           technologies={technologies}
-          handleTextInputAction={handleTextInput}
-          handleNumberInputAction={handleNumberInput}
+          handleTextInputAction={handleTechnologyTextInput}
+          handleNumberInputAction={handleTechnologyNumberInput}
           addTechnologyAction={addTechnology}
           removeTechnologyAction={removeTechnology}>
           Known Technologies:
         </TechnologiesPicker>
-        <HumanLanguagesPicker humanLanguages={humanLanguages} setHumanLanguagesAction={setHumanLanguages}>Known Languages:</HumanLanguagesPicker>
+        <HumanLanguagesPicker
+          humanLanguages={humanLanguages}
+          handleHumanLanguageNameInputAction={handleHumanLanguageNameInput}
+          handleHumanLanguageLevelInputAction={handleHumanLanguageLevelInput}
+          addHumanLanguageAction={addHumanLanguage}
+          removeHumanLanguageAction={removeHumanLanguage}>
+          Known Languages:
+        </HumanLanguagesPicker>
       </div>
       <ActionButton variant="formSubmit" isLoading={isLoading}>Save Settings</ActionButton>
       {error && <ErrorMessage>error</ErrorMessage>}

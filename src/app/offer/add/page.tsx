@@ -39,7 +39,7 @@ export default function Page() {
     addOffer();
   }
 
-  function handleNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+  function handleTechnologyNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
     if (parsedNumber < 0 || parsedNumber > 99) {
       parsedNumber = 0;
@@ -52,9 +52,24 @@ export default function Page() {
     technologies[index].name = parsedName;
   }
 
-  function handleRemoveTechnology(e: MouseEvent<HTMLButtonElement>, index: number) {
+  function handleTechnologyRemoveTechnology(e: MouseEvent<HTMLButtonElement>, index: number) {
     e.preventDefault();
     setTechnologies((cur) => cur.filter((_t, i) => i !== index));
+  }
+
+  function handleLanguageNameInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    humanLanguages[index].name = parsedName;
+  }
+
+  function handleLanguageLevelInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    const parsedLevel = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    humanLanguages[index].level = parsedLevel;
+  }
+
+  function handleRemoveHumanLanguage(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    setHumanLanguages((cur) => cur.filter((_t, i) => i !== index));
   }
 
   return (
@@ -91,12 +106,15 @@ export default function Page() {
       <TechnologiesPicker
         technologies={technologies}
         addTechnologyAction={() => setTechnologies((c) => [...c, { name: "", experience: 0 }])}
-        removeTechnologyAction={handleRemoveTechnology}
-        handleNumberInputAction={handleNumberInput}
+        removeTechnologyAction={handleTechnologyRemoveTechnology}
+        handleNumberInputAction={handleTechnologyNumberInput}
         handleTextInputAction={handleTextInput} />
       <HumanLanguagesPicker
         humanLanguages={humanLanguages}
-        setHumanLanguagesAction={setHumanLanguages} />
+        addHumanLanguageAction={() => setHumanLanguages((c) => [...c, { name: "", level: "A1" }])}
+        removeHumanLanguageAction={handleRemoveHumanLanguage}
+        handleHumanLanguageNameInputAction={handleLanguageNameInput}
+        handleHumanLanguageLevelInputAction={handleLanguageLevelInput} />
       <ActionButton variant="formSubmit">Create offer</ActionButton>
     </form>
   )
