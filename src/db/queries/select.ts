@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, gte, ilike, inArray, lte, not, sql } from "drizzle-orm";
+import { and, count, eq, exists, getTableColumns, gte, ilike, inArray, lte, not, sql } from "drizzle-orm";
 import { db } from "..";
 import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 import { Filter, MAX_JOBS_PER_PAGE } from "@/app/lib/definitions";
@@ -274,7 +274,9 @@ function buildJobFilterConditions(filter: Filter) {
     isInJobArrayOrEmptyArray(filter),
     isInContractArrayOrEmptyArray(filter),
     isInWorkhourArrayOrEmptyArray(filter),
-    ilike(jobsTable.city, `%${filter.city}%`)
+    ilike(jobsTable.city, `%${filter.city}%`),
+    hasRequiredTechnology(filter),
+    hasRequiredLanguage(filter)
   );
 }
 
@@ -304,6 +306,40 @@ function buildUserJoinConditions(userId: number) {
   return and(
     eq(jobsToUsersTable.userId, userId),
     eq(jobsToUsersTable.jobId, jobsTable.id)
+  );
+}
+
+function hasRequiredTechnology(filter: Filter) {
+  if (filter.technologies.length === 0) return eq(sql`1`, sql`1`);
+  const technologies = filter.technologies.map((t) => t.name);
+  return exists(
+    db.select()
+      .from(technologiesRequirementsToJobsTable)
+      .where(
+        and(
+          eq(
+            technologiesRequirementsToJobsTable.jobId, jobsTable.id
+          ),
+          inArray(technologiesRequirementsToJobsTable.name, technologies)
+        )
+      )
+  );
+}
+
+function hasRequiredLanguage(filter: Filter) {
+  if (filter.humanLanguages.length === 0) return eq(sql`1`, sql`1`);
+  const languages = filter.humanLanguages.map((l) => l.name);
+  return exists(
+    db.select()
+      .from(humanLanguagesRequirementsToJobsTable)
+      .where(
+        and(
+          eq(
+            humanLanguagesRequirementsToJobsTable.jobId, jobsTable.id
+          ),
+          inArray(humanLanguagesRequirementsToJobsTable.name, languages)
+        )
+      )
   );
 }
 

@@ -6,6 +6,7 @@ import { ContractType, Filter, JobType, WorkhourType } from '@/app/lib/definitio
 import ButtonCheckboxFilter from '../molecules/ButtonCheckboxFilter';
 import CityFilter from '../molecules/CityFilter';
 import TechnologiesPicker from '../molecules/TechnologiesPicker';
+import HumanLanguagesPicker from '../molecules/HumanLanguagesPicker';
 
 type Props = {
   filter: Filter
@@ -156,7 +157,13 @@ text-black dark:text-white rounded-md min-w-fit max-h-fit`}>
         handleTextInputAction={handleTechnologyName}
         handleNumberInputAction={handleTechnologyExperience}
         addTechnologyAction={addTechnology}
-        removeTechnologyAction={removeTechnology} />
+        removeTechnologyAction={removeTechnology}
+        includeExperience={false} />
+      <HumanLanguagesPicker
+        humanLanguages={filter.humanLanguages}
+        setHumanLanguagesAction={() => { }}
+        includeExperience={true}
+      />
       <ActionButton
         variant="alt"
         onClick={() => submitFilter(filter)}>

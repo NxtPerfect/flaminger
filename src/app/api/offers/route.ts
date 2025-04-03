@@ -1,4 +1,4 @@
-import { CompaniesTable, Filter, JobsTable, JobsToUsersTable, langReturnData, MAX_JOBS_PER_PAGE, techReturnData } from "@/app/lib/definitions";
+import { CompaniesTable, Filter, HumanLanguage, JobsTable, JobsToUsersTable, langReturnData, MAX_JOBS_PER_PAGE, Technology, techReturnData } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
 import { getCountFilteredJobs, getHumanLanguagesForMultipleIds, getJobsFiltered, getTechnologiesForMultipleIds } from "@/db/queries/select"
 import { NextRequest } from "next/server";
@@ -51,6 +51,13 @@ function getParsedFilters(queryParams: URLSearchParams) {
     technologies: [],
     humanLanguages: []
   }
+  const techName = queryParams.getAll("technology").length === 0 ? [] : queryParams.getAll("technology");
+  const techExperience = queryParams.getAll("experience").length === 0 ? [] : queryParams.getAll("experience");
+  const technologies = techName.map((tn, index) => ({ name: tn, experience: techExperience[index] }) as Technology);
+
+  const langName = queryParams.getAll("language").length === 0 ? [] : queryParams.getAll("language");
+  const langLevel = queryParams.getAll("level").length === 0 ? [] : queryParams.getAll("level");
+  const humanLanguages = langName.map((ln, index) => ({ name: ln, level: langLevel[index] }) as HumanLanguage);
 
   const filter: Filter = {
     ...sampleFilter,
@@ -62,8 +69,8 @@ function getParsedFilters(queryParams: URLSearchParams) {
     workhourType: queryParams.getAll("workhourType").length === 0 ? [] : queryParams.getAll("workhourType"),
     contractType: queryParams.getAll("contractType").length === 0 ? [] : queryParams.getAll("contractType"),
     city: queryParams.get("city") ?? "",
-    technologies: queryParams.getAll("technology").length === 0 ? [] : queryParams.getAll("technology"),
-    humanLanguages: queryParams.getAll("language").length === 0 ? [] : queryParams.getAll("language"),
+    technologies: technologies,
+    humanLanguages: humanLanguages,
   }
 
   return { offset: queryParams.get("page") ?? "1", filter: filter };

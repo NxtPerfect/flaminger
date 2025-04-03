@@ -13,9 +13,18 @@ type Props = {
   addTechnologyAction: () => void
   removeTechnologyAction: (e: MouseEvent<HTMLButtonElement>, i: number) => void
   children?: React.ReactNode
+  includeExperience?: boolean
 }
 
-export default function TechnologiesPicker({ technologies, handleNumberInputAction, handleTextInputAction, addTechnologyAction, removeTechnologyAction, children }: Props) {
+export default function TechnologiesPicker({
+  technologies,
+  handleNumberInputAction,
+  handleTextInputAction,
+  addTechnologyAction,
+  removeTechnologyAction,
+  children,
+  includeExperience = true
+}: Props) {
   return (
     <div className="flex flex-col">
       <label htmlFor="technologies">
@@ -23,7 +32,8 @@ export default function TechnologiesPicker({ technologies, handleNumberInputActi
       </label>
       <div className={`flex flex-col border-2 border-neutral-200
         dark:border-neutral-700 px-4 py-2 rounded-md gap-1`}>
-        {technologies && "Technology name | Years of Experience"}
+        {technologies && "Technology name"}
+        {includeExperience && " | Years of Experience"}
         {technologies.map((_technology, index) => {
           return (
             <div key={index} className="flex flex-row items-center">
@@ -31,6 +41,7 @@ export default function TechnologiesPicker({ technologies, handleNumberInputActi
                 index={index}
                 handleNumberInput={handleNumberInputAction}
                 handleTextInput={handleTextInputAction}
+                includeExperience={includeExperience}
               />
               <ActionButton
                 variant="formSubmit"

@@ -87,6 +87,19 @@ export default function SettingsForm() {
     setTechnologies((cur) => cur.filter((_, techIndex) => techIndex !== index));
   }
 
+  function handleNumberInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    let parsedNumber = e.currentTarget.valueAsNumber ?? 0;
+    if (parsedNumber < 0 || parsedNumber > 99) {
+      parsedNumber = 0;
+    }
+    technologies[index].experience = parsedNumber;
+  }
+
+  function handleTextInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    const parsedName = e.currentTarget.value.trim().slice(0, 64) ?? "Empty";
+    technologies[index].name = parsedName;
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -106,6 +119,8 @@ export default function SettingsForm() {
         <h2 className="text-lg font-semibold">Professional Information</h2>
         <TechnologiesPicker
           technologies={technologies}
+          handleTextInputAction={handleTextInput}
+          handleNumberInputAction={handleNumberInput}
           addTechnologyAction={addTechnology}
           removeTechnologyAction={removeTechnology}>
           Known Technologies:

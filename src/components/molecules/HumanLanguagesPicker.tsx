@@ -10,9 +10,15 @@ type Props = {
   humanLanguages: HumanLanguage[]
   setHumanLanguagesAction: Dispatch<SetStateAction<HumanLanguage[]>>
   children?: React.ReactNode
+  includeExperience?: boolean
 }
 
-export default function HumanLanguagesPicker({ humanLanguages, setHumanLanguagesAction, children }: Props) {
+export default function HumanLanguagesPicker({
+  humanLanguages,
+  setHumanLanguagesAction,
+  children,
+  includeExperience
+}: Props) {
 
   function addHumanLanguageInput() {
     if (humanLanguages.length > 20) return;
@@ -30,11 +36,15 @@ export default function HumanLanguagesPicker({ humanLanguages, setHumanLanguages
       <label htmlFor="humanLanguages">{children ?? "Required Languages:"}</label>
       <div className={`border-2 border-neutral-200
         dark:border-neutral-700 px-4 py-2 rounded-md`}>
-        {humanLanguages && "Language name | Level (A1, Native)"}
+        {humanLanguages && "Language name"}
+        {includeExperience && "| Level (A1, Native)"}
         {humanLanguages.map((humanLanguage, index) => {
           return (
             <div key={index} className="flex flex-row items-center">
-              <InputNewHumanLanguage name={humanLanguage.name} level={humanLanguage.level} />
+              <InputNewHumanLanguage
+                name={humanLanguage.name}
+                level={humanLanguage.level}
+                includeExperience={includeExperience ?? false} />
               <ActionButton
                 variant="formSubmit"
                 className={`mt-0 h-fit py-1 px-6 bg-red-600
