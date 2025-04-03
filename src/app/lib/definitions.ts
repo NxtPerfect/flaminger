@@ -68,6 +68,12 @@ export type Offer = {
   company: string
   isClosed?: boolean
   createdAt?: Date
+  minSalary: number
+  maxSalary: number
+  city: string
+  jobType: JobType
+  contractType: ContractType
+  workhourType: WorkhourType
 }
 
 export type JobsTable = {
@@ -238,10 +244,12 @@ export type ModalData = {
   logoPath: string
   acceptanceRate: string
   requirements: Requirements
-  status: string
+  status: JobStatus
   isNotLoggedIn: boolean
   companyName: string
 }
+
+export type JobStatus = "accepted" | "rejected" | "inProgress" | "new"
 
 export type Requirements = {
   tech: Technology

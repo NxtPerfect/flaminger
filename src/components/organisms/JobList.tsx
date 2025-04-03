@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { LangRequirement, Offer, OfferWithCompanyInfo, TechRequirement, UserApplications } from '@/app/lib/definitions';
+import { JobStatus, LangRequirement, Offer, OfferWithCompanyInfo, TechRequirement, UserApplications } from '@/app/lib/definitions';
 import SkeletonJobOffer from '../placeholders/SkeletonJobOffer';
 import JobOffer from '../molecules/JobOffer';
 import ModalReadMore from '../molecules/ModalReadMore';
@@ -79,10 +79,10 @@ export default function JobListTest({ isLoading, isNotLoggedIn, offers, technolo
     return applicationStatus.jobId === offer.id ? getStatus(applicationStatus) : "new";
   }
 
-  function getStatus(applicationStatus: Partial<UserApplications>) {
+  function getStatus(applicationStatus: Partial<UserApplications>): JobStatus {
     if (applicationStatus.isAccepted) return "accepted";
     if (!applicationStatus.isApplicationInProgress && !applicationStatus.isAccepted) return "rejected";
-    if (applicationStatus.isApplied && applicationStatus.isApplicationInProgress) return "in progress";
+    if (applicationStatus.isApplied && applicationStatus.isApplicationInProgress) return "inProgress";
     return "new";
   }
 
@@ -100,7 +100,11 @@ export default function JobListTest({ isLoading, isNotLoggedIn, offers, technolo
       }
       {!isLoading && offers.length === 0 &&
         <>
-          <p>No offers found, try changing your filters.</p>
+          <p className={`flex flex-col bg-neutral-200 dark:bg-neutral-900
+      rounded-md p-4 px-8 min-w-[75svw] md:min-w-[35svw] max-w-[85svw]
+md:max-w-[55svw] text-4xl h-screen justify-center text-center`}>
+            😞 No offers found, try changing your filters.
+          </p>
         </>}
       {isOpenModalReadMore &&
         <ModalReadMore data={modalData} onClick={openModalReadMore} />}
@@ -136,6 +140,7 @@ export default function JobListTest({ isLoading, isNotLoggedIn, offers, technolo
                 }
               }
               skills={skills}
+              salary={{ min: offer.minSalary, max: offer.maxSalary }}
               status={status ?? "new"}
               isNotLoggedIn={isNotLoggedIn}
               openModalReadMore={openModalReadMore}
