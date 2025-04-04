@@ -310,3 +310,14 @@ export type ModalData = {
   isNotLoggedIn: boolean
   companyName: string
 }
+
+export type Question = {
+  id: number
+  jobId: number
+  content: string
+  type: QuestionType
+  answers: string[]
+  required: boolean
+}
+
+export type QuestionType = "singleChoice" | "multiChoice" | "text" | "number"

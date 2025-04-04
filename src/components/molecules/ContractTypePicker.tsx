@@ -10,11 +10,11 @@ export default function ContractTypePicker({ whichRadioIsActive, setWhichRadioIs
   function getContractTypeByRadioId(id: number) {
     switch (id) {
       case 0:
-        return "B2B";
+        return "b2b";
       case 1:
-        return "EmploymentContract";
+        return "contract";
       default:
-        return "None";
+        return "b2b";
     }
   }
 

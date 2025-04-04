@@ -1,6 +1,6 @@
-import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Technology } from "@/app/lib/definitions";
+import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Question, Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
-import { createJob } from "@/db/queries/insert";
+import { createJob, createQuestion } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
 
 export async function PUT(req: Request) {
@@ -8,6 +8,9 @@ export async function PUT(req: Request) {
   const offerData = parseOfferData(formData);
 
   const userId = await getUserId();
+  if (!userId) {
+    return Response.json({}, { status: 403 });
+  }
   const [userData] = await getUserById(userId);
   if (userData.isEmployer === false) {
     return Response.json({}, { status: 401 });
@@ -23,10 +26,23 @@ export async function PUT(req: Request) {
       title: offerData.title,
       description: offerData.description,
       byCompanyId: companyId,
-      isClosed: false
+      isClosed: false,
+      minSalary: offerData.minSalary,
+      maxSalary: offerData.maxSalary,
+      city: offerData.city,
+      jobType: offerData.employmentType,
+      contractType: offerData.contractType,
+      workhourType: offerData.workhourType,
     },
       offerData.technologies,
       offerData.humanLanguages
+    ).then(async (jobId) => {
+      // Insert questions using id
+      // from array of questions assign jobid to each
+      // then put all to query
+      offerData.questions = offerData.questions.map((q) => ({ ...q, jobId: jobId }));
+      await createQuestion(offerData.questions);
+    }
     ).then(() => {
       return Response.json({ data: offerData }, { status: 200 });
     })
@@ -131,6 +147,7 @@ type offerData = {
   workhourType: string
   technologies: Technology[]
   humanLanguages: HumanLanguage[]
+  questions: Question[]
 }
 
 type jobOfferData = {
@@ -142,4 +159,5 @@ type jobOfferData = {
   employmentType: string
   contractType: string
   workhourType: string
+  questions: Question[]
 }

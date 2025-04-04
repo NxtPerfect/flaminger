@@ -1,6 +1,6 @@
 import { HumanLanguage, Technology } from "@/app/lib/definitions";
 import { db } from "..";
-import { companiesTable, humanLanguagesRequirementsToJobsTable, InsertCompany, InsertJobs, InsertJobsToUsers, InsertUser, jobsTable, jobsToUsersTable, technologiesRequirementsToJobsTable, usersTable } from "../schema";
+import { companiesTable, humanLanguagesRequirementsToJobsTable, InsertCompany, InsertJobs, InsertJobsToUsers, InsertQuestionsToJobs, InsertUser, jobsTable, jobsToUsersTable, questionsToJobsTable, technologiesRequirementsToJobsTable, usersTable } from "../schema";
 
 export async function createUser(data: InsertUser) {
   try {
@@ -18,6 +18,7 @@ export async function createJob(data: InsertJobs, tech: Technology[], lang: Huma
   for (let i = 0; i < lang.length; i++) {
     await db.insert(humanLanguagesRequirementsToJobsTable).values({ ...lang[i], jobId: jobId });
   }
+  return jobId;
 }
 
 export async function createCompany(data: InsertCompany) {
@@ -26,4 +27,8 @@ export async function createCompany(data: InsertCompany) {
 
 export async function createJobToUser(data: InsertJobsToUsers) {
   await db.insert(jobsToUsersTable).values(data);
+}
+
+export async function createQuestion(data: InsertQuestionsToJobs[]) {
+  await db.insert(questionsToJobsTable).values(data);
 }

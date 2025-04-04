@@ -11,13 +11,13 @@ export default function EmploymentTypePicker({ whichRadioIsActive, setWhichRadio
   function getEmploymentTypeFromRadioId(id: number) {
     switch (id) {
       case 0:
-        return "Remote";
+        return "remote";
       case 1:
-        return "Hybrid";
+        return "hybrid";
       case 2:
-        return "Stationary";
+        return "stationary";
       default:
-        return "None";
+        return "remote";
     }
   }
 

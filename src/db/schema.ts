@@ -63,13 +63,13 @@ export const technologiesRequirementsToJobsTable = pgTable('technologies_require
   jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
   name: text('name').notNull(),
   experience: text('experience').notNull().default("5"),
-})
+});
 
 export const humanLanguagesRequirementsToJobsTable = pgTable('human_languages_requirements_to_jobs_table', {
   jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
   name: text('name').notNull(),
   level: text('level').notNull().default("A1"),
-})
+});
 
 export const jobsToUsersTable = pgTable('jobs_to_users_table', {
   id: serial('id').primaryKey(),
@@ -79,6 +79,15 @@ export const jobsToUsersTable = pgTable('jobs_to_users_table', {
   isApplicationInProgress: boolean('is_application_in_progress').notNull(),
   isAccepted: boolean('is_accepted').notNull(),
   rejectionReason: text('rejection_reason'),
+});
+
+export const questionsToJobsTable = pgTable('questions_to_jobs_table', {
+  id: serial('id').primaryKey(),
+  jobId: serial('job_id').references(() => jobsTable.id, { onDelete: "cascade" }),
+  content: text('content').notNull(),
+  type: text('type').notNull(),
+  answers: text('answers').array(),
+  required: boolean('required').default(true)
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;
@@ -104,3 +113,6 @@ export type SelectTechnologiesRequirementsToJobs = typeof technologiesRequiremen
 
 export type InsertHumanLanguagesRequirementsToJobs = typeof humanLanguagesRequirementsToJobsTable.$inferInsert;
 export type SelectHumanLanguagesRequirementsToJobs = typeof humanLanguagesRequirementsToJobsTable.$inferSelect;
+
+export type InsertQuestionsToJobs = typeof questionsToJobsTable.$inferInsert;
+export type SelectQuestionsToJobs = typeof questionsToJobsTable.$inferSelect;

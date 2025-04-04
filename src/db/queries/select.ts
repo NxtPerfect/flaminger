@@ -1,6 +1,6 @@
 import { and, count, eq, exists, getTableColumns, gte, ilike, inArray, lte, not, sql } from "drizzle-orm";
 import { db } from "..";
-import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
+import { companiesTable, humanLanguagesRequirementsToJobsTable, humanLanguagesUsersTable, jobsTable, jobsToUsersTable, questionsToJobsTable, SelectCompany, SelectJobs, SelectUser, technologiesRequirementsToJobsTable, technologiesUsersTable, usersTable } from "../schema";
 import { Filter, MAX_JOBS_PER_PAGE } from "@/app/lib/definitions";
 
 export async function getUserByEmail(email: SelectUser['email']) {
@@ -357,5 +357,11 @@ export async function getHumanLanguagesForMultipleIds(userIds: number[]) {
 
 export async function getAllCities() {
   return db.selectDistinct({ city: jobsTable.city })
-    .from(jobsTable)
+    .from(jobsTable);
+}
+
+export async function getQuestionsByJobId(jobId: number) {
+  return db.select()
+    .from(questionsToJobsTable)
+    .where(eq(questionsToJobsTable.jobId, jobId));
 }

@@ -114,7 +114,8 @@ export default function Page() {
         addHumanLanguageAction={() => setHumanLanguages((c) => [...c, { name: "", level: "A1" }])}
         removeHumanLanguageAction={handleRemoveHumanLanguage}
         handleHumanLanguageNameInputAction={handleLanguageNameInput}
-        handleHumanLanguageLevelInputAction={handleLanguageLevelInput} />
+        handleHumanLanguageLevelInputAction={handleLanguageLevelInput}
+        includeExperience={true} />
       <ActionButton variant="formSubmit">Create offer</ActionButton>
     </form>
   )

@@ -11,13 +11,13 @@ export default function WorkhourTypePicker({ whichRadioIsActive, setWhichRadioIs
   function getWorkhourTypeByRadioId(id: number) {
     switch (id) {
       case 0:
-        return "Full";
+        return "full";
       case 1:
-        return "Part";
+        return "part";
       case 2:
-        return "Intern";
+        return "intern";
       default:
-        return "None";
+        return "full";
     }
   }
 
