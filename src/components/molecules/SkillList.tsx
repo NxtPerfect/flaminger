@@ -21,7 +21,7 @@ export default function SkillList({ label, skills, addMore = true }: Props) {
                 {skill.name}
               </span>:
               <span className="text-black dark:text-white">
-                {'level' in skill ? `${skill.level}` : `${skill.experience} years`}
+                {'level' in skill ? ` ${skill.level}` : ` ${skill.experience} years`}
               </span>
             </SkillRectangle>
           )

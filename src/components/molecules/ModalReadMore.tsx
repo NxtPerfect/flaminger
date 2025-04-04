@@ -9,6 +9,7 @@ import ContractTypeInfo from '../atoms/ContractTypeInfo'
 import WorkhourTypeInfo from '../atoms/WorkhourTypeInfo'
 import JobTypeInfo from '../atoms/JobTypeInfo'
 import CityInfo from '../atoms/CityInfo'
+import SkillList from './SkillList'
 
 type Props = {
   data: ModalData | undefined
@@ -63,6 +64,19 @@ export default function ModalReadMore({ data, onClick }: Props) {
               <WorkhourTypeInfo workhourType={data?.workhourType ?? "full"} />
               <ContractTypeInfo contractType={data?.contractType ?? "B2B"} />
               <CityInfo city={data?.city ?? "Paris"} />
+            </div>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-lg font-bold">
+                Requirements:
+              </h3>
+              <SkillList
+                label="technologies"
+                skills={data?.requirements.tech ?? []}
+                addMore={false} />
+              <SkillList
+                label="languages"
+                skills={data?.requirements.langs ?? []}
+                addMore={false} />
             </div>
           </div>
         </div>
