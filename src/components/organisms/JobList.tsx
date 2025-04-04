@@ -141,6 +141,10 @@ md:max-w-[55svw] text-4xl h-screen justify-center text-center`}>
               }
               skills={skills}
               salary={{ min: offer.minSalary, max: offer.maxSalary }}
+              jobType={offer.jobType}
+              workhourType={offer.workhourType}
+              contractType={offer.contractType}
+              city={offer.city}
               status={status ?? "new"}
               isNotLoggedIn={isNotLoggedIn}
               openModalReadMore={openModalReadMore}

@@ -1,11 +1,15 @@
 import React from 'react'
 import Image from 'next/image'
 import LinkButton from '../organisms/LinkButton'
-import { FEATURE_FLAG_READ_MORE, HumanLanguage, JobStatus, Technology } from '@/app/lib/definitions'
+import { ContractType, FEATURE_FLAG_READ_MORE, HumanLanguage, JobStatus, JobType, Technology, WorkhourType } from '@/app/lib/definitions'
 import ActionButton from '../atoms/ActionButton'
 import AcceptanceRatePercentage from '../atoms/AcceptanceRatePercentage'
 import LlmPrompt from './LlmPrompt'
 import JobSalary from '../atoms/JobSalary'
+import JobTypeInfo from '../atoms/JobTypeInfo'
+import WorkhourTypeInfo from '../atoms/WorkhourTypeInfo'
+import ContractTypeInfo from '../atoms/ContractTypeInfo'
+import CityInfo from '../atoms/CityInfo'
 
 type Props = {
   id: number
@@ -17,6 +21,10 @@ type Props = {
   requirements?: { tech: { name: string, experience: string }[], langs: { name: string, level: string }[] }
   skills?: { technologies: Technology[], humanLanguages: HumanLanguage[] }
   salary: { min: number, max: number }
+  jobType: JobType
+  workhourType: WorkhourType
+  contractType: ContractType
+  city: string
   status: JobStatus
   isNotLoggedIn: boolean
   openModalReadMore: (_: number) => void
@@ -32,6 +40,10 @@ export default function JobOffer({
   requirements,
   skills,
   salary,
+  jobType,
+  workhourType,
+  contractType,
+  city,
   status,
   isNotLoggedIn,
   openModalReadMore
@@ -90,17 +102,27 @@ export default function JobOffer({
       <div className="flex flex-row gap-2">
         <h3 className="text-xl">{title}</h3>
       </div>
-      <div className="mt-2 flex flex-row justify-between">
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-row gap-2">
-            <Image src={logoPath} alt="Picture of a company" width={25} height={25} quality={50} />
-            <span>{company}</span>
+      <div className="flex flex-col gap-2">
+        <div className="mt-2 flex flex-row justify-between">
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-2">
+              <Image src={logoPath} alt="Picture of a company" width={25} height={25} quality={50} />
+              <span>{company}</span>
+            </div>
+            <AcceptanceRatePercentage acceptanceRate={acceptanceRate} />
           </div>
-          <AcceptanceRatePercentage acceptanceRate={acceptanceRate} />
+          <JobSalary salary={salary} />
         </div>
-        <JobSalary salary={salary} />
+        <div className="flex flex-row gap-6">
+          <JobTypeInfo jobType={jobType} />
+          <WorkhourTypeInfo workhourType={workhourType} />
+          <ContractTypeInfo contractType={contractType} />
+          <CityInfo city={city} />
+        </div>
       </div>
-      <span className="mt-4 min-w-[75svw] md:min-w-[35svw] max-w-[85svw] md:max-w-[55svw] line-clamp-3 text-ellipsis text-black dark:text-neutral-300">
+      <span className={`mt-4 min-w-[75svw] md:min-w-[35svw]
+max-w-[85svw] md:max-w-[55svw] line-clamp-3
+text-ellipsis text-black dark:text-neutral-300`}>
         {description.substring(0, 180)}
       </span>
       <LlmPrompt
