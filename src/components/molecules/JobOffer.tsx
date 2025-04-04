@@ -96,6 +96,17 @@ export default function JobOffer({
 
   const currentStatusConfig = statusConfig[status] || statusConfig.default;
 
+  const formattedDescription = formatDescription(description);
+
+  function formatDescription(description: string) {
+    const shortenedDescription = description.slice(0, 180);
+    const elipsisDescription = description.length > 180 ?
+      shortenedDescription + "..."
+      :
+      shortenedDescription;
+    return elipsisDescription;
+  }
+
   return (
     <div className={`flex flex-col bg-neutral-200 dark:bg-neutral-900
       rounded-md p-4 px-8 min-w-[75svw] md:min-w-[35svw] max-w-[85svw] md:max-w-[55svw]`}>
@@ -123,7 +134,7 @@ export default function JobOffer({
       <span className={`mt-4 min-w-[75svw] md:min-w-[35svw]
 max-w-[85svw] md:max-w-[55svw] line-clamp-3
 text-ellipsis text-black dark:text-neutral-300`}>
-        {description.substring(0, 180)}
+        {formattedDescription}
       </span>
       <LlmPrompt
         title={title}

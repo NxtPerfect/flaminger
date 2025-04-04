@@ -237,23 +237,16 @@ export type Application = {
   }
 }
 
-export type ModalData = {
-  id: number
-  title: string
-  description: string
-  logoPath: string
-  acceptanceRate: string
-  requirements: Requirements
-  status: JobStatus
-  isNotLoggedIn: boolean
-  companyName: string
-}
-
 export type JobStatus = "accepted" | "rejected" | "inProgress" | "new"
 
 export type Requirements = {
   tech: Technology
   langs: HumanLanguage
+}
+
+export type RequirementsArray = {
+  tech: Technology[]
+  langs: HumanLanguage[]
 }
 
 export type TechRequirement = {
@@ -299,4 +292,21 @@ export type langReturnData = {
   jobId: number,
   name: string,
   level: string
+}
+
+export type ModalData = {
+  id: number
+  title: string
+  description: string
+  logoPath: string
+  acceptanceRate: string
+  requirements: RequirementsArray
+  salary: { min: number, max: number }
+  jobType: JobType
+  workhourType: WorkhourType
+  contractType: ContractType
+  city: string
+  status: string
+  isNotLoggedIn: boolean
+  companyName: string
 }

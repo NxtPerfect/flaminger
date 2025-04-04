@@ -3,7 +3,12 @@ import CloseButton from '../atoms/CloseButton'
 import AcceptanceRatePercentage from '../atoms/AcceptanceRatePercentage'
 import Image from 'next/image'
 import LinkButton from '../organisms/LinkButton'
-import { ModalData } from '@/hooks/useOffers'
+import { ModalData } from '@/app/lib/definitions'
+import JobSalary from '../atoms/JobSalary'
+import ContractTypeInfo from '../atoms/ContractTypeInfo'
+import WorkhourTypeInfo from '../atoms/WorkhourTypeInfo'
+import JobTypeInfo from '../atoms/JobTypeInfo'
+import CityInfo from '../atoms/CityInfo'
 
 type Props = {
   data: ModalData | undefined
@@ -12,12 +17,11 @@ type Props = {
 
 export default function ModalReadMore({ data, onClick }: Props) {
   return (
-    <div className="fixed left-0 top-0 z-50 backdrop-blur-sm
+    <div className={`fixed left-0 top-0 z-50 backdrop-blur-sm
       bg-neutral-800/20 w-full h-full transition duration-1000 animate-fade-in
-      flex flex-col justify-center items-center"
-    >
-      <div className="flex flex-col rounded-md w-[50%] max-h-[50%] bg-neutral-200
-        dark:bg-neutral-800">
+      flex flex-col justify-center items-center`}>
+      <div className={`flex flex-col rounded-md w-[50%] min-h-[50%] bg-neutral-200
+        dark:bg-neutral-800 overflow-y-scroll`}>
         <div className="flex justify-self-start self-end p-2">
           <CloseButton onClick={() => onClick(-1)} />
         </div>
@@ -52,6 +56,13 @@ export default function ModalReadMore({ data, onClick }: Props) {
                 acceptanceRate={
                   Number.parseFloat(data?.acceptanceRate ?? "0")
                 } />
+            </div>
+            <div className="flex flex-row flex-wrap gap-4">
+              <JobSalary salary={data?.salary ?? { min: 0, max: 0 }} />
+              <JobTypeInfo jobType={data?.jobType ?? "remote"} />
+              <WorkhourTypeInfo workhourType={data?.workhourType ?? "full"} />
+              <ContractTypeInfo contractType={data?.contractType ?? "B2B"} />
+              <CityInfo city={data?.city ?? "Paris"} />
             </div>
           </div>
         </div>

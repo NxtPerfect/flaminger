@@ -1,22 +1,5 @@
-import { Filter, HumanLanguage, LangRequirement, OfferWithCompanyInfo, Technology, TechRequirement } from "@/app/lib/definitions";
+import { Filter, LangRequirement, OfferWithCompanyInfo, TechRequirement } from "@/app/lib/definitions";
 import { useCallback, useEffect, useState } from "react";
-
-export type ModalData = {
-  id: number
-  title: string
-  description: string
-  logoPath: string
-  acceptanceRate: string
-  requirements: Requirements
-  status: string
-  isNotLoggedIn: boolean
-  companyName: string
-}
-
-type Requirements = {
-  tech: Technology[]
-  langs: HumanLanguage[]
-}
 
 export function useOffers(filter: Filter) {
   const [offers, setOffers] = useState<OfferWithCompanyInfo[]>([]);

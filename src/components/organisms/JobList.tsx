@@ -1,11 +1,10 @@
 "use client"
 import React, { useState } from 'react'
-import { JobStatus, LangRequirement, Offer, OfferWithCompanyInfo, TechRequirement, UserApplications } from '@/app/lib/definitions';
+import { JobStatus, LangRequirement, ModalData, Offer, OfferWithCompanyInfo, TechRequirement, UserApplications } from '@/app/lib/definitions';
 import SkeletonJobOffer from '../placeholders/SkeletonJobOffer';
 import JobOffer from '../molecules/JobOffer';
 import ModalReadMore from '../molecules/ModalReadMore';
 import { useUserSkills } from '@/hooks/useUserSkills';
-import { ModalData } from '@/hooks/useOffers';
 
 type Props = {
   isLoading: boolean
@@ -67,6 +66,11 @@ export default function JobListTest({ isLoading, isNotLoggedIn, offers, technolo
         tech: tech.tech,
         langs: langs.langs
       },
+      salary: { min: offerFullInfo.jobsTable.minSalary, max: offerFullInfo.jobsTable.maxSalary },
+      jobType: offerFullInfo.jobsTable.jobType,
+      workhourType: offerFullInfo.jobsTable.workhourType,
+      contractType: offerFullInfo.jobsTable.contractType,
+      city: offerFullInfo.jobsTable.city,
       status: status,
       isNotLoggedIn: isNotLoggedIn,
       companyName: offerFullInfo.companiesTable.name
