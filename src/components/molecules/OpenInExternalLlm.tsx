@@ -29,25 +29,27 @@ export default function OpenInExternalLlm({ prompt }: Props) {
   ]
 
   return (
-    <div onClick={() => setIsOpen(cur => !cur)}
+    <button onClick={() => setIsOpen(cur => !cur)}
       className={`text-white hover:text-white/60 cursor-pointer flex flex-row
-bg-neutral-900 justify-center rounded-md px-2 py-1`}>
+bg-neutral-900 justify-center rounded-md px-2 py-1`} id='dropdownButton'
+      aria-haspopup="true" aria-expanded={isOpen}>
       Open in
       <ChevronDownSvg />
       {isOpen &&
-        <div className={`flex flex-col gap-2 absolute mt-6 bg-neutral-900
-p-2 rounded-md text-white`}>
+        <ul className={`flex flex-col gap-2 absolute mt-6 bg-neutral-900
+p-2 rounded-md text-white`} aria-labelledby='dropdownButton'>
           {providers.map((provider, index) => {
             return (
-              <button onClick={() => openUrlInNewTab(provider.url)}
-                key={index}
-                className="hover:bg-neutral-800 focus:bg-neutral-800 w-full px-4 py-1 rounded-md">
-                {provider.name}
-              </button>
+              <li key={index}>
+                <button onClick={() => openUrlInNewTab(provider.url)}
+                  className="hover:bg-neutral-800 focus:bg-neutral-800 w-full px-4 py-1 rounded-md">
+                  {provider.name}
+                </button>
+              </li>
             )
           })}
-        </div>}
-    </div>
+        </ul>}
+    </button>
   )
 }
 

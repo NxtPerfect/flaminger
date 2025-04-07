@@ -47,12 +47,12 @@ My skills include:
 
 Please respond with one of the following: "likely", "unlikely", or "moderate".`.trim();
   return (
-    <div className="flex flex-row rounded-md px-2 py-1 bg-neutral-400 dark:bg-neutral-800 w-full">
+    <div className="flex flex-col rounded-md px-2 py-1 bg-neutral-400 dark:bg-neutral-800 w-full">
       <div className={`font-mono overflow-y-scroll max-h-[3lh]
-min-w-fit max-w-[45svw] mb-[1.5lh] text-pretty text-justify`}>
+min-w-fit max-w-[45svw]  text-pretty text-justify`}>
         {prompt}
       </div>
-      <div className="flex gap-2 justify-self-end self-end absolute">
+      <div className="flex gap-2 justify-self-start self-start">
         <ActionButton variant="llmCopy" onClick={copyTextToClipboard}
           className="bg-neutral-900 hover:bg-neutral-900 hover:text-white/60">
           Copy
