@@ -2,7 +2,7 @@ import { SelectHumanLanguagesToUsers, SelectJobs, SelectTechnologiesToUsers, Sel
 import { Dispatch, SetStateAction } from "react"
 
 export const MAX_JOBS_PER_PAGE = 2;
-export const FEATURE_FLAG_READ_MORE = true;
+export const FEATURE_FLAG_QUESTIONS = false;
 
 export type ErrorVariant = typeof ERROR_VARIANTS[keyof typeof ERROR_VARIANTS];
 

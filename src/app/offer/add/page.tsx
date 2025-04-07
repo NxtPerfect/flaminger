@@ -1,5 +1,5 @@
 "use client";
-import { HumanLanguage, Technology } from '@/app/lib/definitions';
+import { FEATURE_FLAG_QUESTIONS, HumanLanguage, Question, QuestionType, Technology } from '@/app/lib/definitions';
 import ActionButton from '@/components/atoms/ActionButton';
 import TextAreaInput from '@/components/atoms/TextAreaInput'
 import TextInput from '@/components/atoms/TextInput'
@@ -7,6 +7,7 @@ import CityPicker from '@/components/molecules/CityPicker'
 import ContractTypePicker from '@/components/molecules/ContractTypePicker'
 import EmploymentTypePicker from '@/components/molecules/EmploymentTypePicker'
 import HumanLanguagesPicker from '@/components/molecules/HumanLanguagesPicker';
+import QuestionsPicker from '@/components/molecules/QuestionsPicker';
 import SalaryRange from '@/components/molecules/SalaryRange'
 import TechnologiesPicker from '@/components/molecules/TechnologiesPicker'
 import WorkhourTypePicker from '@/components/molecules/WorkhourTypePicker'
@@ -19,6 +20,7 @@ export default function Page() {
   const [workhourActiveRadio, setWorkhourActiveRadio] = useState<number>(0);
   const [technologies, setTechnologies] = useState<Technology[]>([{ name: "Javascript", experience: 2 }]);
   const [humanLanguages, setHumanLanguages] = useState<HumanLanguage[]>([{ name: "German", level: "A1" }]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const router = useRouter();
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -72,6 +74,21 @@ export default function Page() {
     setHumanLanguages((cur) => cur.filter((_t, i) => i !== index));
   }
 
+  function handleRemoveQuestion(e: MouseEvent<HTMLButtonElement>, index: number) {
+    e.preventDefault();
+    setQuestions((cur) => cur.filter((_t, i) => i !== index));
+  }
+
+  function handleQuestionContentInput(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+    const parsedContent = e.currentTarget.value.trim() ?? "Empty";
+    questions[index].content = parsedContent;
+  }
+
+  function handleQuestionTypeInput(e: React.ChangeEvent<HTMLSelectElement>, index: number) {
+    const parsedType = e.currentTarget.value.trim() as QuestionType ?? "singleChoice" as QuestionType;
+    questions[index].type = parsedType;
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -116,6 +133,14 @@ export default function Page() {
         handleHumanLanguageNameInputAction={handleLanguageNameInput}
         handleHumanLanguageLevelInputAction={handleLanguageLevelInput}
         includeExperience={true} />
+      {FEATURE_FLAG_QUESTIONS &&
+        <QuestionsPicker
+          questions={questions}
+          addQuestionAction={() => setQuestions((c) => [...c, { id: 0, jobId: 0, type: "singleChoice", content: "", answers: [], required: true }])}
+          removeQuestionAction={handleRemoveQuestion}
+          handleQuestionContentInputAction={handleQuestionContentInput}
+          handleQuestionTypeInputAction={handleQuestionTypeInput}
+        />}
       <ActionButton variant="formSubmit">Create offer</ActionButton>
     </form>
   )

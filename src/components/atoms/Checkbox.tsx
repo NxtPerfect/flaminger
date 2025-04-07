@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default function Checkbox({ className, checkboxClassName, children, name, required = false }: Props) {
-  const style = `flex flex-row gap-4 mt-8 max-w-[40ch] text-pretty items-center ${className}`.trim();
+  const style = `flex flex-row gap-4 max-w-[40ch] text-pretty items-center ${className}`.trim();
   const checkboxStyle = `flex flex-shrink-0 size-4 rounded-md px-2 py-1 text-black ${checkboxClassName}`.trim();
 
   return (

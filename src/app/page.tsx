@@ -13,7 +13,7 @@ export default function Home() {
             Your one stop shop for finding jobs!
           </p>
         </div>
-        <LinkButton variant="big" href="/offers/1">Start Searching!</LinkButton>
+        <LinkButton variant="big" href="/offers">Start Searching!</LinkButton>
       </div>
       <div className="flex flex-col gap-32 w-full justify-around items-center">
         <HeroSection imagePath="/hero/rejection.jpg">

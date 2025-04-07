@@ -36,16 +36,18 @@ export async function PUT(req: Request) {
     },
       offerData.technologies,
       offerData.humanLanguages
-    ).then(async (jobId) => {
+    )
+      // .then(async (jobId) => {
       // Insert questions using id
       // from array of questions assign jobid to each
       // then put all to query
-      offerData.questions = offerData.questions.map((q) => ({ ...q, jobId: jobId }));
-      await createQuestion(offerData.questions);
-    }
-    ).then(() => {
-      return Response.json({ data: offerData }, { status: 200 });
-    })
+      // offerData.questions = offerData.questions.map((q) => ({ ...q, jobId: jobId }));
+      // await createQuestion(offerData.questions);
+      // }
+      // )
+      .then(() => {
+        return Response.json({ data: offerData }, { status: 200 });
+      })
   } catch (error) {
     return Response.json({ error: error }, { status: 400 });
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import LinkButton from '../organisms/LinkButton'
-import { ContractType, FEATURE_FLAG_READ_MORE, HumanLanguage, JobStatus, JobType, Technology, WorkhourType } from '@/app/lib/definitions'
+import { ContractType, HumanLanguage, JobStatus, JobType, Technology, WorkhourType } from '@/app/lib/definitions'
 import ActionButton from '../atoms/ActionButton'
 import AcceptanceRatePercentage from '../atoms/AcceptanceRatePercentage'
 import LlmPrompt from './LlmPrompt'
@@ -166,11 +166,9 @@ overflow-hidden max-h-[3.5lh] hover:max-h-fit transition-all duration-1000 ease-
       <div className="mt-4 flex flex-col-reverse md:flex-row gap-4 items-center justify-end">
         {!isNotLoggedIn && currentStatusConfig.linkText &&
           <div className="flex flex-row gap-8 items-center">
-            {FEATURE_FLAG_READ_MORE &&
-              <ActionButton variant="alt" onClick={() => openModalReadMore(id)}>
-                Read More
-              </ActionButton>
-            }
+            <ActionButton variant="alt" onClick={() => openModalReadMore(id)}>
+              Read More
+            </ActionButton>
             <LinkButton className="h-fit" variant="offerLink" href={`/offer/${id}/apply`}>
               {currentStatusConfig.linkText}
             </LinkButton>
