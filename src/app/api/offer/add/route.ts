@@ -1,6 +1,6 @@
 import { HUMAN_LANGUAGE_LEVELS, HumanLanguage, Question, Technology } from "@/app/lib/definitions";
 import { getUserId } from "@/app/lib/session";
-import { createJob, createQuestion } from "@/db/queries/insert";
+import { createJob } from "@/db/queries/insert";
 import { getUserById } from "@/db/queries/select";
 
 export async function PUT(req: Request) {
