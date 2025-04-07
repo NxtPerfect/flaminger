@@ -63,7 +63,7 @@ export default function JobFilter({
 
   return (
     <div className={`flex flex-col w-1/6 gap-4 bg-neutral-900 p-4
-text-black dark:text-white rounded-md min-w-fit max-h-fit`}>
+text-white rounded-md min-w-fit max-h-fit`}>
       <div>
         <label htmlFor="title">
           Title
